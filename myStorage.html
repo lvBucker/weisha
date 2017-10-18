@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>查看详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+		<link rel="stylesheet" href="lib/all.css" />
+		<link rel="stylesheet" href="lib/css.css" />
+		<style>
+			body{
+				background: #f3f5fe;
+			}
+			
+		</style>
+		<script type="text/javascript" src="lib/selfFit.js" ></script>
+		<script type="text/javascript" src="lib/jquery-2.2.4.min.js" ></script>
+		<script src="lib/common.js"></script>
+	</head>
+	<body>
+		<header class="mytop">
+			<div class="mylist">
+				<div class="oddnum">
+					<div>申请单号</div>
+					<div>RZSQ201702021111</div>
+				</div>
+				<div class="time">
+					<div>申请时间</div>
+					<div>2017-02-02</div>
+				</div>
+				<div class="ostatus">
+					<div>状态</div>
+					<div class="status-ing">代购中</div>
+				</div>
+				<div class="opinion">
+					<div>意见</div>
+					<div>不知道</div>
+				</div>
+			</div>			
+		</header>
+		<div class="detail">
+			<div class="mylist">
+				<div class="addr">
+					<div>仓库地址</div>
+					<div>上海市闸北区</div>
+				</div>
+				<div class="info">
+					<div>商品信息</div>
+					<div>纱线 纱线</div>
+				</div>
+				<div class="batchnum">
+					<div>批号</div>
+					<div>123</div>
+				</div>
+				<div class="parkaigng">
+					<div>包装</div>
+					<div>10000 ￥/吨</div>
+				</div>
+				<div class="place">
+					<div>产地</div>
+					<div>南京</div>
+				</div>
+				<div class="number">
+					<div>数量</div>
+					<div>20</div>
+				</div>
+				<div class="casenum">
+					<div>件数</div>
+					<div>50</div>
+				</div>
+				<div class="intime">
+					<div>入库时间</div>
+					<div>2017-02-02</div>
+				</div>
+				<div class="carnum">
+					<div>车号</div>
+					<div>64461616</div>
+				</div>
+				<div class="drivername">
+					<div>司机名字</div>
+					<div>王大</div>
+				</div>
+				<div class="driverphone">
+					<div>司机号码</div>
+					<div>2017-02-02</div>
+				</div>
+				<div class="driverid">
+					<div>司机身份证号</div>
+					<div>5242205561613164255</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		<script>
+			$.ajax({
+				type:"post",
+				url:"",
+				async:true,
+				data:{
+					loginId: 'ufuy4bfc6i',
+					mtn: '617048ee072f53566e417c9dfe20dd2d',
+					fromType:2,
+					mobile:true,
+//					_m:'listStorageHosue',
+					_s:'coop',
+					buildID:201608071700,
+					loc:'zh-Hans',
+					versionID:'1.0.0'
+				},
+				beforeSend:function(){
+					theCommonFn.waiting();
+				},
+				success:function(rep){
+					theCommonFn.waiting('hide');
+					var reps;
+					try{
+						reps = JSON.parse(rep);		
+					}catch(e){
+						//TODO handle the exception
+					};
+					if(reps.result){
+						//放入数据
+						$('.oddnum>div:last-child').text(rep.xx);
+					}
+				},
+				error:function(){
+					theCommonFn.alertWin('服务器出错')
+				}
+			});
+			$('.oddnum>div:last-child').text('aaa');
+		</script>
+	</body>
+</html>

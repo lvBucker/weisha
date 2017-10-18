@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>我的代开证</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+		<link rel="stylesheet" href="lib/all.css" />
+		<link rel="stylesheet" href="lib/css.css" />
+		<style>
+			body{
+				font-size: 0.24rem;
+			}
+			header{
+				height: 0.92rem;
+				border: 1px solid #eef0f9;
+				box-shadow: 0 4px 4px 2px #dbdbdb;
+			}
+			header>ul{
+				overflow: hidden;
+				padding-top: 0.35rem;
+			}
+			header>ul>li{
+				float: left;
+				text-align: center;
+			}
+			header li:nth-of-type(1){
+				width: 2.66rem;
+				border-right: 1px solid #9b9b9b;
+			}
+			header li:nth-of-type(2){
+				width: 1.6rem;
+				border-right: 1px solid #9b9b9b;
+			}
+			header li:nth-of-type(3){
+				width: 1.8rem;
+				border-right: 1px solid #9b9b9b;
+			}
+			header li:nth-of-type(4){
+				width: 1.3rem;
+			}
+			.list>ul>li:nth-of-type(odd){
+				background: #f3f5fe;
+			}
+			.list>ul>li{
+				height: 0.88rem;
+				line-height: 0.88rem;
+			}
+			.list-detal{
+				overflow: hidden;
+				display: block;
+			}
+			/*.list-detal:visited{
+				color: #9B9B9B !important;
+			}*/
+			.list-detal>ul{
+				overflow: hidden;
+			}
+			.list-detal>ul>li{
+				float: left;
+				text-align: center;
+				color: #000000;
+			}
+			.list-detal>ul>li:nth-of-type(1){
+				width: 2.66rem;
+			}
+			.list-detal>ul>li:nth-of-type(2){
+				width: 1.6rem;
+			}
+			.list-detal>ul>li:nth-of-type(3){
+				width: 1.8rem;
+			}
+			.list-detal>ul>li:nth-of-type(4){
+				width: 1.3rem;
+			}
+			
+		</style>
+		<script type="text/javascript" src="lib/selfFit.js" ></script>
+		<script type="text/javascript" src="lib/jquery-2.2.4.min.js" ></script>
+
+	</head>
+	<body>
+		<header>
+			<ul>
+				<li>申请单号</li>
+				<li>申请时间</li>
+				<li>申请总额（元）</li>
+				<li>状态</li>
+			</ul>
+		</header>
+		<div class="list">
+			<ul>
+				<li>
+					<a href="" class="list-detal">
+						<ul>
+							<li>RZSQ201709090000</li>
+							<li>2017-02-02</li>
+							<li>47841</li>
+							<li>待审核</li>
+						</ul>
+					</a>					
+				</li>
+				<li>
+					<a href="" class="list-detal">
+						<ul>
+							<li>RZSQ201709090000</li>
+							<li>2017-02-02</li>
+							<li>47841</li>
+							<li class="status-no">不通过</li>
+						</ul>
+					</a>					
+				</li>
+				<li>
+					<a href="" class="list-detal">
+						<ul>
+							<li>RZSQ201709090000</li>
+							<li>2017-02-02</li>
+							<li>47841</li>
+							<li class="status-ing">开证中</li>
+						</ul>
+					</a>					
+				</li>
+			</ul>
+		</div>
+	</body>
+</html>

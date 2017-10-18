@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>代购</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+		<link rel="stylesheet" href="lib/all.css" />
+		<link rel="stylesheet" href="lib/css.css" />
+		<style>
+			body{
+				background: #f3f5fe;
+				font-size: 0.24rem;
+			}
+			#fullbg { 
+background-color:gray; 
+left:0; 
+opacity:0.5; 
+position:absolute; 
+top:0; 
+z-index:3; 
+filter:alpha(opacity=50); 
+-moz-opacity:0.5; 
+-khtml-opacity:0.5; 
+} 
+#dialog { 
+background-color:#fff; 
+border:5px solid rgba(0,0,0, 0.4); 
+height:400px; 
+left:50%; 
+margin:-200px 0 0 -200px; 
+padding:1px; 
+position:fixed !important; /* 浮动对话框 */ 
+position:absolute; 
+top:50%; 
+width:400px; 
+z-index:5; 
+border-radius:5px; 
+display:none; 
+} 
+#dialog p { 
+margin:0 0 12px; 
+height:24px; 
+line-height:24px; 
+background:#CCCCCC; 
+} 
+#dialog p.close { 
+text-align:right; 
+padding-right:10px; 
+} 
+#dialog p.close a { 
+color:#fff; 
+text-decoration:none; 
+} 
+			.supplier{
+				margin-top: 0.2rem;
+			}
+			.supplier-addr-in select{
+				width: 32%;
+				height: 0.68rem;
+				outline: none;
+				border: none;
+				background: #F3F5FE;
+				border-radius: 0.08rem;
+				font-size: 0.2rem;
+				color: #CDCCCD;
+			}	
+			.goods{
+				margin-bottom: 2.2rem;
+			}					
+		</style>
+		<script src="lib/common.js"></script>
+		<script type="text/javascript" src="lib/selfFit.js" ></script>
+		<script type="text/javascript" src="lib/jquery-2.2.4.min.js" ></script>
+		<script type="text/javascript" src="lib/distpicker.js" ></script>
+	</head>
+	<body>
+   <!--成功窗口-->
+        <div id="result-success"> 
+			<div class="result-bg"></div>
+			<div class="result-show">
+			     <div>
+			     	<img src="images/4.png" id="result-pic" />
+			     </div>
+			     <div>
+			     	<!--<p id="result-fail">失败原因——申请提交失败！</p>-->
+			     	<p id="result-in">申请已提交！</p>
+			     </div>
+			</div>
+		</div>
+
+		 <!--失败窗口-->
+        <div id="result-error"> 
+			<div class="result-bg"></div>
+			<div class="result-showfail">
+			     <div>
+			     	<img src="images/5.png" id="result-pic" />
+			     </div>
+			     <div>
+			     	<p id="result-in">失败原因——申请提交失败！</p>
+			     </div>
+			</div>
+		</div>
+
+
+		<div id="fullbg"></div> 
+		 <div id="dialog"> 
+                  <p class="close"><a href="#" onclick="theCommonFn.closeBg();">关闭</a></p> 
+                  <div>正在加载，请稍后....</div> 
+         </div> 
+		<div class="supplier cell">
+			<div class="supplier-choose">
+				<div>供应商</div>
+				<div class="supplier-choose-in">
+					<select id="cells">
+						<option>请选择供应商</option>
+					</select>
+				</div>
+			</div>
+			<div class="supplier-addr">
+				<div>交货地址</div>
+				<div class="supplier-addr-in">
+					<div data-toggle="distpicker">
+					  <select data-province="省"></select>
+					  <select data-city="市"></select>
+					  <select data-district="区"></select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="goods">
+			<div class="goods-model" style="display: none;">
+				<div class="goods-box cell">
+					<div class="goods-info">
+						<div>商品信息</div>
+						<div class="goods-info-select">
+							<div class="goods-info-select-type">
+								<select>
+									<option>商品类型</option>
+								</select>
+							</div>
+							<div class="goods-info-select-name">
+								<select>
+									<option>商品名称</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="goods-num">
+						<div>代购数量</div>
+						<div class="goods-num-in goodsin">
+							<div>
+								<input type="text" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+								 <!--<input type="text" id="test" value="请输入">-->
+							</div>
+							<div>吨</div>
+						</div>
+					</div>
+					<div class="goods-price">
+						<div>意向单价</div>
+						<div class="goods-price-in goodsin">
+							<div>
+								<input type="text" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+							</div>
+							<div>元/每吨</div>
+						</div>
+					</div>
+					<div class="goods-total">
+						<div>商品总价</div>
+						<div class="goods-total-in goodsin">
+							<div>
+								<input type="text" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+							</div>
+							<div>元</div>
+						</div>
+					</div>
+					<div class="goods-delete">删除此商品</div>
+				</div>
+			</div>
+			<div class="good-wrap">
+				<div class="goods-box cell">
+					<div class="goods-info">
+						<div>商品信息</div>
+						<div class="goods-info-select">
+							<div class="goods-info-select-type">
+								<select>
+									<option>商品类型</option>
+								</select>
+							</div>
+							<div class="goods-info-select-name">
+								<select>
+									<option>商品名称</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="goods-num">
+						<div>代购数量</div>
+						<div class="goods-num-in goodsin">
+							<div>
+								<input type="text" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+								 <!--<input type="text" id="test" value="请输入">-->
+							</div>
+							<div>吨</div>
+						</div>
+					</div>
+					<div class="goods-price">
+						<div>意向单价</div>
+						<div class="goods-price-in goodsin">
+							<div>
+								<input type="text" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+							</div>
+							<div>元/每吨</div>
+						</div>
+					</div>
+					<div class="goods-total">
+						<div>商品总价</div>
+						<div class="goods-total-in goodsin">
+							<div>
+								<input type="text" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+							</div>
+							<div>元</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="goods-add">
+				+添加更多商品
+			</div>
+		</div>
+	    <div class="submit" id="submit">提交</div>
+	    
+		<script>
+			var add = $('.goods-add'),
+			    foodWrap = $('.good-wrap'),
+			    box = $('.goods-box');
+			    submitBtn = $('#submit');
+
+			    mtn = null;
+			    if (/(Android)/i.test(navigator.userAgent)) { 
+			    	try {
+                       //console.log(window.AndroidWebView.getMnt());  
+                       mtn =  window.AndroidWebView.getMnt();
+                       //mtn = 'e0ec76abc1575149dba5ba35cfcc8411';
+                       alert("现在获取的是mtn："+ mtn);
+                   }catch(e) {  
+                       alert('无法获取mtn'); 
+                  } 
+              }
+
+
+			$.ajax({
+				type:"post",
+				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listSupplier",
+				async:true,
+				data:{
+					loginId: 'ufuy4bfc6i',
+					mtn: 'e0ec76abc1575149dba5ba35cfcc8411',
+					fromType:2,
+					mobile:true,
+					_m:'listSupplier',
+					_s:'coop',
+					buildID:201608071700,
+					loc:'zh-Hans',
+					versionID:'1.0.0'
+				},
+				beforeSend:function(){
+					//theCommonFn.waiting();
+				},
+				success:function(rep){
+                      var reps;
+					try{
+						reps = JSON.parse(rep);		
+					}catch(e){
+						//TODO handle the exception
+					};
+					if(reps.result){
+						var str = '',
+						    list = reps.content;
+						for(var i=0;i<list.length;i++){
+							str += '<option data-id="'+list[i].supplier_id +'" >'+list[i].company_name+'</option>'
+						};
+					// 	$('#cells').append(str);
+					};
+					$('#cells').append(str);
+					//console.log("测试str为：" + str);
+				},
+				error:function(){
+					theCommonFn.alertWin('服务器出错')
+				}
+			});
+
+			add.click(function(){
+				var theModel = $('.goods-model').children().clone();
+				theModel.appendTo(foodWrap);
+			});
+			foodWrap.on('click','.goods-delete',function(){
+				$(this).parent().remove();
+			});
+           submitBtn.click(function(){
+             //没填的提醒别人填写
+                var isError = 0 ;
+				if($('#cells').val()=='请选择供应商'){
+					theCommonFn.alertWin('请选择供应商');
+					return;
+				}else{
+					$('.good-wrap').find('input').each(function(i,item){
+						if(!$(this).val()){
+							theCommonFn.alertWin('请填写完整');
+							isError = 1;
+							return;
+						}
+					})
+				};
+                if(isError == '1'){
+                	return;
+                }
+			
+           	var product =[];
+           	for(var i=0;i<$('.good-wrap').find('.goods-box').length;i++){
+					// var info3 =  $("#test").val();//可以的
+					// var info4 =  $('.good-wrap').find('.goods-box').eq(i).find('.goods-num').find('.goods-num-in').find('div').find('input').val();
+					var info5 =  $('.good-wrap').find('.goods-box').eq(i).find('.goods-num').find('input').val();
+					var info6 =  $('.good-wrap').find('.goods-box').eq(i).find('.goods-price').find('input').val();
+					var info7 =  $('.good-wrap').find('.goods-box').eq(i).find('.goods-total').find('input').val()
+					console.log('start');
+					console.log(info5);
+					console.log(info6);
+					console.log(info7);
+					console.log('end');
+					product.push({
+						"itemNumber": info5,
+						"itemPrice":  info6,
+						"itemTotal":  info7
+					})
+					//console.log(product);
+				};
+				product = JSON.stringify(product);
+				//console.log(product)
+            	$.ajax({
+						type:"post",
+				        url:"https://wei.wiyarn.com/actiz/rs/b",
+				        async:true,
+				            data:{
+                              _vt:'dlk_weishatest',
+					          loginId: 'ufuy4bfc6i',
+					          mtn: 'e0ec76abc1575149dba5ba35cfcc8411',
+					          fromType:'2',
+					          mobile:'true',
+					          _m:'createPurchasing',
+					          _s:'coop',
+					          buildID:'201608071700',
+					          versionID:'zh-Hans&versionID=1.0.0',
+					          sign:'b92d3f53c061fafcfe8a1041b2cf4baf',
+					          loc:'zh-Hans&versionID=1.0.0',
+					          junit:'元/吨',
+					          suppliername:'新疆利泰丝路投资有限公司'
+				            },
+				            success:function(rep){
+					       //theCommonFn.alertWin('提交成功');
+					       //theCommonFn.windowPrompts();
+					       $("#result-success").show();
+					      // console.log("zoudoazhelile");
+								theCommonFn.delay2('3000');
+								theCommonFn.waitAndClosePrompts('1','3000');
+				        }
+				})
+           });
+		</script>
+	</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>供应商列表</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+		<link rel="stylesheet" href="lib/all.css" />
+		<link rel="stylesheet" href="lib/css.css" />
+		<style>
+			body{
+				font-size: 0.28rem;
+			}
+			header{
+				width: 100%;
+				height: 0.9rem;
+				border-top: 1px solid #eceef7;
+				box-shadow: 0 4px 4px 2px #dbdbdb;
+				padding: 0.14rem 0.24rem;
+			}
+			.search{
+				float: left;
+				height: 0.62rem;
+				width: 4.2rem;
+				border: 1px solid #d4d6df;
+				border-radius: 0.62rem;
+				background: url(images/search.png) no-repeat 0.2rem center;
+				background-size: 0.33rem 0.25rem;
+				padding-left: 0.6rem;
+				font-size: 0 !important;
+			}
+			.search>input{
+				height: 0.56rem;
+				line-height: 0.56rem;
+				width: 3rem;
+				border: none;
+				outline: none;
+			}
+			.search>input::-moz-placeholder{
+				color: #dee0e7;
+			}
+			.search>input::-webkit-input-placeholder{
+				color: #dee0e7;
+			}
+			.search>input::-ms-input-placeholder{
+				color: #dee0e7;
+			}
+			.country{
+				float: right;
+				width: 2.4rem;
+				height: 0.62rem;
+				line-height: 0.62rem;
+				background: #f3f5fe;
+				border-radius: 0.62rem;
+				overflow: hidden;
+			}
+			.country>select{
+				width: 100%;
+				padding: 0 0.1rem;
+				background: #f3f5fe;
+				height: 0.62rem;
+				outline: none;
+				border: none;
+				text-align-last: center;
+			}
+			.country>select>option{
+				text-align: center;
+				text-align-last: center;
+			}
+			.list,.list>ul{
+				overflow: hidden;
+			}
+			.list>ul>li{
+				overflow: hidden;			
+			}
+			.list>ul>li:nth-of-type(even){
+				background: #f3f5fe;
+			}
+			.list-company{
+				float: left;
+				width: 58%;
+				text-align: center;
+				/*height: 0.96rem;*/
+				line-height: 0.96rem;
+			}
+			.list-country{
+				float: right;
+				width: 40%;
+				text-align: left;
+				padding: 0 0.2rem;
+				/*height: 0.96rem;*/
+				line-height: 0.96rem;
+			}
+		</style>
+		<script type="text/javascript" src="lib/selfFit.js" ></script>
+		<script type="text/javascript" src="lib/jquery-2.2.4.min.js" ></script>
+		<script type="text/javascript" src="lib/common.js"></script>
+	</head>
+	<body>
+		<header>
+			<div class="search">
+				<input type="search" placeholder="搜索供应商" />
+			</div>
+			<div class="country">
+				<select>
+					<option>全部国别</option>
+					<option>国内</option>
+					<option>国外</option>
+				</select>
+			</div>
+		</header>
+		<div class="list">
+			<ul>
+				<li>
+					<div class="list-company">某某公司</div>
+					<div class="list-country">国内</div>
+				</li>
+		   </ul>
+		</div>
+		
+		<script>
+			var theSearch = $('.search input'),
+			    theCountry = $('.country select');
+			var coun,sear;
+			infoAjax();
+			theSearch.on('search',function(){							
+				infoAjax();
+			});
+			theCountry.on('change',function(){				
+				infoAjax();
+			});
+			
+			
+			function infoAjax(){
+				$('.list ul').empty();
+				coun = countryId(theCountry.val());
+				sear = $.trim(theSearch.val());
+				$.ajax({
+					type:"post",
+					url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listSupplier",
+					async:true,
+					data:{
+						loginId: 'ufuy4bfc6i',
+						mtn: '617048ee072f53566e417c9dfe20dd2d',
+						fromType:2,
+						mobile:true,
+						_m:'listStorageHosue',
+						_s:'coop',
+						buildID:201608071700,
+						loc:'zh-Hans',
+						versionID:'1.0.0',
+						page: 0,
+						rows: 99999,
+						query: sear || '',
+						country_type: coun || ''
+					},
+					beforeSend:function(){
+						theCommonFn.waiting();
+					},
+					success:function(rep){
+						theCommonFn.waiting('hide');
+						var reps;
+						try{
+							reps = JSON.parse(rep);		
+						}catch(e){
+							//TODO handle the exception
+						};
+						if(reps.result){
+							var str = '',
+							    list = reps.content;
+							for(var i=0;i<list.length;i++){
+								//设计图上是国内外
+								str += '<li data-id="'+ list[i].supplier_id +'"><div class="list-company">'+ list[i].company_name +'</div><div class="list-country">'+ list[i].address  +'</div></li>'
+							};
+							$('.list ul').append(str);
+						}
+					},
+					error:function(){
+						theCommonFn.alertWin('服务器出错')
+					}
+				});
+			}
+			function countryId(cou){
+				var country;
+				switch (cou){
+					case '全部国别':
+					country = '0';
+						break;
+				    case '国内':
+				    country = '1';
+						break;
+				    case '国外':
+				    country = '2';
+						break;
+					default:
+						break;
+				}
+				return country
+			}
+			$('.list').on('click','li',function(){
+				var $this = $(this);
+				var sure = window.confirm('确认选择？');
+				if(sure){
+					window.localStorage.setItem('weisha_supplierId',$this.attr('data-id'));
+					window.localStorage.setItem('weisha_supplierName',$this.find('.list-company').text());
+					window.location.href = 'agency.html';
+				}
+			})
+		</script>
+	</body>
+</html>

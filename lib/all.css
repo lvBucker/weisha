@@ -1,0 +1,63 @@
+*{
+	margin: 0;
+	padding: 0;
+	-webkit-tap-highlight-color: transparent;
+}
+li,ul{
+	list-style: none;
+}
+header,div,ul,li{
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+img{
+	border: 0;
+	display: inline-block;
+}
+html,body{
+    width: 100%; 	
+}
+body{
+	font-size: 0.24rem;
+	font-family: "微软雅黑",arial;
+	max-width: 750px;
+	margin: 0 auto;
+}
+input,select,textarea{
+	font-family: "微软雅黑";
+}
+.public-loatLeft{
+	float: left !important;
+}
+.public-floatRight{
+	float: right !important;
+}
+.public-hidden{
+	display: none !important;
+}
+.public-relative{
+	position: relative !important;
+}
+
+/*上传图片css*/
+.upload-box {
+    position: relative;
+}
+
+.upload-box > .show-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+}

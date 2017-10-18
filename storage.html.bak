@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>存储</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+		<link rel="stylesheet" href="lib/all.css" />
+		<link rel="stylesheet" href="lib/css.css" />
+		<link rel="stylesheet" href="lib/zepto.mdatetimer.css" />
+		<style>
+			body{
+				background: #f3f5fe;
+				font-size: 0.24rem;
+			}		
+			.warehouse{
+				margin-top: 0.2rem;
+			}
+			.storage-from>div>input[type=text]{
+				width: 90%;
+				height: 0.62rem;
+				line-height: 0.62rem;
+				outline: none;
+				border: none;
+				
+			}
+			/*.goods-time input{
+				height: 0.62rem;
+				line-height: 0.62rem;
+				width: 100%;
+				border-radius: 0.08rem;
+				border: none;
+				outline: none;
+				background:#f3f5fe url(images/2.png) no-repeat right center;
+				background-size: 0.44rem 0.44rem;
+			}*/
+			.deal{
+				text-align: center;
+				height: 1.32rem;
+				line-height: 1.32rem;
+				margin-top: 0.7rem;
+			}
+			.deal>span:first-of-type{
+				display: inline-block;
+				width: 0.44rem;
+				height: 0.44rem;
+				background-size: 0.44rem 0.44rem;
+				margin-right: 0.25rem;
+			}
+			.dealno{
+				background: url(images/3.png) no-repeat center center;				
+			}
+			.dealyes{
+				background: url(images/1.png) no-repeat center center;
+			}
+			.deal>span{
+				vertical-align: middle;
+				font-size: 0.18rem;
+			}
+			.deal>a{
+				vertical-align: middle;
+				font-size: 0.18rem;
+				color: #03dcc5;
+			}
+		</style>
+		<script type="text/javascript" src="lib/selfFit.js" ></script>
+		
+		<script src="lib/zepto.js"></script>
+		<script src="lib/zepto.mdatetimer.js"></script>
+		<script src="lib/common.js"></script>
+		<!--<script type="text/javascript" src="lib/jquery-2.2.4.min.js" ></script>-->	
+	</head>
+	<body>
+		<div class="warehouse cell">
+			<div>
+				<div>交货仓库</div>
+				<div>
+					<select id="cells">
+						<option>请选择交货仓库</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="goods">
+			<div class="goods-model" style="display: none;">
+				<div class="goods-box cell">
+					<div class="goods-info">
+						<div>商品信息</div>
+						<div class="goods-info-select">
+							<div class="goods-info-select-type">
+								<select>
+									<option>商品类型</option>
+								</select>
+							</div>
+							<div class="goods-info-select-name">
+								<select>
+									<option>商品名称</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="goods-bn storage-from">
+						<div>批号</div>
+						<div class="rightinput">
+							<input type="text" />
+						</div>
+					</div>
+					<div class="goods-place storage-from">
+						<div>产地</div>
+						<div class="rightinput">
+							<input type="text" />
+						</div>
+					</div>
+					<div class="goods-num storage-from">
+						<div>数量</div>
+						<div class="rightinput">
+							<input type="text" />
+						</div>
+					</div>
+					<div class="goods-cnum storage-from">
+						<div>件数</div>
+						<div class="rightinput">
+							<input type="text" />
+						</div>
+					</div>
+					<div class="goods-time">
+						<div>入库时间</div>
+						<div class="rightinput">
+							<input type="text" class="picktime" value="" readonly>
+						</div>
+					</div>
+					<div class="goods-vn storage-from">
+						<div>车号</div>
+						<div class="rightinput">
+							<input type="text" />
+						</div>
+					</div>
+					<div class="goods-dn storage-from">
+						<div>司机名称</div>
+						<div class="rightinput">
+							<input type="text" />
+						</div>
+					</div>
+					<div class="goods-dph storage-from">
+						<div>司机号码</div>
+						<div class="rightinput">
+							<input type="text" />
+						</div>
+					</div>
+					<div class="goods-did storage-from">
+						<div>司机身份证号</div>
+						<div class="rightinput">
+							<input type="text" />
+						</div>
+					</div>
+					<div class="goods-delete">删除此商品</div>
+				</div>
+			</div>
+			<div class="good-wrap">
+				<div class="goods-box cell">
+					<div class="goods-info">
+						<div>商品信息</div>
+						<div class="goods-info-select">
+							<div class="goods-info-select-type">
+								<select>
+									<option>商品类型</option>
+								</select>
+							</div>
+							<div class="goods-info-select-name">
+								<select>
+									<option>商品名称</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="goods-bn storage-from">
+						<div>批号</div>
+						<div  class="rightinput">
+							<input type="text" />
+						</div>
+					</div>
+					<div class="goods-place storage-from">
+						<div>产地</div>
+						<div class="rightinput">
+							<input type="text" />
+						</div>
+					</div>
+					<div class="goods-num storage-from">
+						<div>数量</div>
+						<div class="rightinput">
+							<input type="text" />
+						</div>
+					</div>
+					<div class="goods-cnum storage-from">
+						<div>件数</div>
+						<div class="rightinput">
+							<input type="text" />
+						</div>
+					</div>
+					<div class="goods-time">
+						<div>入库时间</div>
+						<div class="rightinput">
+							<input type="text" class="picktime" id="picktime" value="" readonly>
+						</div>
+					</div>
+					<div class="goods-vn storage-from">
+						<div>车号</div>
+						<div class="rightinput">
+							<input type="text" />
+						</div>
+					</div>
+					<div class="goods-dn storage-from">
+						<div>司机名称</div>
+						<div class="rightinput">
+							<input type="text" />
+						</div>
+					</div>
+					<div class="goods-dph storage-from">
+						<div>司机号码</div>
+						<div class="rightinput">
+							<input type="text" />
+						</div>
+					</div>
+					<div class="goods-did storage-from">
+						<div>司机身份证号</div>
+						<div class="rightinput">
+							<input type="text" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="goods-add">
+				+添加更多商品
+			</div>
+		</div>
+		<div class="deal">
+			<span class="dealno"></span><span>已同意</span><a href="#">《存储协议》</a>
+		</div>
+	    <div class="submit" id="submit">提交</div>
+		
+		<script>
+			var add = $('.goods-add'),
+			    foodWrap = $('.good-wrap'),
+			    box = $('.goods-box'),
+			    theDeal = $('.deal>span').eq(0),
+			    submitBtn = $('#submit');
+			//时间控件配置
+			var config = {
+				mode : 1, //时间选择器模式：1：年月日，2：年月日时分（24小时），3：年月日时分（12小时），4：年月日时分秒。默认：1
+				format : 2, //时间格式化方式：1：2015年06月10日 17时30分46秒，2：2015-05-10  17:30:46。默认：2
+				years : [2000, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021], //年份数组
+				nowbtn : true, //是否显示现在按钮
+				onOk : function(){
+					//alert('OK');
+				},  //点击确定时添加额外的执行函数 默认null
+				onCancel : function(){
+					
+				}, //点击取消时添加额外的执行函数 默认null
+			};
+		    //时间控件调用
+			$('#picktime').mdatetimer(config);
+			//增加商品
+			add.click(function(){
+				var theModel = $('.goods-model').children().clone();
+				var picktimenum = foodWrap.find('.foodWrap').length;
+				theModel.find('.picktime').attr('id','picktime'+picktimenum);
+				theModel.appendTo(foodWrap);
+				var theID = '#picktime'+picktimenum;
+				$(theID).mdatetimer(config);
+				
+			});
+			//删除增加的商品
+			foodWrap.on('click','.goods-delete',function(){
+				$(this).parent().remove();
+			});
+			//同意协议
+			theDeal.click(function(){
+				if($(this).hasClass('dealno')){
+					$(this).removeClass('dealno').addClass('dealyes');
+				}else{
+					$(this).removeClass('dealyes').addClass('dealno');
+				}
+				
+			});
+			
+			//获取仓库列表
+			$.ajax({
+				type:"post",
+				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listStorageHosue",
+				async:true,
+				data:{
+					loginId: 'ufuy4bfc6i',
+					mtn: '7c0754c5d0ebbad2b72fe4a6d652a29d',
+					fromType:2,
+					mobile:true,
+					_m:'listStorageHosue',
+					_s:'coop',
+					buildID:201608071700,
+					loc:'zh-Hans',
+					versionID:'1.0.0'
+				},
+				beforeSend:function(){
+					theCommonFn.waiting();
+				},
+				success:function(rep){
+					theCommonFn.waiting('hide');
+					var reps;
+					try{
+						reps = JSON.parse(rep);		
+					}catch(e){
+						//TODO handle the exception
+					};
+					if(reps.result){
+						var str = '',
+						    list = reps.content;
+						for(var i=0;i<list.length;i++){
+							str += '<option data-id="'+list[i].storeHouseId +'" >'+list[i].storeHouseName+'</option>'
+						};
+						$('#cells').append(str);
+					}
+				},
+				error:function(){
+					theCommonFn.alertWin('服务器出错')
+				}
+			});
+			submitBtn.click(function(){
+				//没填的提醒别人填写
+				if($('#cells').val()=='请选择交货仓库'){
+					theCommonFn.alertWin('请选择交货仓库');
+					return
+				}else{
+					$('.good-wrap').find('input').each(function(i,item){
+						if(!$(this).val()){
+							theCommonFn.alertWin('请填写完整');
+							return
+						}else if(theDeal.hasClass('dealno')){
+							theCommonFn.alertWin('您未同意储存协议');
+							return
+						}
+					})
+				};
+				//获取数据
+				var product=[],theData;
+				//添加了多个商品
+				for(var i=0;i<$('.good-wrap').find('.goods-box').length;i++){
+					var info = $('.good-wrap').find('.goods-box').eq(i);
+					product.push({
+						"productClassifyId":"商品类型ID",
+						"productTypeName":"商品类型名称",
+						"productid":"商品ID",
+						"productname":"商品名称",
+						"productNum":"商品编号",
+						"batch_num":$.trim(info.find('.goods-bn input').val()),
+						"standard":"包装",
+						"origin":"产地",
+						"weight":"重量",
+						"itemNumber":"件数",
+						"in_time":"入库时间",
+						"car_num	":"车号",
+						"driver_name":"司机名称",
+						"drive_tel	":"司机号码",
+						"driver_card":"司机身份证号",
+						"warehousing_notice":"存储协议"
+					})
+				};
+				product = JSON.stringify(product);
+				console.log(product)
+				theData = {
+					loginId: 'ufuy4bfc6i',
+					mtn: '617048ee072f53566e417c9dfe20dd2d',
+					fromType:2,
+					mobile:true,
+					_m:'listStorageHosue',
+					_s:'coop',
+					buildID:201608071700,
+					loc:'zh-Hans',
+					versionID:'1.0.0',
+					storeHouseId:$('#cells option').not(function(){ return !this.selected }).attr('data-id'),
+					product:product
+				};
+				console.log(theData)
+				sendAjax(theData);
+				function sendAjax(data){
+					$.ajax({
+						type:"post",
+						url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=createStorage",
+						async:true,
+						data:theData,
+						beforeSend:function(){
+							theCommonFn.waiting();
+						},
+						success:function(rep){
+							var reps;
+							try{
+								reps = JSON.parse(rep);		
+							}catch(e){
+								//TODO handle the exception
+							};
+							if(reps.result){
+								theCommonFn.alertWin('保存成功');
+								//设置成功后跳转
+								setTimeout(function(){
+									
+								})
+							}
+						}
+					});
+				}
+			})
+		</script>
+	</body>
+</html>
