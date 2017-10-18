@@ -1,0 +1,29 @@
+1.生成密钥
+ ssh-keygen -t rsa -C "lvzuobin@163.com"
+2.将生成的id_rsa添加到ssh中
+3.测试是否通过： ssh -T git@github.com 
+
+4.提交代码
+git init
+git add .   提交所有
+git add  文件名 提交单个
+
+
+
+git add .
+git commit -m 'first commit'
+git push origin master
+
+
+拉取：
+git pull origin master
+
+
+如果希望保留生产服务器上所做的改动,仅仅并入新配置项, 处理方法如下:
+git stash
+git pull
+git stash pop
+
+反过来,如果希望用代码库中的文件完全覆盖本地工作版本. 方法如下:
+git reset --hard
+git pull
