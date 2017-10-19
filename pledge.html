@@ -128,7 +128,7 @@
 						<div>质押商品</div>
 						<div class="goods-info-select">
 							<div class="goods-info-select-type">
-								<select>
+								<select id = "productType">
 									<option>商品类型</option>
 								</select>
 							</div>
@@ -176,8 +176,8 @@
 						<div>质押商品</div>
 						<div class="goods-info-select">
 							<div class="goods-info-select-type">
-								<select>
-									<option>商品类型</option>
+								<select id="productTypeFirst">
+									<option >商品类型</option>
 								</select>
 							</div>
 							<div class="goods-info-select-name">
@@ -241,6 +241,7 @@
 			    box = $('.goods-box'),
 			    theDeal = $('.deal>span').eq(0);
 			    submitBtn = $('#submit'); 
+			    productTypeFirstBtn = $('#productTypeFirst');
 
 			add.click(function(){
 				var theModel = $('.goods-model').children().clone();
@@ -256,7 +257,6 @@
 					$(this).removeClass('dealyes').addClass('dealno');
 				}
 			});
-
 
 //获取存储仓库列表
 			$.ajax({
@@ -319,7 +319,50 @@
 					var reps;
 					try{
 						reps = JSON.parse(rep);	
-						console.log(rep);	
+						//console.log(rep);	
+					}catch(e){
+						//TODO handle the exception
+					};
+					if(reps.result){
+						var str = '',
+						    list = reps.content;
+						for(var i=0;i<list.length;i++){
+							str += '<option data-id="'+list[i].product_type_id +'" >'+list[i].product_type_name+'</option>'
+						};
+						$('#productTypeFirst').append(str);  //首行插入
+						$('#productType').append(str);       //除了首行之外的其余行插入
+					}
+				},
+				error:function(){
+					theCommonFn.alertWin('服务器出错')
+				}
+			});
+
+
+
+//商品名称信息列表
+			$.ajax({
+				type:"post",
+				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductType2Zy",
+				async:true,
+				data:{
+					loginId: 'ufuy4bfc6i',
+					mtn: 'e0ec76abc1575149dba5ba35cfcc8411',
+					fromType:2,
+					mobile:true,
+					_m:'listProductType2Zy',
+					_s:'coop',
+					buildID:201608071700,
+					loc:'zh-Hans',
+					versionID:'1.0.0'
+				},
+				beforeSend:function(){
+				},
+				success:function(rep){
+					var reps;
+					try{
+						reps = JSON.parse(rep);	
+						//console.log(rep);	
 					}catch(e){
 						//TODO handle the exception
 					};
@@ -339,31 +382,69 @@
 			});
 
 
+
+           $("select").change(function() {
+                 alert($(this).find("option:checked").attr("data-id"));
+            });
+
+           
+           $("productTypeFirstBtn").change(function() {
+                 alert("1111111111111111");
+            });
+
+           productTypeFirstBtn.change(function(){
+           	alert("2222222222222");
+           });
+
 			submitBtn.click(function(){
-                var isError = 0 ;
-				if($('#cells').val()=='请选择供应商'){
-					theCommonFn.alertWin('请选择供应商');
-					return;
-				}else{
-					$('.good-wrap').find('input').each(function(i,item){
-						if(!$(this).val()){
-							theCommonFn.alertWin('请填写完整');
-							isError = 1;
-							return;
-						}
-					})
-				};
+    //             var isError = 0 ;
+				// if($('#cells').val()=='请选择交货仓库'){
+				// 	theCommonFn.alertWin('请选择交货仓库');
+				// 	return;
+				// }else{
+				// 	$('.good-wrap').find('input').each(function(i,item){
+				// 		if(!$(this).val()){
+				// 			theCommonFn.alertWin('请填写完整');
+				// 			isError = 1;
+				// 			return;
+				// 		}
+				// 	})
+				// };
 
-	            if(theDeal.hasClass('dealno')){
-							theCommonFn.alertWin('您未同意储存协议');
-							return;
-				}
+	   //          if(theDeal.hasClass('dealno')){
+				// 			theCommonFn.alertWin('您未同意储存协议');
+				// 			return;
+				// }
 									
-                if(isError == '1'){
-                	return;
+    //             if(isError == '1'){
+    //             	return;
+    //             }
+
+                var product=[],theData;
+                for(var i=0;i<$('.good-wrap').find('.goods-box').length;i++){
+                	var info = $('.good-wrap').find('.goods-box').eq(i);
+                	var wareHouse  = $('.addr').find('.addr-warehouse').eq(i);
+                	console.log('wareHouse');
+                	console.log(wareHouse);
+                    console.log('wareHouse');
+                	product.push({
+                		"product_classify_id	":"商品类型ID",
+		                "productTypeName":"商品类型名称",
+		                "storeHouseId":$.trim(wareHouse.find('.addr-warehouse-in select').val()),
+		                "productid": $.trim(info.find('.goods-info-select-name select').find("option:checked").attr("data-id")),
+		                "productname":$.trim(info.find('.goods-info-select-name select').val()),
+		                "productnum":"商品编码",
+		                "weight":$.trim(info.find('.goods-weight-in input').val()),
+		                "unitprice	":$.trim(info.find('.goods-price-in input').val()),   //goods-price-in
+		                "itemNumber":$.trim(info.find('.goods-num input').val()), //goods-num
+		                "money":"商品总价"
+                		})
+                   
                 }
-
-
+                // console.log(product);
+                // console.log("start");
+                // console.log($.trim(info.find('.goods-info-select-name select').find("option:checked").attr("data-id")));
+                // console.log("end");
 				$("#result-success").show();
 				theCommonFn.waitAndClosePrompts('1','3000');
 			});

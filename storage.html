@@ -408,7 +408,9 @@ filter:alpha(opacity=50);
 					})
 				};
 				product = JSON.stringify(product);
-				console.log(product)
+				console.log("this is");
+				console.log(product);
+				console.log("this is");
 				theData = {
 					loginId: 'ufuy4bfc6i',
 					mtn: 'e0ec76abc1575149dba5ba35cfcc8411',
@@ -430,30 +432,17 @@ filter:alpha(opacity=50);
 						url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=createStorage",
 						async:true,
 						data:theData,
-						// 等待动画（旋转效果）
-						// beforeSend:function(){
-						// 	theCommonFn.waiting();
-						// },
 						success:function(rep){
 							var reps;
 							try{
 								reps = JSON.parse(rep);		
 							}catch(e){
-								//TODO handle the exception
+								
 							};
 							if(reps.result){
-								//theCommonFn.alertWin('保存成功');
-								//成功后灰屏
-								//theCommonFn.windowPrompts();
-								//$("#result-error").show();
-								console.log("zoudoazhelile");
 								$("#result-success").show();
 								theCommonFn.delay2('3000');
 								theCommonFn.waitAndClosePrompts('1','3000');
-								//设置成功后跳转
-								// setTimeout(function(){
-									
-								// })
 							}
 						}
 					});
