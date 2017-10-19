@@ -76,6 +76,7 @@
 		</style>
 		<script type="text/javascript" src="lib/selfFit.js" ></script>
 		<script type="text/javascript" src="lib/jquery-2.2.4.min.js" ></script>
+		<script src="lib/common.js"></script>
 
 	</head>
 	<body>
@@ -88,8 +89,8 @@
 			</ul>
 		</header>
 		<div class="list">
-			<ul>
-				<li>
+			<ul id="cardList">
+				<!-- <li>
 					<a href="" class="list-detal">
 						<ul>
 							<li>RZSQ201709090000</li>
@@ -118,8 +119,104 @@
 							<li class="status-ing">开证中</li>
 						</ul>
 					</a>					
-				</li>
+				</li> -->
 			</ul>
 		</div>
+
+		<script type="text/javascript">
+			//登陆用户名
+			var loginId = 'ufuy4bfc6i';
+			//初始话加载开证列表
+			$(function(){
+				queryMyCard();
+			})
+
+			//开证列表查询
+			function queryMyCard() {
+				var data = {};
+				//通用信息
+				data._vt = 'dlk_weishatest';
+				data.fromType = '2';
+				data.mobile = true;
+				data.mtn = 'e0ec76abc1575149dba5ba35cfcc8411';
+				data.buildID = '201608071700';
+				data.loc = 'zh-Hans';
+				data.versionID = '1.0.0';
+				data._svt = '';
+				data._s = 'coop';
+				data._m = 'listFinancing';
+				//接口信息
+				data.loginId = loginId;
+				data.starttime = '';
+				data.endtime = '';
+				data.type = '2';
+				data.reviewType = '';
+				data.page = 1;
+				data.rows = 10;
+				//获取仓库列表
+				$.ajax({
+					type:"post",
+					url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listFinancing",
+					async:true,
+					data:data,
+					beforeSend:function(){
+						theCommonFn.waiting();
+					},
+					success:function(rep){
+	                    $("#result-error").show();
+
+				          /*延迟之后关闭弹窗*/
+				        theCommonFn.delay('3000');
+						theCommonFn.waiting('hide');
+						var reps;
+						try{
+							reps = JSON.parse(rep);	
+							if(reps.result){
+								$("#cardList").empty();
+								var context = reps.content;
+								var html = '';
+								$.each(context, function(index, value) {
+									//审核状态  1.待审核2.审核通过3.审核不通过
+									var reviewtype = value.reviewtype;
+									//申请单号
+									var financeId = value.financeId;
+									//申请时间
+									var applytime = value.applytime;
+									//申请总额
+									var totalmoney = value.totalmoney;
+
+									var li = '<li>' +
+												'<a href="./myBuyonsb.html?financeId=' + financeId + '" class="list-detal">' +
+													'<ul>' +
+														'<li>' + financeId + '</li>' +
+														'<li>' + applytime + '</li>' +
+														'<li>' + totalmoney + '</li>';
+									if (reviewtype == 1) {
+										li = li + '<li>待审核</li>';
+									} else if (reviewtype == 2) {
+										li = li + '<li class="status-ing">开证中</li>';
+									} else if (reviewtype == 3) {
+										li = li + '<li class="status-no">不通过</li>';
+									} else {
+										li = li + '<li></li>';
+									}
+									li = li + '</ul></a></li>';
+									html = html + li;
+								})
+								$("#cardList").append(html);
+								$("#cardList").trigger("create");
+							} else {
+								theCommonFn.alertWin(reps.msg);
+							}	
+						}catch(e){
+							theCommonFn.alertWin('解析数据异常');
+						};
+					},
+					error:function(){
+						theCommonFn.alertWin('服务器出错')
+					}
+				});
+			}
+		</script>
 	</body>
 </html>

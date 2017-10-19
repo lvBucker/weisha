@@ -14,33 +14,36 @@
 		</style>
 		<script type="text/javascript" src="lib/selfFit.js" ></script>
 		<script type="text/javascript" src="lib/jquery-2.2.4.min.js" ></script>
+		<script type="text/javascript" src="lib/common.js"></script>
+		<script type="text/javascript" src="lib/arg-1.3.min.js"></script>
 	</head>
 	<body>
 		<header class="mytop">
 			<div class="mylist">
-				<div class="oddnum">
+				<div>
 					<div>申请单号</div>
-					<div>RZSQ201702021111</div>
+					<div class="oddnum"></div>
 				</div>
-				<div class="time">
+				<div>
 					<div>申请时间</div>
-					<div>2017-02-02</div>
+					<div class="time"></div>
 				</div>
-				<div class="ostatus">
+				<div>
 					<div>状态</div>
-					<div class="status-ing">代购中</div>
+					<div class="ostatus">代购中</div>
 				</div>
-				<div class="opinion">
+				<div>
 					<div>意见</div>
-					<div>不知道</div>
+					<div class="opinion">不知道</div>
 				</div>
 			</div>			
 		</header>
-		<div class="detail">
+		<!-- 代购中-->
+		<div class="detail" id="daigou">
 			<div class="mylist">
 				<div class="supplier">
 					<div>供应商</div>
-					<div>投资有限公司</div>
+					<div name="app">投资有限公司</div>
 				</div>
 				<div class="addr">
 					<div>交货地址</div>
@@ -64,5 +67,83 @@
 				</div>
 			</div>
 		</div>
+		<script type="text/javascript">
+			//登陆用户信息
+			var loginId = 'ufuy4bfc6i';
+			//初始化加载
+			$(function(){
+				queryCardByApplyId();
+
+			})
+
+			//根据申请单号查询开证信息
+			function queryCardByApplyId() {
+				//申请单号
+				var financeId = Arg('financeId');
+				var data = {};
+				//通用信息
+				data._vt = 'dlk_weishatest';
+				data.fromType = '2';
+				data.mobile = true;
+				data.mtn = 'e0ec76abc1575149dba5ba35cfcc8411';
+				data.buildID = '201608071700';
+				data.loc = 'zh-Hans';
+				data.versionID = '1.0.0';
+				data._svt = '';
+				data._s = 'coop';
+				data._m = 'getFinancingInfo';
+				//接口信息
+				data.loginId = loginId;
+				data.pkid = financeId;
+				//获取仓库列表
+				$.ajax({
+					type:"post",
+					url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=getFinancingInfo",
+					async:true,
+					data:data,
+					beforeSend:function(){
+						theCommonFn.waiting();
+					},
+					success:function(rep){
+	                    $("#result-error").show();
+				          /*延迟之后关闭弹窗*/
+				        theCommonFn.delay('3000');
+						theCommonFn.waiting('hide');
+						var reps;
+						try{
+							reps = JSON.parse(rep);	
+							if(reps.result){
+								var content = reps.content;
+
+								var finance = content.finance;
+								$(".mylist .oddnum").html(finance.number);
+								$(".mylist .time").html(finance.applytime);
+								var reviewtype = finance.reviewtype;
+								var status = "";
+								if (reviewtype == 1) {
+									status = "待审核";
+								} else if (reviewtype == 2) {
+									status = "代购中";
+								} else if (reviewtype == 3) {
+									status = "不通过";
+								}
+								$(".mylist .ostatus").html(status);
+								$(".mylist .opinion").html(finance.say);
+
+								
+							} else {
+								theCommonFn.alertWin(reps.msg);
+							}	
+						}catch(e){
+							theCommonFn.alertWin('解析数据异常');
+						};
+					},
+					error:function(){
+						theCommonFn.alertWin('服务器出错')
+					}
+				});
+			}
+
+		</script>
 	</body>
 </html>
