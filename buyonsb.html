@@ -234,16 +234,16 @@ text-decoration:none;
 			    foodWrap = $('.good-wrap'),
 			    box = $('.goods-box');
 			    submitBtn = $('#submit');
-
 			    mtn = null;
+
 			    if (/(Android)/i.test(navigator.userAgent)) { 
 			    	try {
-                       //console.log(window.AndroidWebView.getMnt());  
                        mtn =  window.AndroidWebView.getMnt();
-                       //mtn = 'e0ec76abc1575149dba5ba35cfcc8411';
                        alert("现在获取的是mtn："+ mtn);
+                       return mtn;
                    }catch(e) {  
-                       alert('无法获取mtn'); 
+                       alert('无法获取mtn,默认返回e0ec76abc1575149dba5ba35cfcc8411'); 
+                       return 'e0ec76abc1575149dba5ba35cfcc8411';
                   } 
               }
 
