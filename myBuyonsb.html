@@ -30,24 +30,83 @@
 				</div>
 				<div>
 					<div>状态</div>
-					<div class="ostatus">代购中</div>
+					<div class="ostatus"></div>
 				</div>
 				<div>
 					<div>意见</div>
-					<div class="opinion">不知道</div>
+					<div class="opinion"></div>
 				</div>
 			</div>			
 		</header>
-		<!-- 代购中-->
-		<div class="detail" id="daigou">
-			<div class="mylist">
-				<div class="supplier">
-					<div>供应商</div>
-					<div name="app">投资有限公司</div>
+
+		<!-- 待审核-->
+		<div id="toaudit">
+			<!-- <div class="detail">
+				<div class="mylist">
+					<div >
+						<div>供应商</div>
+						<div class="supplier"></div>
+					</div>
+					<div>
+						<div>业务国别</div>
+						<div class="national"></div>
+					</div>
+					<div>
+						<div>币种</div>
+						<div class="currency"></div>
+					</div>
+					<div>
+						<div>计量单位</div>
+						<div class="unitId"></div>
+					</div>
+					<div>
+						<div>交货港口</div>
+						<div class="province"></div>
+					</div>
+					<div>
+						<div>信用证类型</div>
+						<div class="credit_letter_type_id"></div>
+					</div>
+				</div> 
+			</div>	-->
+
+			<!-- <div class="detail">
+				<div class="mylist">
+					<div >
+						<div>商品信息</div>
+						<div class="productname"></div>
+					</div>
+					<div>
+						<div>代开柜数</div>
+						<div class="cabinet"></div>
+					</div>
+					<div>
+						<div>代开证数量</div>
+						<div class="weight"></div>
+					</div>
+					<div>
+						<div>意向单价</div>
+						<div class="unitprice"></div>
+					</div>
+					<div>
+						<div>商品总价</div>
+						<div class="money"></div>
+					</div>
 				</div>
-				<div class="addr">
+			</div>	 -->
+		</div>
+		<!--质押-->
+		<div id="pledge"></div>
+		<!-- 代购中-->
+		<div id="daigou">
+			<!-- <div class="mylist">
+				<div>
+					<div>供应商</div>
+					<div class="supplier"></div>
+				</div>
+				<div>
 					<div>交货地址</div>
-					<div>上海市闸北区</div>
+					<div class="addr"></div>
 				</div>
 				<div class="info">
 					<div>商品信息</div>
@@ -65,15 +124,20 @@
 					<div>商品总价</div>
 					<div>100000￥</div>
 				</div>
-			</div>
+			</div> -->
+		</div>
+
+		<!--存储 -->
+		<div id="storage">
+
 		</div>
 		<script type="text/javascript">
 			//登陆用户信息
 			var loginId = 'ufuy4bfc6i';
 			//初始化加载
 			$(function(){
+				console.log();
 				queryCardByApplyId();
-
 			})
 
 			//根据申请单号查询开证信息
@@ -95,7 +159,7 @@
 				//接口信息
 				data.loginId = loginId;
 				data.pkid = financeId;
-				//获取仓库列表
+				//获取开证列表
 				$.ajax({
 					type:"post",
 					url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=getFinancingInfo",
@@ -116,8 +180,10 @@
 								var content = reps.content;
 
 								var finance = content.finance;
-								$(".mylist .oddnum").html(finance.number);
-								$(".mylist .time").html(finance.applytime);
+								if (finance == null || finance == undefined) {
+									finance = {};
+								}
+								//审核状态
 								var reviewtype = finance.reviewtype;
 								var status = "";
 								if (reviewtype == 1) {
@@ -127,10 +193,30 @@
 								} else if (reviewtype == 3) {
 									status = "不通过";
 								}
+								//申请单号
+								$(".mylist .oddnum").html(finance.number);
+								//申请时间
+								$(".mylist .time").html(finance.applytime);
+								//状态
 								$(".mylist .ostatus").html(status);
-								$(".mylist .opinion").html(finance.say);
+								//意见
+								$(".mylist .opinion").html(finance.reason);
 
-								
+								//1.代购。2.待开证。3.质押。4.存储
+								var type = Arg("type");
+								if (type == 1) {
+									//代购
+									daigou(content);
+								} else if (type == 2) {
+									//待开证
+									waitopen(content);
+								} else if (type == 3) {
+									//质押
+									pledge(content);
+								} else if (type == 4) {
+									//存储
+									storage(content);
+								}		
 							} else {
 								theCommonFn.alertWin(reps.msg);
 							}	
@@ -144,6 +230,202 @@
 				});
 			}
 
+			//代开证
+			function waitopen(content) {
+				var finance = content.finance;
+				var list = content.list;
+				var financediv = 	'<div>' +
+										'<div>供应商</div>' +
+										'<div class="supplier">' + theCommonFn.getValue(content.resultSuppliername) + '</div>' +
+									'</div>' + 
+									'<div>' +
+										'<div>业务国别</div>'
+										'<div class="national">' + theCommonFn.getValue(finance.national) + '</div>' +
+									'</div>' +
+									'<div>' +
+										'<div>币种</div>' +
+										'<div class="currency">' + '</div>' +
+									'</div>' +
+									'<div>' +
+										'<div>计量单位</div>' +
+										'<div class="unitId">' + theCommonFn.getValue(finance.unitId) + '</div>' +
+									'</div>' +
+									'<div>' +
+										'<div>交货港口</div>' + 
+										'<div class="province">' + theCommonFn.getValue(finance.province) + '</div>' +
+									'</div>' +
+									'<div>' +
+										'<div>信用证类型</div>' +
+										'<div class="credit_letter_type_id">' + theCommonFn.getValue(finance.credit_letter_type_id) + '</div>' +
+									'</div>';
+
+				financediv = '<div class="detail"><div class="mylist">' + financediv + '</div></div>';
+				$("#toaudit").append(financediv);
+
+				var productList = "";
+				$.each(list, function(index, value) {
+					var div =   '<div>' +
+									'<div>商品信息</div>' +
+									'<div class="productname">' + theCommonFn.getValue(value.productname) + '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>代开柜数</div>' +
+									'<div class="cabinet">' + theCommonFn.getValue(value.cabinet) + '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>代开证数量</div>' +
+									'<div class="weight">' + theCommonFn.getValue(value.weight) + '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>意向单价</div>' +
+									'<div class="unitprice">' + theCommonFn.getValue(value.unitprice) + '  ' +  theCommonFn.getValue(finance.djunit) +  '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>商品总价</div>' +
+									'<div class="money">' + theCommonFn.getValue(value.money) + '</div>' +
+								'</div>';
+					div = '<div class="detail"><div class="mylist">' + div + '</div></div>';
+					productList = productList + div;
+				})
+				$("#toaudit").append(productList);
+				$("#toaudit").trigger("create");
+			}
+
+			//代购中
+			function daigou(content) {
+				var finance = content.finance;
+				var list = content.list;
+				var productList = "";
+				$.each(list, function(index, value) {
+					var div =   '<div>' +
+									'<div>供应商</div>' +
+									'<div class="supplier">' + theCommonFn.getValue(content.resultSuppliername) + '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>交货地址</div>' +
+									'<div class="city">' + theCommonFn.getValue(finance.city) + '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>商品信息</div>' +
+									'<div class="productname">' + theCommonFn.getValue(value.productname) + '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>代开证数量</div>' +
+									'<div class="weight">' + theCommonFn.getValue(value.weight) + '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>意向单价</div>' +
+									'<div class="unitprice">' + theCommonFn.getValue(value.unitprice) + '  ' +  theCommonFn.getValue(finance.djunit) +  '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>商品总价</div>' +
+									'<div class="money">' + theCommonFn.getValue(value.money) + '</div>' +
+								'</div>';
+					div = '<div class="detail"><div class="mylist">' + div + '</div></div>';
+					productList = productList + div;
+				})
+				$("#daigou").append(productList);
+				$("#daigou").trigger("create");
+			}
+
+			//质押
+			function pledge(content) {
+				var finance = content.finance;
+				var list = content.list;
+				var productList = "";
+				$.each(list, function(index, value) {
+					var div =   '<div>' +
+									'<div>交货地址</div>' +
+									'<div class="city">' + theCommonFn.getValue(content.stroeHouseName) + '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>商品信息</div>' +
+									'<div class="productname">' + theCommonFn.getValue(value.productname) + '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>代开证数量</div>' +
+									'<div class="weight">' + theCommonFn.getValue(value.weight) + '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>意向单价</div>' +
+									'<div class="unitprice">' + theCommonFn.getValue(value.unitprice) + '  ' +  theCommonFn.getValue(finance.djunit) +  '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>商品总价</div>' +
+									'<div class="money">' + theCommonFn.getValue(value.money) + '</div>' +
+								'</div>';
+					div = '<div class="detail"><div class="mylist">' + div + '</div></div>';
+					productList = productList + div;
+				})
+				$("#pledge").append(productList);
+				$("#pledge").trigger("create");
+			}
+			//存储
+			function storage(content) {
+				var finance = content.finance;
+				var list = content.list;
+				var productList = "";
+
+				if (list == null || list == undefined) {
+					list = [];
+					var obj = {};
+					list.push(obj);
+				}
+				$.each(list, function(index, value){
+					var div =   '<div>' +
+									'<div>仓库地址</div>' +
+									'<div class="stroeHouseName">' + theCommonFn.getValue(value.productname) + '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>商品信息</div>' +
+									'<div class="productname">' + theCommonFn.getValue(value.productname) + '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>批号</div>' +
+									'<div class="batch_num">' + theCommonFn.getValue(value.batch_num) + '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>包装</div>' +
+									'<div class="standard">' + theCommonFn.getValue(value.standard) + '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>产地</div>' +
+									'<div class="origin">' + theCommonFn.getValue(value.origin) + '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>数量</div>' +
+									'<div class="weight">' + theCommonFn.getValue(value.weight) + '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>件数</div>' +
+									'<div class="itemNumber">' + theCommonFn.getValue(value.itemNumber) + '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>入库时间</div>' +
+									'<div class="in_time">' + theCommonFn.getValue(value.in_time) + '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>车号</div>' +
+									'<div class="car_num">' + theCommonFn.getValue(value.car_num) + '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>司机名称</div>' +
+									'<div class="driver_name">' + theCommonFn.getValue(value.driver_name) + '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>司机号码</div>' +
+									'<div class="drive_tel">' + theCommonFn.getValue(value.drive_tel) + '</div>' +
+								'</div>' +
+								'<div>' +
+									'<div>司机身份证号码</div>' +
+									'<div class="driver_card">' + theCommonFn.getValue(value.driver_card) + '</div>' +
+								'</div>';
+					div = '<div class="detail"><div class="mylist">' + div + '</div></div>';
+					productList = productList + div;
+				}) 
+				$("#storage").append(productList);
+				$("#storage").trigger("create");
+			}
 		</script>
 	</body>
 </html>

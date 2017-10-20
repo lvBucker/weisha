@@ -130,7 +130,8 @@
 			$(function(){
 				queryMyCard();
 			})
-
+			// type融资类型（1.代购。2.待开证。3.质押。4.存储）
+			var type = '4';
 			//开证列表查询
 			function queryMyCard() {
 				var data = {};
@@ -149,11 +150,11 @@
 				data.loginId = loginId;
 				data.starttime = '';
 				data.endtime = '';
-				data.type = '2';
+				data.type = type;
 				data.reviewType = '';
 				data.page = 1;
 				data.rows = 10;
-				//获取仓库列表
+				//开证列表
 				$.ajax({
 					type:"post",
 					url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listFinancing",
@@ -178,23 +179,28 @@
 								$.each(context, function(index, value) {
 									//审核状态  1.待审核2.审核通过3.审核不通过
 									var reviewtype = value.reviewtype;
-									//申请单号
+									//申请单ID
 									var financeId = value.financeId;
+									//申请单号
+									var number = value.number;
 									//申请时间
 									var applytime = value.applytime;
 									//申请总额
-									var totalmoney = value.totalmoney;
+									var totalmoney = theCommonFn.getValue(value.totalmoney);
+									if (totalmoney == '') {
+										totalmoney = '0';
+									}
 
 									var li = '<li>' +
-												'<a href="./myBuyonsb.html?financeId=' + financeId + '" class="list-detal">' +
+												'<a href="./myBuyonsb.html?financeId=' + financeId + '&type=' + data.type + '" class="list-detal">' +
 													'<ul>' +
-														'<li>' + financeId + '</li>' +
+														'<li>' + number + '</li>' +
 														'<li>' + applytime + '</li>' +
 														'<li>' + totalmoney + '</li>';
 									if (reviewtype == 1) {
 										li = li + '<li>待审核</li>';
 									} else if (reviewtype == 2) {
-										li = li + '<li class="status-ing">开证中</li>';
+										li = li + '<li class="status-ing">审核通过</li>';
 									} else if (reviewtype == 3) {
 										li = li + '<li class="status-no">不通过</li>';
 									} else {
