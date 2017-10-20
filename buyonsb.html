@@ -134,12 +134,12 @@ text-decoration:none;
 						<div>商品信息</div>
 						<div class="goods-info-select">
 							<div class="goods-info-select-type">
-								<select>
+								<select id = "productType">
 									<option>商品类型</option>
 								</select>
 							</div>
 							<div class="goods-info-select-name">
-								<select>
+								<select  id = "productNames">
 									<option>商品名称</option>
 								</select>
 							</div>
@@ -182,12 +182,12 @@ text-decoration:none;
 						<div>商品信息</div>
 						<div class="goods-info-select">
 							<div class="goods-info-select-type">
-								<select>
+								<select id = "productTypeFirst">
 									<option>商品类型</option>
 								</select>
 							</div>
 							<div class="goods-info-select-name">
-								<select>
+								<select id = 'productNamesFirst'>
 									<option>商品名称</option>
 								</select>
 							</div>
@@ -234,20 +234,9 @@ text-decoration:none;
 			    foodWrap = $('.good-wrap'),
 			    box = $('.goods-box');
 			    submitBtn = $('#submit');
-			    mtn = null;
-
-			    if (/(Android)/i.test(navigator.userAgent)) { 
-			    	try {
-                       mtn =  window.AndroidWebView.getMnt();
-                       alert("现在获取的是mtn："+ mtn);
-                       return mtn;
-                   }catch(e) {  
-                       alert('无法获取mtn,默认返回e0ec76abc1575149dba5ba35cfcc8411'); 
-                       return 'e0ec76abc1575149dba5ba35cfcc8411';
-                  } 
-              }
-
-
+			    mtn = theCommonFn.getMtn();
+                 
+            //获取供应商信息
 			$.ajax({
 				type:"post",
 				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listSupplier",
@@ -281,21 +270,190 @@ text-decoration:none;
 						};
 					// 	$('#cells').append(str);
 					};
+					//console.log('这里是测试！！！：'+str);
 					$('#cells').append(str);
-					//console.log("测试str为：" + str);
 				},
 				error:function(){
 					theCommonFn.alertWin('服务器出错')
 				}
 			});
+  
+            //监听供应商选择窗口，增添商品类型列表信息
+            $("#cells").change(function() {
+                 var suppilerId = $(this).find("option:checked").attr("data-id");
+	         $.ajax({
+				type:"post",
+				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductType",
+				async:true,
+				data:{
+					loginId: 'ufuy4bfc6i',
+					mtn: 'e0ec76abc1575149dba5ba35cfcc8411',
+					fromType:2,
+					mobile:true,
+					_m:'listProductType',
+					_s:'coop',
+					buildID:201608071700,
+					loc:'zh-Hans',
+					versionID:'1.0.0',
+					supplier_id:suppilerId
+				},
+				beforeSend:function(){
+					//theCommonFn.waiting();
+					theCommonFn.alertWin('请稍后')
+				},
+				success:function(rep){
+                      var reps;
+					try{
+						reps = JSON.parse(rep);	
+					}catch(e){
+						//TODO handle the exception
+					};
+					if(reps.result){
+						var str = '<option>商品类型</option>',
+						    list = reps.content;
+						for(var i=0;i<list.length;i++){
+							str += '<option data-id="'+list[i].product_type_id +'" >'+list[i].product_type_name+'</option>'
+						};
 
+					   $('#productTypeFirst option').remove();//首框删除老的选择内容
+					   $('#productTypeFirst').append(str);  //首框插入新的内容
+                       $('#productType option').remove();//后续框删除老的选择内容
+					   $('#productType').append(str);  //后续框插入新的内容
+					};
+				},
+				error:function(){
+					theCommonFn.alertWin('服务器出错')
+				}
+			});
+            });          
+
+            ///添加list同时绑定select元素用以监听
 			add.click(function(){
 				var theModel = $('.goods-model').children().clone();
 				theModel.appendTo(foodWrap);
+				 $("select").change(function() {
+                	var firstSelect=$(this);  //产品类型选择框 $(this).parent().siblings().children();
+                	var productTypeId = $(this).find("option:checked").attr("data-id");
+                	var secondSelect=firstSelect.parent().siblings().children(); //产品名字选择框
+                	var secondSelectParent = $(this).parent().siblings().find("option");
+                	alert("zhsi:" + secondSelectParent );
+                    getProductNameListNext(secondSelect,productTypeId,secondSelectParent);
+                     //$(this).parent().siblings().children().remove();
+                     //secondSelectParent.append('<select id="productNames"><option data-id="9">测试9</option></select>');
+                    console.log("当前窗口为："+ $(this).find("option:checked").attr("data-id"));
+                   });
 			});
 			foodWrap.on('click','.goods-delete',function(){
 				$(this).parent().remove();
 			});
+
+			 //首框展示
+          $("#productTypeFirst").change(function() {
+                 getProductNameList();
+            });
+
+
+        //首个产品列表信息
+          function getProductNameList(){
+                 $.ajax({
+				type:"post",
+				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductByTypeId",
+				async:true,
+				data:{
+					loginId: 'ufuy4bfc6i',
+					mtn: 'e0ec76abc1575149dba5ba35cfcc8411',
+					fromType:2,
+					mobile:true,
+					_m:'listProductByTypeId',
+					_s:'coop',
+					buildID:201608071700,
+					loc:'zh-Hans',
+					versionID:'1.0.0',
+					supplier_id:'10',
+					productTypeId:'1'
+
+				},
+				beforeSend:function(){
+				},
+				success:function(rep){
+					var reps;
+					try{
+						reps = JSON.parse(rep);	
+							console.log("start");
+						console.log(reps);
+						console.log("end");
+					}catch(e){
+						//TODO handle the exception
+					};
+					if(reps.result){
+						var str = '<option>商品类型</option>',
+						    list = reps.content;
+						for(var i=0;i<list.length;i++){
+							str += '<option data-id="'+list[i].product_id +'" >'+list[i].product_name+'</option>'
+						};                   
+						 $('#productNamesFirst option').remove();//首框删除老的选择内容
+					     $('#productNamesFirst').append(str);  //首框插入新的内容
+					       // secondSelect.remove();
+					       // secondSelect.append(str);
+					}
+				},
+				error:function(){
+					theCommonFn.alertWin('服务器出错')
+				}
+			});
+           }
+
+
+           function getProductNameListNext(secondSelect,productTypeId,secondSelectParent){
+ 	             var secondSelectObject = secondSelect;
+ 	             var productTypeIdResult = productTypeId;
+ 	             secondSelectParentObject = secondSelectParent;
+                 $.ajax({
+				type:"post",
+				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductByTypeId",
+				async:true,
+				data:{
+					loginId: 'ufuy4bfc6i',
+					mtn: 'e0ec76abc1575149dba5ba35cfcc8411',
+					fromType:2,
+					mobile:true,
+					_m:'listProductByTypeId',
+					_s:'coop',
+					buildID:201608071700,
+					loc:'zh-Hans',
+					versionID:'1.0.0',
+					supplier_id:'10',
+					productTypeId:productTypeIdResult
+				},
+				beforeSend:function(){
+				},
+				success:function(rep){
+					var reps;
+					try{
+						reps = JSON.parse(rep);	
+					}catch(e){
+						//TODO handle the exception
+					};
+					if(reps.result){
+						var str = '<option>商品类型</option>',
+						    list = reps.content;
+						for(var i=0;i<list.length;i++){
+							str += '<option data-id="'+list[i].product_id +'" >'+list[i].product_name+'</option>'
+						};
+                         // $('#productNames').remove();//删除老的选择内容
+					     //$('#productNames').append(str);  //首框插入新的内容
+					     secondSelectParentObject.remove();
+					     secondSelect.append(str);
+					}
+				},
+				error:function(){
+					theCommonFn.alertWin('服务器出错')
+				}
+			});
+           }
+
+
+
            submitBtn.click(function(){
              //没填的提醒别人填写
                 var isError = 0 ;
