@@ -234,6 +234,14 @@
 			function waitopen(content) {
 				var finance = content.finance;
 				var list = content.list;
+				if (finance == null || finance ==undefined) {
+					finance = {};
+				}
+				if (list == null || list == undefined) {
+					list = [];
+					var obj = {};
+					list.push(obj);
+				}
 				var financediv = 	'<div>' +
 										'<div>供应商</div>' +
 										'<div class="supplier">' + theCommonFn.getValue(content.resultSuppliername) + '</div>' +
@@ -296,6 +304,14 @@
 				var finance = content.finance;
 				var list = content.list;
 				var productList = "";
+				if (finance == null || finance ==undefined) {
+					finance = {};
+				}
+				if (list == null || list == undefined) {
+					list = [];
+					var obj = {};
+					list.push(obj);
+				}
 				$.each(list, function(index, value) {
 					var div =   '<div>' +
 									'<div>供应商</div>' +
@@ -333,6 +349,14 @@
 				var finance = content.finance;
 				var list = content.list;
 				var productList = "";
+				if (finance == null || finance ==undefined) {
+					finance = {};
+				}
+				if (list == null || list == undefined) {
+					list = [];
+					var obj = {};
+					list.push(obj);
+				}
 				$.each(list, function(index, value) {
 					var div =   '<div>' +
 									'<div>交货地址</div>' +
@@ -365,7 +389,9 @@
 				var finance = content.finance;
 				var list = content.list;
 				var productList = "";
-
+				if (finance == null || finance ==undefined) {
+					finance = {};
+				}
 				if (list == null || list == undefined) {
 					list = [];
 					var obj = {};
