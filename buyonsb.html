@@ -299,7 +299,6 @@ text-decoration:none;
 				},
 				beforeSend:function(){
 					//theCommonFn.waiting();
-					theCommonFn.alertWin('请稍后')
 				},
 				success:function(rep){
                       var reps;
@@ -336,7 +335,7 @@ text-decoration:none;
                 	var productTypeId = $(this).find("option:checked").attr("data-id");
                 	var secondSelect=firstSelect.parent().siblings().children(); //产品名字选择框
                 	var secondSelectParent = $(this).parent().siblings().find("option");
-                	alert("zhsi:" + secondSelectParent );
+                	//alert("zhsi:" + secondSelectParent );
                     getProductNameListNext(secondSelect,productTypeId,secondSelectParent);
                      //$(this).parent().siblings().children().remove();
                      //secondSelectParent.append('<select id="productNames"><option data-id="9">测试9</option></select>');
@@ -349,12 +348,12 @@ text-decoration:none;
 
 			 //首框展示
           $("#productTypeFirst").change(function() {
-                 getProductNameList();
+          	     var productTypeId = $(this).find("option:checked").attr("data-id");
+                 getProductNameList(productTypeId);
             });
 
-
         //首个产品列表信息
-          function getProductNameList(){
+          function getProductNameList(productTypeId){
                  $.ajax({
 				type:"post",
 				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductByTypeId",
@@ -370,7 +369,7 @@ text-decoration:none;
 					loc:'zh-Hans',
 					versionID:'1.0.0',
 					supplier_id:'10',
-					productTypeId:'1'
+					productTypeId: productTypeId
 
 				},
 				beforeSend:function(){
@@ -402,7 +401,6 @@ text-decoration:none;
 				}
 			});
            }
-
 
            function getProductNameListNext(secondSelect,productTypeId,secondSelectParent){
  	             var secondSelectObject = secondSelect;
