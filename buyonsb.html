@@ -6,10 +6,18 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
 		<link rel="stylesheet" href="lib/all.css" />
 		<link rel="stylesheet" href="lib/css.css" />
+		<link rel="stylesheet" href="lib/zepto.mdatetimer.css" />
 		<style>
 			body{
 				background: #f3f5fe;
 				font-size: 0.24rem;
+			}
+			header{
+				width: 100%;
+				height: 0.68rem;
+				line-height: 0.68rem;
+				padding-left: 0.36rem;
+				font-size: 0.2rem;
 			}
 			#fullbg { 
 background-color:gray; 
@@ -66,12 +74,44 @@ text-decoration:none;
 			}	
 			.goods{
 				margin-bottom: 2.2rem;
-			}					
+			}
+			.deal{
+				text-align: center;
+				height: 1.32rem;
+				line-height: 1.32rem;
+				margin-top: 0.7rem;
+			}
+			.deal>span:first-of-type{
+				display: inline-block;
+				width: 0.44rem;
+				height: 0.44rem;
+				background-size: 0.44rem 0.44rem;
+				margin-right: 0.25rem;
+			}
+			.dealno{
+				background: url(images/3.png) no-repeat center center;
+				
+			}
+			.dealyes{
+				background: url(images/1.png) no-repeat center center;
+			}
+			.deal>span{
+				vertical-align: middle;
+				font-size: 0.18rem;
+			}
+			.deal>a{
+				vertical-align: middle;
+				font-size: 0.18rem;
+				color: #03dcc5;
+			}						
 		</style>
+		<script src="lib/zepto.js"></script>
+		<script src="lib/zepto.mdatetimer.js"></script>
 		<script src="lib/common.js"></script>
 		<script type="text/javascript" src="lib/selfFit.js" ></script>
 		<script type="text/javascript" src="lib/jquery-2.2.4.min.js" ></script>
 		<script type="text/javascript" src="lib/distpicker.js" ></script>
+	
 	</head>
 	<body>
    <!--成功窗口-->
@@ -101,7 +141,7 @@ text-decoration:none;
 			</div>
 		</div>
 
-
+        <header>注：以下商品单价及总金额为含税17%。</header>
 		<div id="fullbg"></div> 
 		 <div id="dialog"> 
                   <p class="close"><a href="#" onclick="theCommonFn.closeBg();">关闭</a></p> 
@@ -116,17 +156,44 @@ text-decoration:none;
 					</select>
 				</div>
 			</div>
-			<div class="supplier-addr">
-				<div>交货地址</div>
-				<div class="supplier-addr-in">
-					<div data-toggle="distpicker">
-					  <select data-province="省"></select>
-					  <select data-city="市"></select>
-					  <select data-district="区"></select>
-					</div>
+
+			<div class="supplier-address">
+				<div>供应商地址</div>
+				<div class="supplier-address-in" id = "supplier-address-in">
 				</div>
 			</div>
-		</div>
+			<div class="supplier-addr">
+				<div>交货地址</div>
+				  <div class="supplier-addr-in">
+					 <div data-toggle="distpicker">
+					   <select data-province="省"></select>
+					   <select data-city="市"></select>
+					   <select data-district="区"></select>
+					 </div>
+				  </div>
+			   </div>
+
+            <div class="goodsWarehouse">
+				 <div>交货仓库</div>
+				   <div class="supplier-choose-in">
+					   <select id="goodsWarehouseId">
+						  <option>请选择交货仓库</option>
+					   </select>
+				   </div>
+		    </div>
+            <div class="goodsWarehouse-address">
+				<div>交货仓库地址</div>
+				  <div class="goodsWarehouse-address-in" id = "goodsWarehouse-address-in">		
+				  </div>
+			</div>
+	             <div class="goods-time">
+						<div>入库时间</div>
+						<div class="rightinput">
+							<input type="text" class="picktime" value="" readonly>
+						</div>
+			     </div>
+		    </div>
+            
 		<div class="goods">
 			<div class="goods-model" style="display: none;">
 				<div class="goods-box cell">
@@ -155,22 +222,40 @@ text-decoration:none;
 							<div>吨</div>
 						</div>
 					</div>
+                  <div class="goods-weight">
+						<div>公定总重量</div>
+						<div class="goods-weight-in goodsin">
+							<div>
+								<input type="text"   onKeyup="javascript:sendWeight(this);" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+								 <!--<input type="text" id="test" value="请输入">-->
+							</div>
+							<div>吨</div>
+						</div>
+					</div>
 					<div class="goods-price">
 						<div>意向单价</div>
 						<div class="goods-price-in goodsin">
 							<div>
-								<input type="text" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+								<input type="text"   onKeyup="javascript:sendPrice(this);" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
 							</div>
 							<div>元/每吨</div>
 						</div>
 					</div>
 					<div class="goods-total">
 						<div>商品总价</div>
-						<div class="goods-total-in goodsin">
+						<div class="goods-total-in goodsin" id = "totalPrice">
 							<div>
 								<input type="text" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
 							</div>
 							<div>元</div>
+						</div>
+					</div>
+					  <div class="goods-convention">
+						<div>特殊约定</div>
+						<div class="goods-convention-in goodsin">
+							<div>
+								<input type="text" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+							</div>
 						</div>
 					</div>
 					<div class="goods-delete">删除此商品</div>
@@ -203,40 +288,122 @@ text-decoration:none;
 							<div>吨</div>
 						</div>
 					</div>
+					 <div class="goods-weight">
+						<div>公定总重量</div>
+						<div class="goods-weight-in goodsin">
+							<div>
+								<input id="weight" type="text" onKeyup="javascript:sendWeight(this);" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+								 <!--<input type="text" id="test" value="请输入">-->
+							</div>
+							<div>吨</div>
+						</div>
+					</div>
 					<div class="goods-price">
 						<div>意向单价</div>
 						<div class="goods-price-in goodsin">
 							<div>
-								<input type="text" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+								<input  id="price" type="text" onKeyup="javascript:sendPrice(this);" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>1
 							</div>
 							<div>元/每吨</div>
 						</div>
 					</div>
-					<div class="goods-total">
+
+					<!--<div class="goods-total">
 						<div>商品总价</div>
 						<div class="goods-total-in goodsin">
 							<div>
-								<input type="text" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+								<input id="totalPrice" type="text" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
 							</div>
 							<div>元</div>
 						</div>
+					</div>-->
+
+					 <div class="goods-total">
+				         <div>商品总价</div>
+				         <div class="goods-total-in goodsin" id = "totalPrice">		
+				         </div>
+			         </div>
+
+                    <div class="goods-convention">
+						<div>特殊约定</div>
+						<div class="goods-convention-in goodsin">
+							<div>
+								<input type="text" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+							</div>
+						</div>
 					</div>
+
+
 				</div>
 			</div>
 			<div class="goods-add">
 				+添加更多商品
 			</div>
 		</div>
-	    <div class="submit" id="submit">提交</div>
+
+		<div class="deal">
+			<span class="dealno"></span><span>已阅读</span><a href="contractZSZY.html">《中代购服务协议》</a>
+		</div>
+	    <div class="submit" id="put">提交</div>
+	    <div class="submit" id="test1">这是一个测试</div>
+	    <div class="submit" id="close">来点爸爸呀</div>
 	    
 		<script>
+		// startRecordBtn.onclick = function(){
+  //          alert("https://itunes.apple.com/cn/app/wei-ruan-shi-hua/id1153109870?mt=8")
+  //          bridge.callHandler('pushBack', {}, function responseCallback(responseData) {
+  //             log("JS received response:", responseData)
+  //          })
+  //        }
 			var add = $('.goods-add'),
 			    foodWrap = $('.good-wrap'),
 			    box = $('.goods-box');
-			    submitBtn = $('#submit');
+			    submitBtn = $('#put');
+			    testBtn = $('#test1');
+			    closeBtn = $('#close');
 			    mtn = theCommonFn.getMtn();
+			    theDeal = $('.deal>span').eq(0);
+			    suppilerAddress=[];
+			    suppilerWarehouse=[];
+			 var goodsWeight,
+			    goodsPrice,
+			    goodsTotal;
+
+			    theDeal.click(function(){
+				if($(this).hasClass('dealno')){
+					$(this).removeClass('dealno').addClass('dealyes');
+				}else{
+					$(this).removeClass('dealyes').addClass('dealno');
+				}
+			});
+
+			     testBtn.click(function(){
+			    	bridge.callHandler('pushBack', {}, function responseCallback(responseData) {
+              log("JS received response:", responseData)
+           })
+			    });
+
+			    closeBtn.click(function(){
+			    	window.AndroidWebView.finishWebView();
+			    });
+
+           //时间控件配置
+			var config = {
+				mode : 1, //时间选择器模式：1：年月日，2：年月日时分（24小时），3：年月日时分（12小时），4：年月日时分秒。默认：1
+				format : 2, //时间格式化方式：1：2015年06月10日 17时30分46秒，2：2015-05-10  17:30:46。默认：2
+				years : [2000, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021], //年份数组
+				nowbtn : true, //是否显示现在按钮
+				onOk : function(){
+					//alert('OK');
+				},  //点击确定时添加额外的执行函数 默认null
+				onCancel : function(){				
+				}, //点击取消时添加额外的执行函数 默认null
+			};
+
+			    //时间控件调用
+			//$('#picktime').mdatetimer(config);
                  
-            //获取供应商信息
+            //获取供应商信息-初始
 			$.ajax({
 				type:"post",
 				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listSupplier",
@@ -266,11 +433,15 @@ text-decoration:none;
 						var str = '',
 						    list = reps.content;
 						for(var i=0;i<list.length;i++){
-							str += '<option data-id="'+list[i].supplier_id +'" >'+list[i].company_name+'</option>'
+							str += '<option data-id="'+list[i].supplier_id +'" >'+list[i].company_name+'</option>',
+							suppilerAddress.push({
+								"dataId":list[i].supplier_id,
+								"address":list[i].address
+							})
 						};
 					// 	$('#cells').append(str);
 					};
-					//console.log('这里是测试！！！：'+str);
+					console.log('这里是测试！！！：'+ suppilerAddress);
 					$('#cells').append(str);
 				},
 				error:function(){
@@ -278,9 +449,147 @@ text-decoration:none;
 				}
 			});
   
+             // $('input').bind('input propertychange', function() {
+             //      //进行相关操作
+             //      alert("input");
+             //    });
+             
+             //交货仓库信息获取-初始
+             $.ajax({
+				type:"post",
+				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listStroeByArea",
+				async:true,
+				data:{
+					loginId: 'ufuy4bfc6i',
+					mtn: 'e0ec76abc1575149dba5ba35cfcc8411',
+					fromType:2,
+					mobile:true,
+					_m:'listStroeByArea',
+					_s:'coop',
+					buildID:201608071700,
+					loc:'zh-Hans',
+					versionID:'1.0.0'
+				},
+				beforeSend:function(){
+					//theCommonFn.waiting();
+				},
+				success:function(rep){
+                      var reps;
+					try{
+						reps = JSON.parse(rep);		
+					}catch(e){
+						//TODO handle the exception
+					};
+					if(reps.result){
+						var str = '',
+						    list = reps.content;
+						for(var i=0;i<list.length;i++){
+							str += '<option data-id="'+list[i].store_house_id +'" >'+list[i].store_house_name+'</option>',
+							suppilerWarehouse.push({
+								"houseId":list[i].store_house_id,
+								"houseName":list[i].store_house_name,
+								"houseAddress":list[i].address
+							})
+						};
+					// 	$('#cells').append(str);
+					};
+					//console.log('这里是测试！！！：'+ suppilerAddress);
+					$('#goodsWarehouseId').append(str);
+				},
+				error:function(){
+					theCommonFn.alertWin('服务器出错')
+				}
+			});
+
+              //input监听
+             $("input").focus(function(){
+                 $(this).css("background-color","#EDEDED");
+                 console.log("success");
+               });
+              $("input").blur(function(){
+                $(this).css("background-color","#FFFFFF");
+              });
+
+              // var resultWeight = document.getElementById("weight").value;     
+              // var resultPrice = document.getElementById("price").value;  
+              // alert(resultWeight+resultPrice);
+
+              // $("#weight").blur(function(){
+              // 	alert($(this).val());
+              // 	 //goodsPrice
+              // 	  goodsWeight = $(this).val();
+              // });
+
+              // $("#weight").blur(function(){
+              // 	//alert($(this).val());
+              // 	  goodsWeight = $(this).val();
+              // 	   $("#price").blur(function(){
+              // 	   goodsPrice = $(this).val();
+              // 	   document.getElementById("totalPrice").innerHTML=goodsPrice*goodsWeight;
+              // });
+              // });
+
+              //  $("#price").blur(function(){
+              // 	//alert($(this).val());
+              // 	  goodsWeight = $(this).val();
+              // 	   $("#weight").blur(function(){
+              // 	    goodsPrice = $(this).val();
+              // 	    document.getElementById("totalPrice").innerHTML=goodsPrice*goodsWeight;
+              // });
+              // });
+
+
+               function sendWeight(inputobj){
+               	goodsWeight = inputobj.value;
+               	   var obj = $(this);
+               	   console.log("newceshi:"+ inputobj.html);
+               	//  alert("这里：！！"+ $(this).val());
+                    //alert(goodsWeight);
+                     document.getElementById("totalPrice").innerHTML=goodsPrice*goodsWeight;
+                 }
+
+                 function sendPrice(inputobj){
+               	goodsPrice = inputobj.value;
+                   // alert(goodsPrice);
+                    document.getElementById("totalPrice").innerHTML=goodsPrice*goodsWeight;
+                 }
+
+              
+
+              // document.getElementById("totalPrice").innerHTML='1511';
+              // function calculatorPrice(weight,price){
+              // 	 var totoalPrice = weight*price;
+              // 	 document.getElementById("totalPrice").innerHTML=15;
+
+              // }
+
+              // $("input").on("click", function() {
+              //     //test($(this).attr("name"));
+              //     //do something here
+              //      console.log("succ");
+              //   });
+   
+             //监听仓库选择
+             $("#goodsWarehouseId").change(function() {
+             	var wareHouseId = $(this).find("option:checked").attr("data-id");
+             	   for(var i =0; i < suppilerWarehouse.length; i++){
+             	   	  console.log(wareHouseId);
+             	   	  if (wareHouseId.toString() == suppilerWarehouse[i].houseId){
+             	   	  	document.getElementById("goodsWarehouse-address-in").innerHTML=suppilerWarehouse[i].houseAddress;
+             	   	  }
+             	   }
+             });
+
             //监听供应商选择窗口，增添商品类型列表信息
             $("#cells").change(function() {
                  var suppilerId = $(this).find("option:checked").attr("data-id");
+                 for(var i = 0 ;i<suppilerAddress.length;i++){ //插入地址信息
+                 		if (suppilerId.toString() == suppilerAddress[i].dataId){
+                 			document.getElementById("supplier-address-in").innerHTML=suppilerAddress[i].address;
+                 		}
+                 	}
+				//document.getElementById("supplier-address-in").innerHTML=suppilerAddress[suppilerId].address;
+                 //alert("suppilerId:"+suppilerId);
 	         $.ajax({
 				type:"post",
 				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductType",
@@ -309,7 +618,11 @@ text-decoration:none;
 					};
 					if(reps.result){
 						var str = '<option>商品类型</option>',
-						    list = reps.content;
+						//var str_address,
+						list = reps.content;
+						//console.log(suppilerAddress[0].address);
+						//$('supplier-address-in').replace(suppilerAddress[0].address);
+
 						for(var i=0;i<list.length;i++){
 							str += '<option data-id="'+list[i].product_type_id +'" >'+list[i].product_type_name+'</option>'
 						};
@@ -331,10 +644,10 @@ text-decoration:none;
 				var theModel = $('.goods-model').children().clone();
 				theModel.appendTo(foodWrap);
 				 $("select").change(function() {
-                	var firstSelect=$(this);  //产品类型选择框 $(this).parent().siblings().children();
+                	var firstSelect=$(this);  //产品类型选择框
                 	var productTypeId = $(this).find("option:checked").attr("data-id");
                 	var secondSelect=firstSelect.parent().siblings().children(); //产品名字选择框
-                	var secondSelectParent = $(this).parent().siblings().find("option");
+                	var secondSelectParent = $(this).parent().siblings().find("option");//产品名字框上级属性，用来清除使用
                 	//alert("zhsi:" + secondSelectParent );
                     getProductNameListNext(secondSelect,productTypeId,secondSelectParent);
                      //$(this).parent().siblings().children().remove();

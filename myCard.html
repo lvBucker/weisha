@@ -136,6 +136,16 @@
 			if (type == null || type == undefined) {
 				type = 1;
 			}
+			if(type == 1){
+				$(document).attr('title','我的代购');
+			}else if(type == 2){
+				$(document).attr('title','我的代开证');
+			}else if(type == 3){
+				$(document).attr('title','我的质押');
+			}else if(type == 4){
+				$(document).attr('title','我的存储');
+			}
+
 			//开证列表查询
 			function queryMyCard() {
 				var data = {};
