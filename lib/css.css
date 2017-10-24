@@ -28,7 +28,7 @@
 	width: 100%;
 	height: 0.68rem;
 	/*background: #F3F5FE;*/
-	background:#f3f5fe;
+	background:#f3f5fe !important;
 	/*color: #cdcccd;*/
 	outline: none;
 	border: none;
@@ -54,7 +54,7 @@
 .goods-info-select-type>select,.goods-info-select-name>select{
 	width: 100%;
 	height: 0.68rem;
-	background: #F3F5FE;
+	background: #F3F5FE !important;
     /*color: #cdcccd;*/
 	outline: none;
 	border: none;
