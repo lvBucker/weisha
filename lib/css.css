@@ -10,6 +10,9 @@
 	height: 0.68rem;
 	line-height: 0.68rem;
 }
+/*.cell>div>div:displayInformation{
+    height:1rem;
+}*/
 .cell>div>div:first-of-type{
 	float: left;
 	width: 1.6rem;
@@ -24,8 +27,9 @@
 .cell>div>div:last-of-type>select{
 	width: 100%;
 	height: 0.68rem;
-	background: #F3F5FE;
-	color: #cdcccd;
+	/*background: #F3F5FE;*/
+	background:#f3f5fe;
+	/*color: #cdcccd;*/
 	outline: none;
 	border: none;
 	font-size: 0.24rem;
@@ -51,7 +55,7 @@
 	width: 100%;
 	height: 0.68rem;
 	background: #F3F5FE;
-	color: #cdcccd;
+    /*color: #cdcccd;*/
 	outline: none;
 	border: none;
 	font-size: 0.24rem;

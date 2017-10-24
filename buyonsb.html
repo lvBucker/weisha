@@ -355,6 +355,7 @@ text-decoration:none;
   //             log("JS received response:", responseData)
   //          })
   //        }
+  //事件绑定
 			var add = $('.goods-add'),
 			    foodWrap = $('.good-wrap'),
 			    box = $('.goods-box');
@@ -365,6 +366,7 @@ text-decoration:none;
 			    theDeal = $('.deal>span').eq(0);
 			    suppilerAddress=[];
 			    suppilerWarehouse=[];
+			    inputArea = $('input');
 			 var goodsWeight,
 			    goodsPrice,
 			    goodsTotal;
@@ -501,14 +503,20 @@ text-decoration:none;
 				}
 			});
 
-              //input监听
-             $("input").focus(function(){
-                 $(this).css("background-color","#EDEDED");
-                 console.log("success");
+             // input监听
+              // $("input").focus(function(){
+              //    $(this).css("background-color","#EDEDED");
+              //    console.log("success");
+              //  });
+              // $("input").blur(function(){
+              //   $(this).css("background-color","#FFFFFF");
+              // });
+              $('.goods').on('focus','input',function(){
+	            $(this).css("background-color","#EDEDED");
                });
-              $("input").blur(function(){
-                $(this).css("background-color","#FFFFFF");
-              });
+              $('.goods').on('blur','input',function(){
+	            $(this).css("background-color","#FFFFFF");
+               });
 
               // var resultWeight = document.getElementById("weight").value;     
               // var resultPrice = document.getElementById("price").value;  
@@ -652,6 +660,8 @@ text-decoration:none;
                     getProductNameListNext(secondSelect,productTypeId,secondSelectParent);
                      //$(this).parent().siblings().children().remove();
                      //secondSelectParent.append('<select id="productNames"><option data-id="9">测试9</option></select>');
+
+                   // var inputArea = $('input');
                     console.log("当前窗口为："+ $(this).find("option:checked").attr("data-id"));
                    });
 			});
