@@ -21,17 +21,7 @@
 				 line-height:1rem !important;
 				 font-size:0.2rem ;
 			}	
-/*#fullbg { 
-background-color:gray; 
-left:0; 
-opacity:0.5; 
-position:absolute; 
-top:0; 
-z-index:3; 
-filter:alpha(opacity=50); 
--moz-opacity:0.5; 
--khtml-opacity:0.5; 
-} */
+
 			.warehouse{
 				margin-top: 0.2rem;
 			}
@@ -43,7 +33,7 @@ filter:alpha(opacity=50);
 				border: none;
 				
 			}
-			/*.goods-time input{
+			.goods-time input{
 				height: 0.62rem;
 				line-height: 0.62rem;
 				width: 100%;
@@ -52,7 +42,7 @@ filter:alpha(opacity=50);
 				outline: none;
 				background:#f3f5fe url(images/2.png) no-repeat right center;
 				background-size: 0.44rem 0.44rem;
-			}*/
+			}
 			.deal{
 				text-align: center;
 				height: 1.32rem;
@@ -82,11 +72,12 @@ filter:alpha(opacity=50);
 				color: #03dcc5;
 			}
 		</style>
-		<script type="text/javascript" src="lib/selfFit.js" ></script>	
 		<script src="lib/zepto.js"></script>
 		<script src="lib/zepto.mdatetimer.js"></script>
+		<script type="text/javascript" src="lib/selfFit.js" ></script>	
 		<script src="lib/common.js"></script>
-		<!--<script type="text/javascript" src="lib/jquery-2.2.4.min.js" ></script>-->	
+		<script type="text/javascript" src="lib/distpicker.js" ></script>	
+		<script type="text/javascript" src="lib/arg-1.3.min.js"></script>	
 	</head>
 	<body>
         <!--成功窗口-->
@@ -156,14 +147,20 @@ filter:alpha(opacity=50);
 							<input type="text" />
 						</div>
 					</div>
+					<div class="goods-pk storage-from">
+						<div>包装</div>
+						<div class="rightinput">
+							<input type="text" />
+						</div>
+					</div>
 					<div class="goods-place storage-from">
 						<div>产地</div>
 						<div class="rightinput">
 							<input type="text" />
 						</div>
 					</div>
-					<div class="goods-num storage-from">
-						<div>数量</div>
+					<div class="goods-weight storage-from">
+						<div>重量</div>
 						<div class="rightinput">
 							<input type="text" />
 						</div>
@@ -230,14 +227,20 @@ filter:alpha(opacity=50);
 							<input type="text" />
 						</div>
 					</div>
+					<div class="goods-pk storage-from">
+						<div>包装</div>
+						<div class="rightinput">
+							<input type="text" />
+						</div>
+					</div>
 					<div class="goods-place storage-from">
 						<div>产地</div>
 						<div class="rightinput">
 							<input type="text" />
 						</div>
 					</div>
-					<div class="goods-num storage-from">
-						<div>数量</div>
+					<div class="goods-weight storage-from">
+						<div>重量</div>
 						<div class="rightinput">
 							<input type="text" />
 						</div>
@@ -290,14 +293,15 @@ filter:alpha(opacity=50);
 	    <div class="submit" id="submit">提交</div>
 		
 		<script>
-		alert()
 			var add = $('.goods-add'),
 			    foodWrap = $('.good-wrap'),
 			    box = $('.goods-box'),
 			    theDeal = $('.deal>span').eq(0);
-			    mtn = theCommonFn.getMtn();
+			    mtn = theCommonFn.getMtnByUrl();
+			    loginId = theCommonFn.getLoginIdByUrl(); 
 			    submitBtn = $('#submit');
 			    suppilerWarehouse=[];  //仓库地址
+	
 			//时间控件配置
 			var config = {
 				mode : 1, //时间选择器模式：1：年月日，2：年月日时分（24小时），3：年月日时分（12小时），4：年月日时分秒。默认：1
@@ -308,7 +312,7 @@ filter:alpha(opacity=50);
 					//alert('OK');
 				},  //点击确定时添加额外的执行函数 默认null
 				onCancel : function(){
-					
+
 				}, //点击取消时添加额外的执行函数 默认null
 			};
 		    //时间控件调用
@@ -339,8 +343,7 @@ filter:alpha(opacity=50);
 					$(this).removeClass('dealno').addClass('dealyes');
 				}else{
 					$(this).removeClass('dealyes').addClass('dealno');
-				}
-				
+				}			
 			});
 			
 			//获取仓库列表——初始
@@ -349,7 +352,7 @@ filter:alpha(opacity=50);
 				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listStorageHosue",
 				async:true,
 				data:{
-					loginId: 'u5dd27duw7',
+					loginId: loginId,
 					mtn: mtn,
 					fromType:2,
 					mobile:true,
@@ -406,7 +409,7 @@ filter:alpha(opacity=50);
 				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductByTypeId",
 				async:true,
 				data:{
-					loginId: 'u5dd27duw7',
+					loginId: loginId,
 					mtn: mtn,
 					fromType:2,
 					mobile:true,
@@ -436,7 +439,8 @@ filter:alpha(opacity=50);
 						    list = reps.content;
 						for(var i=0;i<list.length;i++){
 							str += '<option data-id="'+list[i].product_id +'" >'+list[i].product_name+'</option>'
-						};                   
+						};      
+						 str += '<option data-id=2 >东北的</option>';             
 						 $('#productNamesFirst option').remove();//首框删除老的选择内容
 					     $('#productNamesFirst').append(str);  //首框插入新的内容
 					       // secondSelect.remove();
@@ -458,7 +462,7 @@ filter:alpha(opacity=50);
 				     url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductByTypeId",
 				     async:true,
 				     data:{
-					    loginId: 'u5dd27duw7',
+					    loginId: loginId,
 					    mtn: mtn,
 					    fromType:2,
 					    mobile:true,
@@ -518,7 +522,7 @@ filter:alpha(opacity=50);
 				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductType",
 				async:true,
 				data:{
-					loginId: 'u5dd27duw7',
+					loginId: loginId,
 					mtn: mtn,
 					fromType:2,
 					mobile:true,
@@ -546,7 +550,7 @@ filter:alpha(opacity=50);
 							str += '<option data-id="'+list[i].product_type_id +'" >'+list[i].product_type_name+'</option>'
 						};
                        // alert(list.length);
-                       //str += '<option data-id=1 >大米</option>';
+                       str += '<option data-id=1 >大米</option>';
                       // console.log(str);
 					   $('#productTypeFirst option').remove();//首框删除老的选择内容
 					   $('#productTypeFirst').append(str);  //首框插入新的内容
@@ -560,8 +564,21 @@ filter:alpha(opacity=50);
 			});
             });          
 
+       //                 var str = '<option data-id=3 >日本的的</option>'; 
+       //                     str += '<option data-id=2 >东北的</option>';             
+						 // $('#productNamesFirst option').remove();//首框删除老的选择内容
+					  //    $('#productNamesFirst').append(str);  //首框插入新的内容
+
+       //                 var str = '<option data-id=51 >大米</option>';
+       //                // console.log(str);
+					  //  $('#productTypeFirst option').remove();//首框删除老的选择内容
+					  //  $('#productTypeFirst').append(str);  //首框插入新的内容
+       //                 $('#productType option').remove();//后续框删除老的选择内容
+					  //  $('#productType').append(str);  //后续框插入新的内容
+
+
 			submitBtn.click(function(){
-                //没填的提醒别人填写
+                没填的提醒别人填写
                 var isError = 0 ;
 				if($('#cells').val()=='请选择供应商'){
 					theCommonFn.alertWin('请选择供应商');
@@ -583,7 +600,6 @@ filter:alpha(opacity=50);
                 if(isError == '1'){
                 	return;
                 }
-    //window.navigate("www.baidu.com");
   
 				//获取数据
 				var product=[],theData;
@@ -593,13 +609,12 @@ filter:alpha(opacity=50);
 					product.push({
 						"productClassifyId":info.find("option:checked").attr("data-id"),
 						"productTypeName":$.trim(info.find('.goods-info-select-type select').val()),
-						"productid":"商品ID",
+						"productid":info.find('#productNamesFirst').find("option:checked").attr("data-id"),
 						"productname":$.trim(info.find('.goods-info-select-name select').val()),
-						"productNum":"商品编号", //goods-bn
 						"batch_num":$.trim(info.find('.goods-bn input').val()),
-						"standard":"包装",
+						"standard":$.trim(info.find('.goods-pk input').val()),   //
 						"origin":$.trim(info.find('.goods-place input').val()),
-						"weight":"重量",
+						"weight":$.trim(info.find('.goods-weight input').val()),  //goods-weight
 						"itemNumber":$.trim(info.find('.goods-cnum input').val()),   //goods-cnum
 						"in_time":$.trim(info.find('.goods-time input').val()),
 						"car_num	":$.trim(info.find('.goods-vn input').val()), //goods-vn
@@ -609,11 +624,11 @@ filter:alpha(opacity=50);
 						"warehousing_notice":"存储协议"
 					})
 				};
-				//alert(info.find(".goods-info-select-name select option:checked").attr("data-id"));
+				//alert(info.find('#productNamesFirst').find("option:checked").attr("data-id"));
 				product = JSON.stringify(product);
 
 				theData = {
-					loginId: 'u5dd27duw7',
+					loginId: loginId,
 					mtn: mtn,
 					fromType:2,
 					mobile:true,
