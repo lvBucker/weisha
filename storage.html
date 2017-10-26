@@ -116,11 +116,16 @@
 					</select>
 				</div>
 			</div>
-			<div class="displayInformation goodsWarehouse-address">
+			<!--<div class="displayInformation goodsWarehouse-address">
 		        <div>交货仓库地址</div>
 				<div class="goodsWarehouse-address-in" id = "goodsWarehouse-address-in">		
 				</div>
-	        </div>
+	        </div>-->
+	        <div id="cellsDetail" class="storeHouse" style="display: none;">
+				<div class="storeHouse-info">
+					
+				</div>
+			</div>
 		</div>
 
 		<div class="goods">
@@ -293,12 +298,18 @@
 	    <div class="submit" id="submit">提交</div>
 		
 		<script>
+		//alert("11");
 			var add = $('.goods-add'),
 			    foodWrap = $('.good-wrap'),
 			    box = $('.goods-box'),
 			    theDeal = $('.deal>span').eq(0);
 			    mtn = theCommonFn.getMtnByUrl();
 			    loginId = theCommonFn.getLoginIdByUrl(); 
+			    fromType = theCommonFn.getFromTypeByUrl();
+			    mobile = theCommonFn.getMobileByUrl();
+                buildID = theCommonFn.getBuildIdByUrl();	
+                loc = theCommonFn.getLocByUrl();
+                versionID = theCommonFn.getVersionIDByUrl();
 			    submitBtn = $('#submit');
 			    suppilerWarehouse=[];  //仓库地址
 	
@@ -354,13 +365,11 @@
 				data:{
 					loginId: loginId,
 					mtn: mtn,
-					fromType:2,
-					mobile:true,
-					_m:'listStorageHosue',
-					_s:'coop',
-					buildID:201608071700,
-					loc:'zh-Hans',
-					versionID:'1.0.0'
+					fromType:fromType,
+					mobile:mobile,
+					buildID:buildID,
+					loc:loc,
+					versionID:versionID
 				},
 				beforeSend:function(){
 					//theCommonFn.waiting();
@@ -396,6 +405,13 @@
 			});
 
 
+	// //交货仓库详细地址
+ //    $("#cells").change(function() {
+ //    	    var storeDetail = $(this).find("option:checked").attr("address");
+ //          $("#cellsDetail").css('display','block'); 
+ //          $(".storeHouse-info").text(storeDetail);
+           
+ //    });
  //首框展示
           $("#productTypeFirst").change(function() {
           	     var productTypeId = $(this).find("option:checked").attr("data-id");
@@ -406,21 +422,16 @@
           function getProductNameList(productTypeId){
                  $.ajax({
 				type:"post",
-				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductByTypeId",
+				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductType2Zy",//listProductType2Zy替换listProductByTypeId
 				async:true,
 				data:{
 					loginId: loginId,
 					mtn: mtn,
-					fromType:2,
-					mobile:true,
-					_m:'listProductByTypeId',
-					_s:'coop',
-					buildID:201608071700,
-					loc:'zh-Hans',
-					versionID:'1.0.0',
-					supplier_id:'10',
-					productTypeId: productTypeId
-
+					fromType:fromType,
+					mobile:mobile,
+					buildID:buildID,
+					loc:loc,
+					versionID:versionID
 				},
 				beforeSend:function(){
 				},
@@ -462,17 +473,13 @@
 				     url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductByTypeId",
 				     async:true,
 				     data:{
-					    loginId: loginId,
-					    mtn: mtn,
-					    fromType:2,
-					    mobile:true,
-					    _m:'listProductByTypeId',
-					    _s:'coop',
-					    buildID:201608071700,
-					    loc:'zh-Hans',
-					    versionID:'1.0.0',
-					    supplier_id:'10',
-					    productTypeId:productTypeIdResult
+					     loginId: loginId,
+					     mtn: mtn,
+					     fromType:fromType,
+					     mobile:mobile,
+					     buildID:buildID,
+					loc:loc,
+					versionID:versionID
 				},
 				  beforeSend:function(){
 				  },
@@ -544,13 +551,14 @@
 						//TODO handle the exception
 					};
 					if(reps.result){
-						var str = '<option>商品类型</option>',
+						//var str = '<option>商品类型</option>',
+						var str = '',
 						    list = reps.content;
 						for(var i=0;i<list.length;i++){
 							str += '<option data-id="'+list[i].product_type_id +'" >'+list[i].product_type_name+'</option>'
 						};
                        // alert(list.length);
-                       str += '<option data-id=1 >大米</option>';
+                       //str += '<option data-id=1 >大米</option>';
                       // console.log(str);
 					   $('#productTypeFirst option').remove();//首框删除老的选择内容
 					   $('#productTypeFirst').append(str);  //首框插入新的内容
