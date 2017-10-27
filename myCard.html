@@ -126,7 +126,7 @@
 
 		<script type="text/javascript">
 			//登陆用户名
-			var loginId = 'ufuy4bfc6i';
+			var loginId = theCommonFn.getloginId();
 			//初始话加载开证列表
 			$(function(){
 				queryMyCard();
@@ -153,7 +153,7 @@
 				data._vt = 'dlk_weishatest';
 				data.fromType = '2';
 				data.mobile = true;
-				data.mtn = 'e0ec76abc1575149dba5ba35cfcc8411';
+				data.mtn = theCommonFn.getMtn();
 				data.buildID = '201608071700';
 				data.loc = 'zh-Hans';
 				data.versionID = '1.0.0';
