@@ -68,7 +68,7 @@
 }
 .goodsin{
 	overflow: hidden;
-	color: #CDCCCD;
+	/*color: #CDCCCD;*/
 	border-bottom: 1px solid #f3f5fe;
 }
 .goodsin>div:first-of-type{
@@ -82,7 +82,7 @@
 	width: 100%;
 	border: none;
 	outline: none;
-	color: #CDCCCD;
+	/*color: #CDCCCD;*/
 }
 .goodsin>div:last-of-type{
 	float: right;
