@@ -307,7 +307,7 @@
 		    //loginId = theCommonFn.getLoginIdByUrl(); 
 		    submitBtn = $('#submit');
 		    suppilerWarehouse=[];  //仓库地址
-	
+
 		//时间控件配置
 		var config = {
 				mode : 1, //时间选择器模式：1：年月日，2：年月日时分（24小时），3：年月日时分（12小时），4：年月日时分秒。默认：1
@@ -337,9 +337,8 @@
 				      var firstSelect=$(this);
 				      var productTypeId = $(this).find("option:checked").attr("data-id");
 				      var secondSelect=firstSelect.parent().siblings().children(); //产品名字选择框
-              var secondSelectParent = $(this).parent().siblings().find("option");//产品名字框上级属性，用来清除使用
-              var selcetId = firstSelect.attr("id");
-              
+                      var secondSelectParent = $(this).parent().siblings().find("option");//产品名字框上级属性，用来清除使用
+                      var selcetId = firstSelect.attr("id");  
               if(selcetId=="productType"){
               		getProductNameListNext(secondSelect,productTypeId,secondSelectParent);
               }

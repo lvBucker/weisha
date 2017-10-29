@@ -11,6 +11,15 @@
 				background: #f3f5fe;
 				font-size: 0.24rem;
 			}		
+			.goodsWarehouse-address-in{
+				width: 100% !important;
+				margin-top: 3px !important;
+				padding-left: 0.3rem !important;
+				padding-right: 0.3rem !important;
+				background: #FFFFFF;
+				word-wrap: break-word;
+				display:none;
+			}
 			header{
 				width: 100%;
 				height: 0.68rem;
@@ -71,6 +80,7 @@
 		<script type="text/javascript" src="lib/jquery-2.2.4.min.js" ></script>
 		<script type="text/javascript" src="lib/distpicker.js" ></script>
 		<script src="lib/common.js"></script>
+		<script type="text/javascript" src="lib/arg-1.3.min.js"></script>
 	</head>
 	<body>
 
@@ -122,6 +132,10 @@
 				</div>
 			</div>
 		</div>
+		<div>
+			<div class="goodsWarehouse-address-in" id = "goodsWarehouse-address-in">		
+			</div>
+	    </div>
 		<div class="goods">
 			<div class="goods-model" style="display: none;">
 				<div class="goods-box cell">
@@ -145,7 +159,7 @@
 						<div>意向单价</div>
 						<div class="goods-price-in goodsin">
 							<div>
-								<input type="text"  onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+								<input type="text"   id="price" onKeyup="javascript:sendPrice(this);" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
 							</div>
 							<div>元/每吨</div>
 						</div>
@@ -154,7 +168,7 @@
 						<div>重量</div>
 						<div class="goods-weight-in goodsin">
 							<div>
-								<input type="text" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+								<input type="text" id="weight" onKeyup="javascript:sendWeight(this);" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
 							</div>
 							<div>顿</div>
 						</div>
@@ -166,6 +180,15 @@
 								<input type="text" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
 							</div>
 							<div>$</div>
+						</div>
+					</div>
+					<div class="goods-total">
+						<div>商品总价</div>
+						<div class="goods-total-in goodsin" id = "totalPrice">
+							<div>
+								<input type="text" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+							</div>
+							<div>元</div>
 						</div>
 					</div>
 					<div class="goods-delete">删除此商品</div>
@@ -194,7 +217,7 @@
 						<div>意向单价</div>
 						<div class="goods-price-in goodsin">
 							<div>
-								<input type="text"  onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+								<input type="text"  id="price" onKeyup="javascript:sendPrice(this);" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
 							</div>
 							<div>元/每吨</div>
 						</div>
@@ -203,7 +226,7 @@
 						<div>重量</div>
 						<div class="goods-weight-in goodsin">
 							<div>
-								<input type="text" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+								<input type="text" id="weight" onKeyup="javascript:sendWeight(this);" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
 							</div>
 							<div>顿</div>
 						</div>
@@ -217,6 +240,17 @@
 							<div>$</div>
 						</div>
 					</div>
+                    <div class="goods-total">
+						<div>商品总价</div>
+						<div class="goods-total-in goodsin" id = "totalPrice">
+							<div>
+								<input type="text" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+							</div>
+							<div>元</div>
+						</div>
+					</div>
+
+
 				</div>
 			</div>
 			<div class="goods-add">
@@ -244,7 +278,18 @@
 			    theDeal = $('.deal>span').eq(0);
 			    submitBtn = $('#submit'); 
 			    productTypeFirstBtn = $('#productTypeFirst');
-			    mtn = theCommonFn.getMtn();
+			    suppilerWarehouse=[];
+		    var mtn = theCommonFn.getMtnByUrl();
+			    loginId = theCommonFn.getLoginIdByUrl(); 
+			    fromType = theCommonFn.getFromTypeByUrl();
+			    mobile = theCommonFn.getMobileByUrl();
+                buildID = theCommonFn.getBuildIdByUrl();	
+                loc = theCommonFn.getLocByUrl();
+                versionID = theCommonFn.getVersionIDByUrl();
+
+                alert("mtn："+mtn );
+                alert("loginId："+ loginId );
+                
 			    
          //添加list同时绑定select元素用以监听
  			add.click(function(){
@@ -279,21 +324,21 @@
 				}
 			});
 
-//获取存储仓库列表
+//获取存储仓库列表 -初始
 			$.ajax({
 				type:"post",
 				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listStorageHosue",
 				async:true,
 				data:{
-					loginId: 'ufuy4bfc6i',
-					mtn: mtn,
-					fromType:2,
-					mobile:true,
-					_m:'listStorageHosue',
-					_s:'coop',
-					buildID:201608071700,
-					loc:'zh-Hans',
-					versionID:'1.0.0'
+					loginId: loginId,
+					mtn: mtn,		
+					// loginId: '82cc33cf3b35bda1705428551889c787',
+					// mtn: 'uy4q4h8n31',
+					fromType:fromType,
+					mobile:mobile,
+					buildID:buildID,
+					loc:loc,
+					versionID:versionID
 				},
 				beforeSend:function(){
 				},
@@ -308,31 +353,49 @@
 						var str = '',
 						    list = reps.content;
 						for(var i=0;i<list.length;i++){
-							str += '<option data-id="'+list[i].storeHouseId +'" >'+list[i].storeHouseName+'</option>'
+							str += '<option data-id="'+list[i].storeHouseId +'" >'+list[i].storeHouseName+'</option>',
+							suppilerWarehouse.push({
+								"houseId":list[i].store_house_id,
+								"houseName":list[i].store_house_name,
+								"houseAddress":list[i].address
+							})
 						};
 						$('#cells').append(str);
 					}
 				},
 				error:function(){
+					var str = '<option data-id=1 >中国</option>'
+						$('#cells').append(str);
 					theCommonFn.alertWin('服务器出错')
 				}
 			});
+
+
+ //监听交货选择窗口，增添商品类型列表信息
+            $("#cells").change(function() {
+                 var wareHouseId = $(this).find("option:checked").attr("data-id");
+                   for(var i =0; i < suppilerWarehouse.length; i++){
+             	   	  console.log(wareHouseId);
+             	   	  if (wareHouseId.toString() == suppilerWarehouse[i].houseId){
+             	   	  	document.getElementById("goodsWarehouse-address-in").innerHTML=suppilerWarehouse[i].houseAddress;
+             	   	  }
+             	   }
 
 //商品类型信息列表
 			$.ajax({
 				type:"post",
 				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductType2Zy",
 				async:true,
-				data:{
-					loginId: 'ufuy4bfc6i',
-					mtn: 'e0ec76abc1575149dba5ba35cfcc8411',
-					fromType:2,
-					mobile:true,
-					_m:'listProductType2Zy',
-					_s:'coop',
-					buildID:201608071700,
-					loc:'zh-Hans',
-					versionID:'1.0.0'
+				data:{					
+					loginId: loginId,
+					mtn: mtn,
+					// loginId: '82cc33cf3b35bda1705428551889c787',
+					// mtn: 'uy4q4h8n31',
+					fromType:fromType,
+					mobile:mobile,
+					buildID:buildID,
+					loc:loc,
+					versionID:versionID
 				},
 				beforeSend:function(){
 				},
@@ -359,6 +422,22 @@
 				}
 			});
 
+            });          
+
+
+               function sendWeight(inputobj){
+               	    var goodsWeight = inputobj.value;
+                    var jqueryinputobj = $(inputobj);
+                    var goodsPrice = jqueryinputobj.parent().parent().parent().parent().find("#price").val();
+                    jqueryinputobj.closest("div[class~=cell]").find("#totalPrice").html(goodsWeight*goodsPrice);
+                 }
+
+                function sendPrice(inputobj){
+               	    var goodsPrice = inputobj.value;
+                    var jqueryinputobj = $(inputobj);
+                    var goodsWeight = jqueryinputobj.parent().parent().parent().parent().find("#weight").val();
+               	    jqueryinputobj.closest("div[class~=cell]").find("#totalPrice").html(goodsWeight*goodsPrice);
+                 }
 
            // $("select").change(function() {
            //       alert($(this).find("option:checked").attr("data-id"));
@@ -372,28 +451,28 @@
 
           //首框展示
           $("#productTypeFirst").change(function() {
-                 getProductNameList();
+          	     var productTypeId = $(this).find("option:checked").attr("data-id");
+                 getProductNameList(productTypeId);
             });
 
 
-           function getProductNameList(){
+           function getProductNameList(productTypeId){
                  $.ajax({
 				type:"post",
 				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductByTypeId",
 				async:true,
 				data:{
-					loginId: 'ufuy4bfc6i',
-					mtn: 'e0ec76abc1575149dba5ba35cfcc8411',
-					fromType:2,
-					mobile:true,
-					_m:'listProductByTypeId',
-					_s:'coop',
-					buildID:201608071700,
-					loc:'zh-Hans',
-					versionID:'1.0.0',
-					supplier_id:'10',
-					productTypeId:'1'
-
+					loginId: loginId,
+					mtn: mtn,
+					// 	loginId: '82cc33cf3b35bda1705428551889c787',
+					// mtn: 'uy4q4h8n31',
+					fromType:fromType,
+					mobile:mobile,
+					buildID:buildID,
+					loc:loc,
+					versionID:versionID,
+					//supplier_id:'10',
+					productTypeId:productTypeId
 				},
 				beforeSend:function(){
 				},
@@ -431,18 +510,17 @@
 				     url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductByTypeId",
 				      async:true,
 				 data:{
-					loginId: 'ufuy4bfc6i',
-					mtn: 'e0ec76abc1575149dba5ba35cfcc8411',
-					fromType:2,
-					mobile:true,
-					_m:'listProductByTypeId',
-					_s:'coop',
-					buildID:201608071700,
-					loc:'zh-Hans',
-					versionID:'1.0.0',
-					supplier_id:'10',
+					loginId: loginId,
+					mtn: mtn,
+					// 	loginId: '82cc33cf3b35bda1705428551889c787',
+					// mtn: 'uy4q4h8n31',			
+					fromType:fromType,
+					mobile:mobile,
+					buildID:buildID,
+					loc:loc,
+					versionID:versionID,
+					//supplier_id:'10',
 					productTypeId:productTypeIdResult
-
 				},
 				beforeSend:function(){
 				},
@@ -471,35 +549,35 @@
            }
 
 			submitBtn.click(function(){
-                var isError = 0 ;
-				if($('#cells').val()=='请选择交货仓库'){
-					theCommonFn.alertWin('请选择交货仓库');
-					return;
-				}else{
-					$('.good-wrap').find('input').each(function(i,item){
-						if(!$(this).val()){
-							theCommonFn.alertWin('请填写完整');
-							isError = 1;
-							return;
-						}
-					})
-				};
+    //             var isError = 0 ;
+				// if($('#cells').val()=='请选择交货仓库'){
+				// 	theCommonFn.alertWin('请选择交货仓库');
+				// 	return;
+				// }else{
+				// 	$('.good-wrap').find('input').each(function(i,item){
+				// 		if(!$(this).val()){
+				// 			theCommonFn.alertWin('请填写完整');
+				// 			isError = 1;
+				// 			return;
+				// 		}
+				// 	})
+				// };
 
-	            if(theDeal.hasClass('dealno')){
-							theCommonFn.alertWin('您未同意储存协议');
-							return;
-				}
+	   //          if(theDeal.hasClass('dealno')){
+				// 			theCommonFn.alertWin('您未同意储存协议');
+				// 			return;
+				// }
 									
-                if(isError == '1'){
-                	return;
-                }
+    //             if(isError == '1'){
+    //             	return;
+    //             }
 
                 var product=[],theData;
                 for(var i=0;i<$('.good-wrap').find('.goods-box').length;i++){
                 	var info = $('.good-wrap').find('.goods-box').eq(i);
                 	var wareHouse  = $('.addr').find('.addr-warehouse').eq(i);
                 	product.push({
-                		"product_classify_id	":$.trim(info.find('.goods-info-select-type select').find("option:checked").attr("data-id")),
+                		"product_classify_id":$.trim(info.find('.goods-info-select-type select').find("option:checked").attr("data-id")),
 		                "productTypeName":$.trim(info.find('.goods-info-select-type select').val()),
 		                "storeHouseId":$.trim(wareHouse.find('.addr-warehouse-in select').val()),
 		                "productid": $.trim(info.find('.goods-info-select-name select').find("option:checked").attr("data-id")),
@@ -508,13 +586,60 @@
 		                "weight":$.trim(info.find('.goods-weight-in input').val()),
 		                "unitprice	":$.trim(info.find('.goods-price-in input').val()),   //goods-price-in
 		                "itemNumber":$.trim(info.find('.goods-num input').val()), //goods-num
-		                "money":"商品总价"
+		                "money":info.find('#totalPrice').html()
                 		})
                    
                 }
                 console.log(product);
-				$("#result-success").show();
-				theCommonFn.waitAndClosePrompts('1','3000');
+
+                product = JSON.stringify(product);
+            	$.ajax({
+						type:"post",
+				        url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=createPledge",
+				        async:true,
+				            data:{
+                              _vt:'dlk_weishatest',
+					          loginId: loginId,
+					          mtn: mtn,
+					          fromType:fromType,
+					          mobile:mobile,
+					          buildID:buildID,
+					          versionID:versionID,
+					          //sign:'b92d3f53c061fafcfe8a1041b2cf4baf',
+					          loc:loc,
+					          //junit:'元/吨',
+					          //suppliername:'新疆利泰丝路投资有限公司'
+				            },
+				            success:function(rep){
+
+
+				            	var reps;
+								try{
+									reps = JSON.parse(rep);		
+								}catch(e){
+									
+								};
+								if(reps.result){
+										$("#result-success").show();
+										theCommonFn.delay2('3000');
+										theCommonFn.waitAndClosePrompts('1','7000');
+										theCommonFn.delay2('5000');
+										//window.navigate("www.baidu.com"); 
+										//window.location="https://www.baidu.com";
+								}else{
+										$("#result-error").show();
+										setTimeout("$('#result-error').hide();",3000);
+								}
+					   //     //theCommonFn.alertWin('提交成功');
+					   //     //theCommonFn.windowPrompts();
+					   //     $("#result-success").show();
+					   //    // console.log("zoudoazhelile");
+								// theCommonFn.delay2('3000');
+								// theCommonFn.waitAndClosePrompts('1','3000');
+				        }
+				})
+				// $("#result-success").show();
+				// theCommonFn.waitAndClosePrompts('1','3000');
 			});
 		</script>
 	</body>
