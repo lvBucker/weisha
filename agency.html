@@ -216,11 +216,8 @@ text-decoration:none;
 			<div class="info-country">
 				<div>业务国别</div>
 				<div class="info-country-select">
-					<select>
-						<option>国外业务</option>
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
+					<select id="buyerCells">
+						<option>请选择业务国别</option>
 					</select>
 				</div>
 			</div>
@@ -229,9 +226,9 @@ text-decoration:none;
 				<div class="info-currency-select">
 					<select>
 						<option>美元</option>
-						<option>1</option>
+						<!--<option>1</option>
 						<option>2</option>
-						<option>3</option>
+						<option>3</option>-->
 					</select>
 				</div>
 			</div>
@@ -240,20 +237,17 @@ text-decoration:none;
 				<div class="info-unit-select">
 					<select>
 						<option>kg</option>
-						<option>1</option>
+						<!--<option>1</option>
 						<option>2</option>
-						<option>3</option>
+						<option>3</option>-->
 					</select>
 				</div>
 			</div>
 			<div class="info-port">
 				<div>交货港口</div>
 				<div class="info-port-select">
-					<select>
+					<select id="portCells">
 						<option>请选择交货港口</option>
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
 					</select>
 				</div>
 			</div>
@@ -277,7 +271,7 @@ text-decoration:none;
 				<div>seller</div>
 				<div class="info-seller-select">
 					<select>
-						<option>选择供应商</option>
+						<option id =" supplierCells">选择供应商</option>
 					</select>
 				</div>
 			</div>
@@ -289,7 +283,7 @@ text-decoration:none;
 						<div>商品信息</div>
 						<div class="goods-commodity-select">
 							<div class="goods-commodity-select-type">
-								<select>
+								<select id="productType">
 									<option>商品类型</option>
 								</select>
 							</div>
@@ -354,7 +348,7 @@ text-decoration:none;
 						<div>商品信息</div>
 						<div class="goods-commodity-select">
 							<div class="goods-commodity-select-type">
-								<select>
+								<select id = "productTypeFirst">
 									<option>商品类型</option>
 								</select>
 							</div>
@@ -605,10 +599,350 @@ text-decoration:none;
 			    box = $('.goods-box'),
 			    theDeal = $('.deal>span').eq(0),
 			    allowed = $('.allowed');
-			//选取供应商放入
+
+               //Buyer信息获取-初始
+             $.ajax({
+				type:"post",
+				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listBuyer",
+				async:true,
+				data:{
+					_vt:'dlk_weishatest',
+					loginId: 'uy4q4h8n31',
+					mtn: '82cc33cf3b35bda1705428551889c787',
+					//fromType:fromType,
+					mobile:'true',
+					buildID:'201608071700',
+					loc:'zh-Hans',
+					versionID:'zh-Hans&versionID=1.0.0'
+				},
+				beforeSend:function(){
+					//theCommonFn.waiting();
+				},
+				success:function(rep){
+                       var reps;
+					try{
+						reps = JSON.parse(rep);		
+					}catch(e){
+						//TODO handle the exception
+					};
+					// console.log(reps);
+					if(reps.result){
+						var str = '',
+						    list = reps.content;
+					    for(var i=0;i<list.length;i++){
+					 		str += '<option data-id="'+list[i].id +'" >'+list[i].key+'</option>';
+					// // 		suppilerWarehouse.push({
+					// // 			"houseId":list[i].store_house_id,
+					// // 			"houseName":list[i].store_house_name,
+					// // 			"houseAddress":list[i].address
+					// //		})
+					// // 	};	
+					// //};
+					// //$('#goodsWarehouseId').append(str);
+				        }
+                        $('#buyerCells').append(str);
+				 //        console.log('这里是测试！！！：'+ kk);
+					}
+				},
+				error:function(){
+					theCommonFn.alertWin('服务器出错')
+				}
+			});
+
+
+  //交货港口信息获取-初始
+             $.ajax({
+				type:"post",
+				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listContainerSize",
+				async:true,
+				data:{
+					_vt:'dlk_weishatest',
+					loginId: 'uy4q4h8n31',
+					mtn: '82cc33cf3b35bda1705428551889c787',
+					//fromType:fromType,
+					mobile:'true',
+					buildID:'201608071700',
+					loc:'zh-Hans',
+					versionID:'zh-Hans&versionID=1.0.0'
+				},
+				beforeSend:function(){
+					//theCommonFn.waiting();
+				},
+				success:function(rep){
+                       var reps;
+					try{
+						reps = JSON.parse(rep);		
+						//console.log("ldx01:"+reps);
+					}catch(e){
+						//TODO handle the exception
+					};
+					// console.log(reps);
+					if(reps.result){
+						var str = '',
+						    list = reps.content.wharfList;
+						    console.log("ldx011:"+list);
+					    for(var i=0;i<list.length;i++){
+					 		str += '<option data-id="'+list[i].key +'" >'+list[i].label+'</option>';
+					// // 		suppilerWarehouse.push({
+					// // 			"houseId":list[i].store_house_id,
+					// // 			"houseName":list[i].store_house_name,
+					// // 			"houseAddress":list[i].address
+					// //		})
+					// // 	};	
+					// //};
+					// //$('#goodsWarehouseId').append(str);
+				        }
+                        $('#portCells').append(str);
+				 //        console.log('这里是测试！！！：'+ kk);
+					}
+				},
+				error:function(){
+					theCommonFn.alertWin('服务器出错')
+				}
+			});
+
+
+
+ //供应商信息获取-初始
+             $.ajax({
+				type:"post",
+				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listContainerSize",
+				async:true,
+				data:{
+					_vt:'dlk_weishatest',
+					loginId: 'uy4q4h8n31',
+					mtn: '82cc33cf3b35bda1705428551889c787',
+					//fromType:fromType,
+					mobile:'true',
+					buildID:'201608071700',
+					loc:'zh-Hans',
+					versionID:'zh-Hans&versionID=1.0.0'
+				},
+				beforeSend:function(){
+					//theCommonFn.waiting();
+				},
+				success:function(rep){
+                       var reps;
+					try{
+						reps = JSON.parse(rep);		
+						//console.log("ldx01:"+reps);
+					}catch(e){
+						//TODO handle the exception
+					};
+					// console.log(reps);
+					if(reps.result){
+						var str = '',
+						    list = reps.content.containerList;
+						    console.log("ldx011:"+list);
+					    for(var i=0;i<list.length;i++){
+					 		str += '<option data-id="'+list[i].key +'" >'+list[i].label+'</option>';
+					// // 		suppilerWarehouse.push({
+					// // 			"houseId":list[i].store_house_id,
+					// // 			"houseName":list[i].store_house_name,
+					// // 			"houseAddress":list[i].address
+					// //		})
+					// // 	};	
+					// //};
+					// //$('#goodsWarehouseId').append(str);
+				        }
+                        $('#supplierCells').append(str);
+				 //        console.log('这里是测试！！！：'+ kk);
+					}
+				},
+				error:function(){
+					theCommonFn.alertWin('服务器出错')
+				}
+			});
+
+           
+
+			//选取供应商放入,并刷出商品类型
 			if(localStorage.getItem('weisha_supplierName')){
 				$('.info-seller-select select option').text(localStorage.getItem('weisha_supplierName'))
+				var suppilerId = localStorage.getItem('weisha_supplierId');
+				 $.ajax({
+				type:"post",
+				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductType2Zy",
+				async:true,
+				data:{
+                    _vt:'dlk_weishatest',
+					loginId: 'uy4q4h8n31',
+					mtn: '82cc33cf3b35bda1705428551889c787',
+					//fromType:fromType,
+					mobile:'true',
+					buildID:'201608071700',
+					loc:'zh-Hans',
+					versionID:'zh-Hans&versionID=1.0.0',
+					supplier_id:suppilerId
+				},
+				beforeSend:function(){
+					//theCommonFn.waiting();
+				},
+				success:function(rep){
+                      var reps;
+					try{
+						reps = JSON.parse(rep);	
+					}catch(e){
+						//TODO handle the exception
+					};
+					if(reps.result){
+						var str = '<option>商品类型</option>',
+						//var str_address,
+						list = reps.content;
+						//console.log(suppilerAddress[0].address);
+						//$('supplier-address-in').replace(suppilerAddress[0].address);
+
+						for(var i=0;i<list.length;i++){
+							str += '<option data-id="'+list[i].product_type_id +'" >'+list[i].product_type_name+'</option>'
+						};
+                         console.log("str is "+str);
+					   $('#productTypeFirst option').remove();//首框删除老的选择内容
+					   $('#productTypeFirst').append(str);  //首框插入新的内容
+                       $('#productType option').remove();//后续框删除老的选择内容
+					   $('#productType').append(str);  //后续框插入新的内容
+					};
+				},
+				error:function(){
+					theCommonFn.alertWin('服务器出错')
+				}
+			});
 			};
+
+          //首框展示
+          $("#productTypeFirst").change(function() {
+          	     var productTypeId = $(this).find("option:checked").attr("data-id");
+          	    // var productTypeId2 = $(this).find("option:checked").attr("dataid");
+          	     var a = $(this).find("option:checked");
+          	     var b = $(this).val();
+          	     var c = $(this).html();
+          	     //console.log(event);
+          	     console.log("$(this):"+  $(this));
+          	     console.log("option checked"+ $(this).find("option:checked") );
+          	     console.log("productType = " +productTypeId);
+                 getProductNameList(productTypeId);
+            });
+            
+             //添加list同时绑定select元素用以监听
+ 			add.click(function(){
+				var theModel = $('.goods-model').children().clone();
+				theModel.appendTo(foodWrap);
+                $("select").change(function() {
+                	alert("触发");
+                	var firstSelect=$(this);  //产品类型选择框
+                	var productTypeId = $(this).find("option:checked").attr("data-id");
+                	var secondSelect=firstSelect.parent().siblings().children(); //产品名字选择框
+                     //alert("zhelishejizhongyao");
+                     getProductNameListNext(secondSelect,productTypeId);
+                    console.log("当前窗口为："+ $(this).find("option:checked").attr("data-id"));
+                     //console.log("测试窗口为："+ $(this).parent().siblings().children());
+                     // $(this).parent().siblings().children().find("option:checked").append('<option data-id="'+4+'" >'+'飞机4'+'</option>');
+                     //secondSelect.append('<option data-id="'+4+'" >'+'飞机5'+'</option>');
+                    // $('#productNames').append('<option data-id="'+3+'" >'+'飞机3'+'</option>');  //首行插入
+                 //$(this).find("option:checked").append('<option data-id="'+4+'" >'+'飞机4'+'</option>');
+                 //console.log( $(this).next());
+                 // console.log( "这里是：" + $(this).find("option:checked").attr("data-id"));
+                 // console.log( $('#productNamesFirst').next());
+             });
+            });
+
+
+           function getProductNameList(productTypeId){
+                 $.ajax({
+				type:"post",
+				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductByTypeId",
+				async:true,
+				data:{
+					 _vt:'dlk_weishatest',
+					loginId: 'uy4q4h8n31',
+					mtn: '82cc33cf3b35bda1705428551889c787',
+					//fromType:fromType,
+					mobile:'true',
+					buildID:'201608071700',
+					loc:'zh-Hans',
+					versionID:'zh-Hans&versionID=1.0.0',
+					productTypeId:productTypeId
+				},
+				beforeSend:function(){
+				},
+				success:function(rep){
+					var reps;
+					try{
+						reps = JSON.parse(rep);	
+						//console.log(rep);	
+					}catch(e){
+						//TODO handle the exception
+					};
+					if(reps.result){
+						var str = '',
+						    list = reps.content;
+						for(var i=0;i<list.length;i++){
+							str += '<option data-id="'+list[i].product_id +'" >'+list[i].product_name+'</option>'
+						};
+                             //str = '<option data-id="'+2+'" >'+'傻子'+'</option>';
+						//$('#productNamesFirst').append('<option data-id="'+2+'" >'+'飞机'+'</option>');  //首行插入
+						$('#productNamesFirst').append(str);  //首行插入
+						//$('#productNames').append(str);       //除了首行之外的其余行插入
+					}
+				},
+				error:function(){
+					theCommonFn.alertWin('服务器出错')
+				}
+			});
+           }
+
+            function getProductNameListNext(secondSelect,productTypeId){
+ 	             var secondSelectObject = secondSelect;
+ 	             var productTypeIdResult = productTypeId;
+                 $.ajax({
+				     type:"post",
+				     url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductByTypeId",
+				      async:true,
+				 data:{
+                    _vt:'dlk_weishatest',
+					loginId: 'uy4q4h8n31',
+					mtn: '82cc33cf3b35bda1705428551889c787',
+					//fromType:fromType,
+					mobile:'true',
+					buildID:'201608071700',
+					loc:'zh-Hans',
+					versionID:'zh-Hans&versionID=1.0.0',
+					productTypeId:productTypeId
+				},
+				beforeSend:function(){
+				},
+				success:function(rep){
+					var reps;
+					try{
+						reps = JSON.parse(rep);	
+						//console.log(rep);	
+					}catch(e){
+						//TODO handle the exception
+					};
+					if(reps.result){
+						var str = '',
+						    list = reps.content;
+						for(var i=0;i<list.length;i++){
+							str += '<option data-id="'+list[i].product_id +'" >'+list[i].product_name+'</option>'
+						};
+                        secondSelectObject.append(str);
+						//$('#productNames').append(str);  
+					}
+				},
+				error:function(){
+					theCommonFn.alertWin('服务器出错')
+				}
+			});
+           }
+
+
+            //input框的监听
+            $('.goods').on('focus','input',function(){
+    		    $(this).css("background-color","#EDEDED");
+            });
+            $('.goods').on('blur','input',function(){
+    		   $(this).css("background-color","#FFFFFF");
+            });
+
 			//日期插件配置
 			var config = {
 				mode : 1, //时间选择器模式：1：年月日，2：年月日时分（24小时），3：年月日时分（12小时），4：年月日时分秒。默认：1
@@ -624,19 +958,20 @@ text-decoration:none;
 			};
 			$('#picktime').mdatetimer(config);
 			$('#thepicktime').mdatetimer(config);
-			add.click(function(){
-				var theModel = $('.goods-model').children().clone();
-				var picktimenum = foodWrap.find('.foodWrap').length;
-				//循环生成日期插件，id唯一，需重新生成
-				theModel.find('.picktime').attr('id','picktime'+picktimenum);
-				theModel.appendTo(foodWrap);
-				var theID = '#picktime'+picktimenum;
-				$(theID).mdatetimer(config);
+			// add.click(function(){
+			// 	var theModel = $('.goods-model').children().clone();
+			// 	var picktimenum = foodWrap.find('.foodWrap').length;
+			// 	//循环生成日期插件，id唯一，需重新生成
+			// 	theModel.find('.picktime').attr('id','picktime'+picktimenum);
+			// 	theModel.appendTo(foodWrap);
+			// 	var theID = '#picktime'+picktimenum;
+			// 	$(theID).mdatetimer(config);
 				
-			});
+			// });
 			foodWrap.on('click','.goods-delete',function(){
 				$(this).parent().remove();
 			});
+
 			allowed.on('click','[allow]',function(){
 				if($(this).hasClass('dealno')){
 					$(this).removeClass('dealno').addClass('dealyes');

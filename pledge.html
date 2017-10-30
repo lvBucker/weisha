@@ -310,12 +310,13 @@
                  //console.log( $(this).next());
                  // console.log( "这里是：" + $(this).find("option:checked").attr("data-id"));
                  // console.log( $('#productNamesFirst').next());
-            });
-
+                });
 			});
+
 			foodWrap.on('click','.goods-delete',function(){
 				$(this).parent().remove();
 			});
+			
 			theDeal.click(function(){
 				if($(this).hasClass('dealno')){
 					$(this).removeClass('dealno').addClass('dealyes');

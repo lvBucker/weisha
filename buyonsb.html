@@ -601,6 +601,7 @@ text-decoration:none;
              //监听仓库选择
              $("#goodsWarehouseId").change(function() {
              	var wareHouseId = $(this).find("option:checked").attr("data-id");
+             	var wareHouseId = 123;
              	   for(var i =0; i < suppilerWarehouse.length; i++){
              	   	  console.log(wareHouseId);
              	   	  if (wareHouseId.toString() == suppilerWarehouse[i].houseId){
@@ -612,6 +613,7 @@ text-decoration:none;
             //监听供应商选择窗口，增添商品类型列表信息
             $("#cells").change(function() {
                  var suppilerId = $(this).find("option:checked").attr("data-id");
+                 var suppilerId = 123;
                  for(var i = 0 ;i<suppilerAddress.length;i++){ //插入地址信息
                  		if (suppilerId.toString() == suppilerAddress[i].dataId){
                  			document.getElementById("supplier-address-in").innerHTML=suppilerAddress[i].address;
