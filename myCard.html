@@ -78,6 +78,7 @@
 		<script type="text/javascript" src="lib/jquery-2.2.4.min.js" ></script>
 		<script src="lib/common.js"></script>
 		<script type="text/javascript" src="lib/arg-1.3.min.js"></script>
+		<script type="text/javascript" src="lib/Consts.js"></script>
 
 	</head>
 	<body>
@@ -125,6 +126,7 @@
 		</div>
 
 		<script type="text/javascript">
+			Consts.getCreaditInfo();
 			//登陆用户名
 			var loginId = theCommonFn.getloginId();
 			//初始话加载开证列表
@@ -233,7 +235,8 @@
 						};
 					},
 					error:function(){
-						theCommonFn.alertWin('服务器出错')
+						theCommonFn.alertWin('服务器出错');
+						theCommonFn.waiting('hide');
 					}
 				});
 			}
