@@ -16,6 +16,8 @@
 		<script type="text/javascript" src="lib/jquery-2.2.4.min.js" ></script>
 		<script type="text/javascript" src="lib/common.js"></script>
 		<script type="text/javascript" src="lib/arg-1.3.min.js"></script>
+		<script type="text/javascript" src="lib/Consts.js"></script>
+
 	</head>
 	<body>
 		<header class="mytop">
@@ -189,7 +191,7 @@
 								if (reviewtype == 1) {
 									status = "待审核";
 								} else if (reviewtype == 2) {
-									status = "代购中";
+									status = "审核通过";
 								} else if (reviewtype == 3) {
 									status = "不通过";
 								}
@@ -225,7 +227,8 @@
 						};
 					},
 					error:function(){
-						theCommonFn.alertWin('服务器出错')
+						theCommonFn.alertWin('服务器出错');
+						theCommonFn.waiting('hide');
 					}
 				});
 			}
@@ -242,25 +245,28 @@
 					var obj = {};
 					list.push(obj);
 				}
+
+				//交货地址省份
+				var address = Consts.getAddress(finance.provice, finance.city, finance.area);
 				var financediv = 	'<div>' +
 										'<div>供应商</div>' +
 										'<div class="supplier">' + theCommonFn.getValue(content.resultSuppliername) + '</div>' +
 									'</div>' + 
 									'<div>' +
-										'<div>业务国别</div>'
-										'<div class="national">' + theCommonFn.getValue(finance.national) + '</div>' +
+										'<div>业务国别</div>' +
+										'<div class="national">' + Consts.getValue(NATIONAL, finance.national) + '</div>' +
 									'</div>' +
 									'<div>' +
 										'<div>币种</div>' +
-										'<div class="currency">' + '</div>' +
+										'<div class="currency">' + Consts.getValue(CURRENCY, finance.currency) + '</div>' +
 									'</div>' +
 									'<div>' +
 										'<div>计量单位</div>' +
-										'<div class="unitId">' + theCommonFn.getValue(finance.unitId) + '</div>' +
+										'<div class="unitId">' + Consts.getValue(UNIT, finance.unitId) + '</div>' +
 									'</div>' +
 									'<div>' +
 										'<div>交货港口</div>' + 
-										'<div class="province">' + theCommonFn.getValue(finance.province) + '</div>' +
+										'<div class="province">' + address + '</div>' +
 									'</div>' +
 									'<div>' +
 										'<div>信用证类型</div>' +
@@ -270,11 +276,13 @@
 				financediv = '<div class="detail"><div class="mylist">' + financediv + '</div></div>';
 				$("#toaudit").append(financediv);
 
+				//查询代开证类型
+
 				var productList = "";
 				$.each(list, function(index, value) {
 					var div =   '<div>' +
 									'<div>商品信息</div>' +
-									'<div class="productname">' + theCommonFn.getValue(value.productname) + '</div>' +
+									'<div class="productname">' + theCommonFn.getValue(value.productTypeName) + ' ' + theCommonFn.getValue(value.productname) + '</div>' +
 								'</div>' +
 								'<div>' +
 									'<div>代开柜数</div>' +
@@ -282,7 +290,7 @@
 								'</div>' +
 								'<div>' +
 									'<div>代开证数量</div>' +
-									'<div class="weight">' + theCommonFn.getValue(value.weight) + '</div>' +
+									'<div class="weight">' + theCommonFn.getValue(value.weight) + ' ' + Consts.getValue(UNIT, finance.unitId) + '</div>' +
 								'</div>' +
 								'<div>' +
 									'<div>意向单价</div>' +
@@ -290,7 +298,7 @@
 								'</div>' +
 								'<div>' +
 									'<div>商品总价</div>' +
-									'<div class="money">' + theCommonFn.getValue(value.money) + '</div>' +
+									'<div class="money">' + theCommonFn.getValue(value.money) + ' ' + Consts.getValue(CURRENCY, finance.currency) + '</div>' +
 								'</div>';
 					div = '<div class="detail"><div class="mylist">' + div + '</div></div>';
 					productList = productList + div;
@@ -312,6 +320,9 @@
 					var obj = {};
 					list.push(obj);
 				}
+
+				//交货地址省份
+				var address = Consts.getAddress(finance.provice, finance.city, finance.area);
 				$.each(list, function(index, value) {
 					var div =   '<div>' +
 									'<div>供应商</div>' +
@@ -319,15 +330,15 @@
 								'</div>' +
 								'<div>' +
 									'<div>交货地址</div>' +
-									'<div class="city">' + theCommonFn.getValue(finance.city) + '</div>' +
+									'<div class="city">' + address + '</div>' +
 								'</div>' +
 								'<div>' +
 									'<div>商品信息</div>' +
-									'<div class="productname">' + theCommonFn.getValue(value.productname) + '</div>' +
+									'<div class="productname">' + theCommonFn.getValue(value.productTypeName) + ' ' + theCommonFn.getValue(value.productname) + '</div>' +
 								'</div>' +
 								'<div>' +
 									'<div>代开证数量</div>' +
-									'<div class="weight">' + theCommonFn.getValue(value.weight) + '</div>' +
+									'<div class="weight">' + theCommonFn.getValue(value.weight) + ' ' + Consts.getValue(UNIT, finance.unitId) + '</div>' +
 								'</div>' +
 								'<div>' +
 									'<div>意向单价</div>' +
@@ -335,7 +346,7 @@
 								'</div>' +
 								'<div>' +
 									'<div>商品总价</div>' +
-									'<div class="money">' + theCommonFn.getValue(value.money) + '</div>' +
+									'<div class="money">' + theCommonFn.getValue(value.money) +  ' ' + Consts.getValue(CURRENCY, finance.currency) + '</div>' +
 								'</div>';
 					div = '<div class="detail"><div class="mylist">' + div + '</div></div>';
 					productList = productList + div;
@@ -357,18 +368,21 @@
 					var obj = {};
 					list.push(obj);
 				}
+				//交货地址省份
+				var address = Consts.getAddress(finance.provice, finance.city, finance.area);
+
 				$.each(list, function(index, value) {
 					var div =   '<div>' +
 									'<div>交货地址</div>' +
-									'<div class="city">' + theCommonFn.getValue(content.stroeHouseName) + '</div>' +
+									'<div class="city">' + address + '</div>' +
 								'</div>' +
 								'<div>' +
 									'<div>商品信息</div>' +
-									'<div class="productname">' + theCommonFn.getValue(value.productname) + '</div>' +
+									'<div class="productname">' + theCommonFn.getValue(value.productTypeName) + ' ' + theCommonFn.getValue(value.productname) + '</div>' +
 								'</div>' +
 								'<div>' +
 									'<div>代开证数量</div>' +
-									'<div class="weight">' + theCommonFn.getValue(value.weight) + '</div>' +
+									'<div class="weight">' + theCommonFn.getValue(value.weight) + ' ' + Consts.getValue(UNIT, finance.unitId) + '</div>' +
 								'</div>' +
 								'<div>' +
 									'<div>意向单价</div>' +
@@ -376,7 +390,7 @@
 								'</div>' +
 								'<div>' +
 									'<div>商品总价</div>' +
-									'<div class="money">' + theCommonFn.getValue(value.money) + '</div>' +
+									'<div class="money">' + theCommonFn.getValue(value.money) + ' ' + Consts.getValue(CURRENCY, finance.currency) + '</div>' +
 								'</div>';
 					div = '<div class="detail"><div class="mylist">' + div + '</div></div>';
 					productList = productList + div;
@@ -400,7 +414,7 @@
 				$.each(list, function(index, value){
 					var div =   '<div>' +
 									'<div>仓库地址</div>' +
-									'<div class="stroeHouseName">' + theCommonFn.getValue(value.productname) + '</div>' +
+									'<div class="stroeHouseName">' + theCommonFn.getValue(content.stroeHouseName) + '</div>' +
 								'</div>' +
 								'<div>' +
 									'<div>商品信息</div>' +
@@ -412,7 +426,7 @@
 								'</div>' +
 								'<div>' +
 									'<div>包装</div>' +
-									'<div class="standard">' + theCommonFn.getValue(value.standard) + '</div>' +
+									'<div class="standard">' + theCommonFn.getValue(value.standard) +  ' ' + theCommonFn.getValue(value.djunit) + '</div>' +
 								'</div>' +
 								'<div>' +
 									'<div>产地</div>' +
@@ -452,6 +466,7 @@
 				$("#storage").append(productList);
 				$("#storage").trigger("create");
 			}
+
 		</script>
 	</body>
 </html>
