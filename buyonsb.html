@@ -12,6 +12,15 @@
 				background: #f3f5fe;
 				font-size: 0.24rem;
 			}
+			.supplier-address-in{
+				width: 100% !important;
+				margin-top: 3px !important;
+				padding-left: 0.3rem !important;
+				padding-right: 0.3rem !important;
+				background: #FFFFFF;
+				word-wrap: break-word;
+				display:none;
+			}
 			.goodsWarehouse-address{
 				 height:100% !important;
 				 width: 100%;
@@ -23,7 +32,9 @@
 				padding-left: 0.3rem !important;
 				padding-right: 0.3rem !important;
 				background: #FFFFFF;
-				word-wrap: break-word;
+				word-wrap: break-word !important;
+				line-height: 100% ;
+				height: 45px !important;
 				display:none;
 			}	
 			header{
@@ -170,10 +181,10 @@ text-decoration:none;
 					</select>
 				</div>
 			</div>
-            <div>
-				<div class="goodsWarehouse-address-in" id = "goodsWarehouse-address-in">		
-				</div>
-	        </div>
+            <div2>
+				<div2 class="supplier-address-in" id = "supplier-address-in">		
+				</div2>
+	        </div2>
 			<!-- <div class="supplier-address">
 				<div>供应商地址</div>
 				<div class="supplier-address-in" id = "supplier-address-in">
@@ -198,10 +209,10 @@ text-decoration:none;
 					   </select>
 				   </div>
 		    </div>
-		    <div>
-				<div class="goodsWarehouse-address-in" id = "goodsWarehouse-address-in">		
-				</div>
-	        </div>
+		    <div2>
+				<div2 class="goodsWarehouse-address-in" id = "goodsWarehouse-address-in">		
+				</div2>
+	        </div2>
             <!-- <div class="goodsWarehouse-address">
 				<div>交货仓库地址</div>
 				  <div class="goodsWarehouse-address-in" id = "goodsWarehouse-address-in">		
@@ -373,7 +384,6 @@ text-decoration:none;
 	    <div class="submit" id="close">来点爸爸呀</div>-->
 	    
 		<script>
-		alert("ldx02");
 		// startRecordBtn.onclick = function(){
   //          alert("https://itunes.apple.com/cn/app/wei-ruan-shi-hua/id1153109870?mt=8")
   //          bridge.callHandler('pushBack', {}, function responseCallback(responseData) {
@@ -600,27 +610,28 @@ text-decoration:none;
    
              //监听仓库选择
              $("#goodsWarehouseId").change(function() {
-             	var wareHouseId = $(this).find("option:checked").attr("data-id");
-             	var wareHouseId = 123;
+             	var wareHouseId = $(this).find("option:selected").attr("data-id");
+             	//var wareHouseId = 123;
+             	alert(wareHouseId);
              	   for(var i =0; i < suppilerWarehouse.length; i++){
              	   	  console.log(wareHouseId);
              	   	  if (wareHouseId.toString() == suppilerWarehouse[i].houseId){
-             	   	  	document.getElementById("goodsWarehouse-address-in").innerHTML=suppilerWarehouse[i].houseAddress;
+             	   	  	//alert(suppilerWarehouse[i].houseAddress);
+             	   	  	$("#goodsWarehouse-address-in").text(suppilerWarehouse[i].houseAddress);
+             	   	  	$("#goodsWarehouse-address-in").show();
              	   	  }
              	   }
              });
 
             //监听供应商选择窗口，增添商品类型列表信息
             $("#cells").change(function() {
-                 var suppilerId = $(this).find("option:checked").attr("data-id");
-                 var suppilerId = 123;
-                 for(var i = 0 ;i<suppilerAddress.length;i++){ //插入地址信息
-                 		if (suppilerId.toString() == suppilerAddress[i].dataId){
-                 			document.getElementById("supplier-address-in").innerHTML=suppilerAddress[i].address;
-                 		}
+                var suppilerId = $(this).find("option:selected").attr("data-id");
+                for(var i = 0 ;i<suppilerAddress.length;i++){ //插入地址信息
+                    if (suppilerId.toString() == suppilerAddress[i].dataId){
+                 	    $("#supplier-address-in").text(suppilerAddress[i].address);
+             	   	  	$("#supplier-address-in").show();
                  	}
-				//document.getElementById("supplier-address-in").innerHTML=suppilerAddress[suppilerId].address;
-                 //alert("suppilerId:"+suppilerId);
+                }
 	         $.ajax({
 				type:"post",
 				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductType",
@@ -674,11 +685,12 @@ text-decoration:none;
 				theModel.appendTo(foodWrap);
 				 $("select").change(function() {
                 	var firstSelect=$(this);  //产品类型选择框
-                	var productTypeId = $(this).find("option:checked").attr("data-id");
+                	var productTypeId = $(this).find("option:selected").attr("data-id");
                 	var secondSelect=firstSelect.parent().siblings().children(); //产品名字选择框
                 	var secondSelectParent = $(this).parent().siblings().find("option");//产品名字框上级属性，用来清除使用
-                    getProductNameListNext(secondSelect,productTypeId,secondSelectParent);
-                    console.log("当前窗口为："+ $(this).find("option:checked").attr("data-id"));
+                	 var suppilerId = $('#cells').find("option:selected").attr("data-id");
+                    getProductNameListNext(secondSelect,productTypeId,secondSelectParent,suppilerId);
+                    console.log("当前窗口为："+ $(this).find("option:selected").attr("data-id"));
                    });
 			});
 			foodWrap.on('click','.goods-delete',function(){
@@ -687,12 +699,13 @@ text-decoration:none;
 
 			 //首框展示
           $("#productTypeFirst").change(function() {
-          	     var productTypeId = $(this).find("option:checked").attr("data-id");
-                 getProductNameList(productTypeId);
+          	     var productTypeId = $(this).find("option:selected").attr("data-id");
+          	     var suppilerId = $('#cells').find("option:selected").attr("data-id");
+                 getProductNameList(productTypeId,suppilerId);
             });
 
         //首个产品列表信息
-          function getProductNameList(productTypeId){
+          function getProductNameList(productTypeId,suppilerId){
                  $.ajax({
 				type:"post",
 				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductByTypeId",
@@ -738,7 +751,7 @@ text-decoration:none;
 			});
            }
 
-           function getProductNameListNext(secondSelect,productTypeId,secondSelectParent){
+           function getProductNameListNext(secondSelect,productTypeId,secondSelectParent,suppilerId){
  	             var secondSelectObject = secondSelect;
  	             var productTypeIdResult = productTypeId;
  	             secondSelectParentObject = secondSelectParent;
@@ -809,7 +822,7 @@ text-decoration:none;
     		var select_title;
     		$('.good-wrap').find('select').each(function(i,item){
 						select_title = $(this).eq(0).val();
-						var selectValue = $(this).find("option:checked").attr("data-id");
+						var selectValue = $(this).find("option:selected").attr("data-id");
 						if(selectValue==null){
 								isError = 1;
 								return false;
@@ -820,7 +833,7 @@ text-decoration:none;
 	        	return;
         }
         
-    		var storeHouseId = $('#cells').find("option:checked").attr("data-id");
+    		var storeHouseId = $('#cells').find("option:selected").attr("data-id");
 				if(storeHouseId==null){
 						theCommonFn.alertWin('请选择交货仓库');
 						return;

@@ -71,7 +71,7 @@ text-decoration:none;
 				width: 100%;
 				height: 0.68rem;
 				background: #F3F5FE;
-				color: #cdcccd;
+				/*color: #cdcccd;*/
 				outline: none;
 				border: none;
 				font-size: 0.28rem;
@@ -96,7 +96,7 @@ text-decoration:none;
 				width: 100%;
 				border: none;
 				outline: none;
-				color: #CDCCCD;
+				/*color: #CDCCCD;*/
 			}
 			.goodsin>div:last-of-type{
 				float: right;
@@ -206,12 +206,38 @@ text-decoration:none;
 		<script type="text/javascript" src="lib/succorfai.js" ></script>
 	</head>
 	<body>
-		 <div id="fullbg"></div> 
+		 <!-- <div id="fullbg"></div> 
 		 <div id="dialog"> 
                   <p class="close"><a href="#" onclick="theCommonFn.closeBg();">关闭</a></p> 
                   <img src="images/4.png" id="result-pic" />
                   <div>申请已提交！</div> 
-         </div> 
+         </div>  -->
+           <!--成功窗口-->
+        <div id="result-success"> 
+			<div class="result-bg"></div>
+			<div class="result-show">
+			     <div>
+			     	<img src="images/4.png" id="result-pic" />
+			     </div>
+			     <div>
+			     	<!--<p id="result-fail">失败原因——申请提交失败！</p>-->
+			     	<p id="result-in">申请已提交！</p>
+			     </div>
+			</div>
+		</div>
+
+		 <!--失败窗口-->
+        <div id="result-error"> 
+			<div class="result-bg"></div>
+			<div class="result-showfail">
+			     <div>
+			     	<img src="images/5.png" id="result-pic" />
+			     </div>
+			     <div>
+			     	<p id="result-in">失败原因——申请提交失败！</p>
+			     </div>
+			</div>
+		</div>
 		<div class="info cell">
 			<div class="info-country">
 				<div>业务国别</div>
@@ -270,8 +296,8 @@ text-decoration:none;
 			<div class="info-seller">
 				<div>seller</div>
 				<div class="info-seller-select">
-					<select>
-						<option id =" supplierCells">选择供应商</option>
+					<select id ="supplierCells">
+						<option >选择供应商</option>
 					</select>
 				</div>
 			</div>
@@ -305,11 +331,8 @@ text-decoration:none;
 					<div class="goods-cs">
 						<div class="wordtitle">Container Size</div>
 						<div class="goods-cs-in goodsin">
-							<select>
+							<select id = 'containerSize'>
 								<option></option>
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
 							</select>
 						</div>
 					</div>
@@ -317,7 +340,7 @@ text-decoration:none;
 						<div>Quantity</div>
 						<div class="goods-price-in goodsin">
 							<div>
-								<input type="text" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+								<input type="text" id="weight" onKeyup="javascript:sendWeight(this);" onKeyup="javascript:sendWeight(this);" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
 							</div>
 							<div>kg</div>
 						</div>
@@ -326,11 +349,17 @@ text-decoration:none;
 						<div>Unit Price</div>
 						<div class="goods-total-in goodsin">
 							<div>
-								<input type="text" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+								<input type="text" id="price" onKeyup="javascript:sendPrice(this);" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
 							</div>
 							<div>$/kg</div>
 						</div>
 					</div>
+
+					 <div class="goods-total">
+				         <div>商品总价</div>
+				         <div class="goods-total-in goodsin" id = "totalPrice">		
+				         </div>
+			         </div>
 					<div class="goods-shipment">
 						<div>Shipment</div>
 						<div class="goods-total-in">
@@ -353,7 +382,7 @@ text-decoration:none;
 								</select>
 							</div>
 							<div class="goods-commodity-select-name">
-								<select>
+								<select id = "productNamesFirst">
 									<option>商品名称</option>
 								</select>
 							</div>
@@ -370,11 +399,8 @@ text-decoration:none;
 					<div class="goods-cs">
 						<div class="wordtitle">Container Size</div>
 						<div class="goods-cs-in goodsin">
-							<select>
+							<select id = 'containerSizeFirst'>
 								<option></option>
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
 							</select>
 						</div>
 					</div>
@@ -382,7 +408,7 @@ text-decoration:none;
 						<div>Quantity</div>
 						<div class="goods-price-in goodsin">
 							<div>
-								<input type="text" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+								<input type="text" id="weight" onKeyup="javascript:sendWeight(this);" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
 							</div>
 							<div>kg</div>
 						</div>
@@ -391,11 +417,17 @@ text-decoration:none;
 						<div>Unit Price</div>
 						<div class="goods-total-in goodsin">
 							<div>
-								<input type="text" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+								<input type="text" id="price" onKeyup="javascript:sendPrice(this);" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
 							</div>
 							<div>$/kg</div>
 						</div>
 					</div>
+
+					 <div class="goods-total">
+				         <div>商品总价</div>
+				         <div class="goods-total-in goodsin" id = "totalPrice">		
+				         </div>
+			         </div>
 					<div class="goods-shipment">
 						<div>Shipment</div>
 						<div class="goods-total-in">
@@ -415,20 +447,17 @@ text-decoration:none;
 			<div class="pps-port">
 				<div>Port</div>
 				<div class="pps-port">
-					<select>
+					<select id ="portCellsSecond">
 						<option></option>
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
 					</select>
 				</div>
 			</div>
-			<div class="pps-price">
+			<!--<div class="pps-price">
 				<div>Price Term</div>
 				<div class="pps-price-in rightinput">
 					<input type="text"  class="" />
 				</div>
-			</div>
+			</div>-->
 			<div class="pps-say">
 				<div>Say</div>
 				<div class="pps-say-in rightinput">
@@ -507,7 +536,7 @@ text-decoration:none;
 			<div class="other-ir">
 				<div>Irrevocable tansferable L/C</div>
 				<div class="other-ir-select">
-					<select>
+					<select id = "creditCard">
 						<option></option>
 						<option>1</option>
 						<option>2</option>
@@ -589,8 +618,8 @@ text-decoration:none;
 				</div>
 			</div>
 		</div>
-		<div class="submit agencysb">提交</div>
-		<div class="submit agencysb2" onclick = "submitTest()">提交2</div>
+		<!--<div class="submit agencysb">提交</div>-->
+		<div class="submit agencysb2" onclick = "submitTest()">提交</div>
 		
 		
 		<script>
@@ -680,7 +709,7 @@ text-decoration:none;
 					if(reps.result){
 						var str = '',
 						    list = reps.content.wharfList;
-						    console.log("ldx011:"+list);
+						    //console.log("ldx011:"+list);
 					    for(var i=0;i<list.length;i++){
 					 		str += '<option data-id="'+list[i].key +'" >'+list[i].label+'</option>';
 					// // 		suppilerWarehouse.push({
@@ -701,9 +730,59 @@ text-decoration:none;
 				}
 			});
 
+//交货港口(port)信息获取-初始
+             $.ajax({
+				type:"post",
+				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listContainerSize",
+				async:true,
+				data:{
+					_vt:'dlk_weishatest',
+					loginId: 'uy4q4h8n31',
+					mtn: '82cc33cf3b35bda1705428551889c787',
+					//fromType:fromType,
+					mobile:'true',
+					buildID:'201608071700',
+					loc:'zh-Hans',
+					versionID:'zh-Hans&versionID=1.0.0'
+				},
+				beforeSend:function(){
+					//theCommonFn.waiting();
+				},
+				success:function(rep){
+                       var reps;
+					try{
+						reps = JSON.parse(rep);		
+						//console.log("ldx01:"+reps);
+					}catch(e){
+						//TODO handle the exception
+					};
+					// console.log(reps);
+					if(reps.result){
+						var str = '',
+						    list = reps.content.wharfList;
+						    //console.log("ldx011:"+list);
+					    for(var i=0;i<list.length;i++){
+					 		str += '<option data-id="'+list[i].key +'" >'+list[i].label+'</option>';
+					// // 		suppilerWarehouse.push({
+					// // 			"houseId":list[i].store_house_id,
+					// // 			"houseName":list[i].store_house_name,
+					// // 			"houseAddress":list[i].address
+					// //		})
+					// // 	};	
+					// //};
+					// //$('#goodsWarehouseId').append(str);
+				        }
+                        $('#portCellsSecond').append(str);
+				 //        console.log('这里是测试！！！：'+ kk);
+					}
+				},
+				error:function(){
+					theCommonFn.alertWin('服务器出错')
+				}
+			});
 
 
- //供应商信息获取-初始
+ //Container Size信息获取-初始
              $.ajax({
 				type:"post",
 				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listContainerSize",
@@ -733,19 +812,21 @@ text-decoration:none;
 					if(reps.result){
 						var str = '',
 						    list = reps.content.containerList;
-						    console.log("ldx011:"+list);
-					    for(var i=0;i<list.length;i++){
-					 		str += '<option data-id="'+list[i].key +'" >'+list[i].label+'</option>';
-					// // 		suppilerWarehouse.push({
-					// // 			"houseId":list[i].store_house_id,
-					// // 			"houseName":list[i].store_house_name,
-					// // 			"houseAddress":list[i].address
-					// //		})
-					// // 	};	
-					// //};
-					// //$('#goodsWarehouseId').append(str);
-				        }
-                        $('#supplierCells').append(str);
+						    console.log("ldx0121:"+list);
+					     for(var i=0;i<list.length;i++){
+					  		str += '<option data-id="'+list[i].key +'" >'+list[i].label+'</option>';
+					// // // 		suppilerWarehouse.push({
+					// // // 			"houseId":list[i].store_house_id,
+					// // // 			"houseName":list[i].store_house_name,
+					// // // 			"houseAddress":list[i].address
+					// // //		})
+					// // // 	};	
+					// // //};
+					// // //$('#goodsWarehouseId').append(str);
+				         }
+				         console.log("123321:"+str);
+                         $('#containerSizeFirst').append(str);
+                         $('#containerSize').append(str);
 				 //        console.log('这里是测试！！！：'+ kk);
 					}
 				},
@@ -754,12 +835,108 @@ text-decoration:none;
 				}
 			});
 
-           
 
+//信用证信息获取-初始
+             $.ajax({
+				type:"post",
+				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listCredit",
+				async:true,
+				data:{
+					_vt:'dlk_weishatest',
+					loginId: 'uy4q4h8n31',
+					mtn: '82cc33cf3b35bda1705428551889c787',
+					//fromType:fromType,
+					mobile:'true',
+					buildID:'201608071700',
+					loc:'zh-Hans',
+					versionID:'zh-Hans&versionID=1.0.0'
+				},
+				beforeSend:function(){
+					//theCommonFn.waiting();
+				},
+				success:function(rep){
+                       var reps;
+					try{
+						reps = JSON.parse(rep);		
+						//console.log("ldx01:"+reps);
+					}catch(e){
+						//TODO handle the exception
+					};
+					// console.log(reps);
+					if(reps.result){
+						var str = '',
+						    list = reps.content;
+						    console.log("ldx012132321:"+list);
+					     for(var i=0;i<list.length;i++){
+					  		str += '<option data-id="'+list[i].key +'" >'+list[i].label+'</option>';
+				         }
+                         $('#creditCard').append(str);
+					}
+				},
+				error:function(){
+					theCommonFn.alertWin('服务器出错')
+				}
+			});
+
+ // //供应商信息获取-初始
+ //             $.ajax({
+	// 			type:"post",
+	// 			url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listContainerSize",
+	// 			async:true,
+	// 			data:{
+	// 				_vt:'dlk_weishatest',
+	// 				loginId: 'uy4q4h8n31',
+	// 				mtn: '82cc33cf3b35bda1705428551889c787',
+	// 				//fromType:fromType,
+	// 				mobile:'true',
+	// 				buildID:'201608071700',
+	// 				loc:'zh-Hans',
+	// 				versionID:'zh-Hans&versionID=1.0.0'
+	// 			},
+	// 			beforeSend:function(){
+	// 				//theCommonFn.waiting();
+	// 			},
+	// 			success:function(rep){
+ //                       var reps;
+	// 				try{
+	// 					reps = JSON.parse(rep);		
+	// 					//console.log("ldx01:"+reps);
+	// 				}catch(e){
+	// 					//TODO handle the exception
+	// 				};
+	// 				// console.log(reps);
+	// 				if(reps.result){
+	// 					var str = '',
+	// 					    list = reps.content.containerList;
+	// 					    //console.log("ldx011:"+list);
+	// 				    for(var i=0;i<list.length;i++){
+	// 				 		str += '<option data-id="'+list[i].key +'" >'+list[i].label+'</option>';
+	// 				// // 		suppilerWarehouse.push({
+	// 				// // 			"houseId":list[i].store_house_id,
+	// 				// // 			"houseName":list[i].store_house_name,
+	// 				// // 			"houseAddress":list[i].address
+	// 				// //		})
+	// 				// // 	};	
+	// 				// //};
+	// 				// //$('#goodsWarehouseId').append(str);
+	// 			        }
+
+	// 			       // str += '<option data-id=10 >shanghai</option>';//测试
+ //                        $('#supplierCells').append(str);
+	// 			 //        console.log('这里是测试！！！：'+ kk);
+	// 				}
+	// 			},
+	// 			error:function(){
+	// 				theCommonFn.alertWin('服务器出错')
+	// 			}
+	// 		});
+
+           
 			//选取供应商放入,并刷出商品类型
 			if(localStorage.getItem('weisha_supplierName')){
 				$('.info-seller-select select option').text(localStorage.getItem('weisha_supplierName'))
 				var suppilerId = localStorage.getItem('weisha_supplierId');
+				console.log("ldx111："+suppilerId);
 				 $.ajax({
 				type:"post",
 				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductType2Zy",
@@ -795,7 +972,7 @@ text-decoration:none;
 						for(var i=0;i<list.length;i++){
 							str += '<option data-id="'+list[i].product_type_id +'" >'+list[i].product_type_name+'</option>'
 						};
-                         console.log("str is "+str);
+                         //console.log("str is "+str);
 					   $('#productTypeFirst option').remove();//首框删除老的选择内容
 					   $('#productTypeFirst').append(str);  //首框插入新的内容
                        $('#productType option').remove();//后续框删除老的选择内容
@@ -810,16 +987,10 @@ text-decoration:none;
 
           //首框展示
           $("#productTypeFirst").change(function() {
-          	     var productTypeId = $(this).find("option:checked").attr("data-id");
-          	    // var productTypeId2 = $(this).find("option:checked").attr("dataid");
-          	     var a = $(this).find("option:checked");
-          	     var b = $(this).val();
-          	     var c = $(this).html();
-          	     //console.log(event);
-          	     console.log("$(this):"+  $(this));
-          	     console.log("option checked"+ $(this).find("option:checked") );
-          	     console.log("productType = " +productTypeId);
-                 getProductNameList(productTypeId);
+          	     var productTypeId = $(this).find("option:selected").attr("data-id");
+          	     //console.log("productType = " +productTypeId);
+          	     var suppilerId = localStorage.getItem('weisha_supplierId');
+                 getProductNameList(productTypeId,suppilerId);
             });
             
              //添加list同时绑定select元素用以监听
@@ -827,13 +998,15 @@ text-decoration:none;
 				var theModel = $('.goods-model').children().clone();
 				theModel.appendTo(foodWrap);
                 $("select").change(function() {
-                	alert("触发");
+                	//alert("触发");
                 	var firstSelect=$(this);  //产品类型选择框
-                	var productTypeId = $(this).find("option:checked").attr("data-id");
+                	var productTypeId = $(this).find("option:selected").attr("data-id");
                 	var secondSelect=firstSelect.parent().siblings().children(); //产品名字选择框
+                	var secondSelectParent = $(this).parent().siblings().find("option");//产品名字框上级属性，用来清除使用
+                	var suppilerId = localStorage.getItem('weisha_supplierId');
                      //alert("zhelishejizhongyao");
-                     getProductNameListNext(secondSelect,productTypeId);
-                    console.log("当前窗口为："+ $(this).find("option:checked").attr("data-id"));
+                     getProductNameListNext(secondSelect,productTypeId,secondSelectParent,suppilerId);
+                    //console.log("当前窗口为："+ $(this).find("option:checked").attr("data-id"));
                      //console.log("测试窗口为："+ $(this).parent().siblings().children());
                      // $(this).parent().siblings().children().find("option:checked").append('<option data-id="'+4+'" >'+'飞机4'+'</option>');
                      //secondSelect.append('<option data-id="'+4+'" >'+'飞机5'+'</option>');
@@ -845,8 +1018,7 @@ text-decoration:none;
              });
             });
 
-
-           function getProductNameList(productTypeId){
+           function getProductNameList(productTypeId,suppilerId){
                  $.ajax({
 				type:"post",
 				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductByTypeId",
@@ -855,12 +1027,13 @@ text-decoration:none;
 					 _vt:'dlk_weishatest',
 					loginId: 'uy4q4h8n31',
 					mtn: '82cc33cf3b35bda1705428551889c787',
-					//fromType:fromType,
+					fromType:2,
 					mobile:'true',
 					buildID:'201608071700',
 					loc:'zh-Hans',
 					versionID:'zh-Hans&versionID=1.0.0',
-					productTypeId:productTypeId
+					productTypeId:productTypeId,
+					supplier_id:suppilerId
 				},
 				beforeSend:function(){
 				},
@@ -880,6 +1053,8 @@ text-decoration:none;
 						};
                              //str = '<option data-id="'+2+'" >'+'傻子'+'</option>';
 						//$('#productNamesFirst').append('<option data-id="'+2+'" >'+'飞机'+'</option>');  //首行插入
+						console.log("ldx2:"+str);
+						 $('#productNamesFirst option').remove();//删除老内容
 						$('#productNamesFirst').append(str);  //首行插入
 						//$('#productNames').append(str);       //除了首行之外的其余行插入
 					}
@@ -890,9 +1065,10 @@ text-decoration:none;
 			});
            }
 
-            function getProductNameListNext(secondSelect,productTypeId){
+            function getProductNameListNext(secondSelect,productTypeId,secondSelectParent,suppilerId){
  	             var secondSelectObject = secondSelect;
  	             var productTypeIdResult = productTypeId;
+ 	             secondSelectParentObject = secondSelectParent;
                  $.ajax({
 				     type:"post",
 				     url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductByTypeId",
@@ -901,12 +1077,13 @@ text-decoration:none;
                     _vt:'dlk_weishatest',
 					loginId: 'uy4q4h8n31',
 					mtn: '82cc33cf3b35bda1705428551889c787',
-					//fromType:fromType,
+					fromType:2,
 					mobile:'true',
 					buildID:'201608071700',
 					loc:'zh-Hans',
 					versionID:'zh-Hans&versionID=1.0.0',
-					productTypeId:productTypeId
+					productTypeId:productTypeId,
+					supplier_id:suppilerId
 				},
 				beforeSend:function(){
 				},
@@ -924,6 +1101,7 @@ text-decoration:none;
 						for(var i=0;i<list.length;i++){
 							str += '<option data-id="'+list[i].product_id +'" >'+list[i].product_name+'</option>'
 						};
+						secondSelectParentObject.remove();
                         secondSelectObject.append(str);
 						//$('#productNames').append(str);  
 					}
@@ -942,6 +1120,27 @@ text-decoration:none;
             $('.goods').on('blur','input',function(){
     		   $(this).css("background-color","#FFFFFF");
             });
+
+             $('.cell').on('focus','input',function(){
+    		    $(this).css("background-color","#EDEDED");
+            });
+            $('.cell').on('blur','input',function(){
+    		   $(this).css("background-color","#FFFFFF");
+            });
+
+             function sendWeight(inputobj){
+               	    var goodsWeight = inputobj.value;
+                    var jqueryinputobj = $(inputobj);
+                    var goodsPrice = jqueryinputobj.parent().parent().parent().parent().find("#price").val();
+                    jqueryinputobj.closest("div[class~=cell]").find("#totalPrice").html(goodsWeight*goodsPrice);
+                 }
+
+                function sendPrice(inputobj){
+               	    var goodsPrice = inputobj.value;
+                    var jqueryinputobj = $(inputobj);
+                    var goodsWeight = jqueryinputobj.parent().parent().parent().parent().find("#weight").val();
+               	    jqueryinputobj.closest("div[class~=cell]").find("#totalPrice").html(goodsWeight*goodsPrice);
+                 }
 
 			//日期插件配置
 			var config = {
@@ -998,8 +1197,8 @@ text-decoration:none;
 				async:true,
 				data:{
                     _vt:'dlk_weishatest',
-					loginId: 'ufuy4bfc6i',
-					mtn: 'e0ec76abc1575149dba5ba35cfcc8411',
+					loginId: 'uy4q4h8n31',
+					mtn: '82cc33cf3b35bda1705428551889c787',
 					fromType:'2',
 					mobile:'true',
 					_m:'listStorageHosue',
@@ -1009,16 +1208,20 @@ text-decoration:none;
 					sign:'b92d3f53c061fafcfe8a1041b2cf4baf'
 				},
 				success:function(rep){
-					//theCommonFn.alertWin('提交成功');
-					theCommonFn.windowPrompts();
-					// var bh = $("body").height(); 
-     //                var bw = $("body").width(); 
-     //                $("#fullbg").css({ 
-     //                   height:bh, 
-     //                   width:bw, 
-     //                  display:"block" 
-     //                }); 
-     //                $("#dialog").show(); 
+					var reps;
+					try{
+					    reps = JSON.parse(rep);		
+				    }catch(e){				
+					};
+					if(reps.result){
+						$("#result-success").show();
+					    theCommonFn.delay2('3000');
+						theCommonFn.waitAndClosePrompts('1','7000');
+						theCommonFn.delay2('5000');
+					}else{
+						$("#result-error").show();
+						setTimeout("$('#result-error').hide();",3000);
+					} 
 				},
 				error:function(){
 					theCommonFn.alertWin('服务器出错');

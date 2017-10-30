@@ -286,7 +286,7 @@
                 buildID = theCommonFn.getBuildIdByUrl();	
                 loc = theCommonFn.getLocByUrl();
                 versionID = theCommonFn.getVersionIDByUrl();
-
+                
                 alert("mtn："+mtn );
                 alert("loginId："+ loginId );
                 
@@ -297,11 +297,11 @@
 				theModel.appendTo(foodWrap);
                 $("select").change(function() {
                 	var firstSelect=$(this);  //产品类型选择框
-                	var productTypeId = $(this).find("option:checked").attr("data-id");
+                	var productTypeId = $(this).find("option:selected").attr("data-id");
                 	var secondSelect=firstSelect.parent().siblings().children(); //产品名字选择框
                      //alert("zhelishejizhongyao");
                      getProductNameListNext(secondSelect,productTypeId);
-                    console.log("当前窗口为："+ $(this).find("option:checked").attr("data-id"));
+                    //console.log("当前窗口为："+ $(this).find("option:selected").attr("data-id"));
                      //console.log("测试窗口为："+ $(this).parent().siblings().children());
                      // $(this).parent().siblings().children().find("option:checked").append('<option data-id="'+4+'" >'+'飞机4'+'</option>');
                      //secondSelect.append('<option data-id="'+4+'" >'+'飞机5'+'</option>');
@@ -356,8 +356,8 @@
 						for(var i=0;i<list.length;i++){
 							str += '<option data-id="'+list[i].storeHouseId +'" >'+list[i].storeHouseName+'</option>',
 							suppilerWarehouse.push({
-								"houseId":list[i].store_house_id,
-								"houseName":list[i].store_house_name,
+								"houseId":list[i].storeHouseId,
+								"houseName":list[i].storeHouseName,
 								"houseAddress":list[i].address
 							})
 						};
@@ -371,14 +371,16 @@
 				}
 			});
 
-
+	// $("#goodsWarehouse-address-in").text("1134");
+	document.getElementById("goodsWarehouse-address-in").innerHTML="54123";
  //监听交货选择窗口，增添商品类型列表信息
             $("#cells").change(function() {
-                 var wareHouseId = $(this).find("option:checked").attr("data-id");
+                 var wareHouseId = $(this).find("option:selected").attr("data-id");
                    for(var i =0; i < suppilerWarehouse.length; i++){
              	   	  console.log(wareHouseId);
              	   	  if (wareHouseId.toString() == suppilerWarehouse[i].houseId){
-             	   	  	document.getElementById("goodsWarehouse-address-in").innerHTML=suppilerWarehouse[i].houseAddress;
+             	   	  	$("#goodsWarehouse-address-in").text(suppilerWarehouse[i].houseAddress);
+             	   	  	$("#goodsWarehouse-address-in").show();
              	   	  }
              	   }
 
@@ -452,7 +454,7 @@
 
           //首框展示
           $("#productTypeFirst").change(function() {
-          	     var productTypeId = $(this).find("option:checked").attr("data-id");
+          	     var productTypeId = $(this).find("option:selected").attr("data-id");
                  getProductNameList(productTypeId);
             });
 
@@ -550,28 +552,28 @@
            }
 
 			submitBtn.click(function(){
-    //             var isError = 0 ;
-				// if($('#cells').val()=='请选择交货仓库'){
-				// 	theCommonFn.alertWin('请选择交货仓库');
-				// 	return;
-				// }else{
-				// 	$('.good-wrap').find('input').each(function(i,item){
-				// 		if(!$(this).val()){
-				// 			theCommonFn.alertWin('请填写完整');
-				// 			isError = 1;
-				// 			return;
-				// 		}
-				// 	})
-				// };
+                var isError = 0 ;
+				if($('#cells').val()=='请选择交货仓库'){
+					theCommonFn.alertWin('请选择交货仓库');
+					return;
+				}else{
+					$('.good-wrap').find('input').each(function(i,item){
+						if(!$(this).val()){
+							theCommonFn.alertWin('请填写完整');
+							isError = 1;
+							return;
+						}
+					})
+				};
 
-	   //          if(theDeal.hasClass('dealno')){
-				// 			theCommonFn.alertWin('您未同意储存协议');
-				// 			return;
-				// }
+	            if(theDeal.hasClass('dealno')){
+							theCommonFn.alertWin('您未同意储存协议');
+							return;
+				}
 									
-    //             if(isError == '1'){
-    //             	return;
-    //             }
+                if(isError == '1'){
+                	return;
+                }
 
                 var product=[],theData;
                 for(var i=0;i<$('.good-wrap').find('.goods-box').length;i++){

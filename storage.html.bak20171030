@@ -124,7 +124,7 @@
 			</div>
 			
 		</div>
-	 <div>
+	    <div>
 				<div class="goodsWarehouse-address-in" id = "goodsWarehouse-address-in">		
 				</div>
 	  </div>
@@ -298,7 +298,7 @@
 	    <div class="submit" id="submit">提交</div>
 		
 <script>
-		//alert(window.location);
+		alert(window.location);
 		var add = $('.goods-add'),
 		    foodWrap = $('.good-wrap'),
 		    box = $('.goods-box'),
@@ -307,15 +307,6 @@
 		    //loginId = theCommonFn.getLoginIdByUrl(); 
 		    submitBtn = $('#submit');
 		    suppilerWarehouse=[];  //仓库地址
-	
-	var mtn = getUrlParam('mtn');
-	var loginId = getUrlParam('loginId');
-	var fromType = 2;//getUrlParam('fromType');
-	var mobile = true;//getUrlParam('mobile');
-	var buildID = getUrlParam('buildID');
-	var loc = getUrlParam('loc');
-	var versionID = getUrlParam('versionID');
-	var _vt = getUrlParam('_vt');
 
 		//时间控件配置
 		var config = {
@@ -344,11 +335,10 @@
 				$(theID).mdatetimer(config);
 				$("select").change(function() {
 				      var firstSelect=$(this);
-				      var productTypeId = $(this).find("option:selected").attr("data-id");
+				      var productTypeId = $(this).find("option:checked").attr("data-id");
 				      var secondSelect=firstSelect.parent().siblings().children(); //产品名字选择框
-              var secondSelectParent = $(this).parent().siblings().find("option");//产品名字框上级属性，用来清除使用
-              var selcetId = firstSelect.attr("id");
-              
+                      var secondSelectParent = $(this).parent().siblings().find("option");//产品名字框上级属性，用来清除使用
+                      var selcetId = firstSelect.attr("id");  
               if(selcetId=="productType"){
               		getProductNameListNext(secondSelect,productTypeId,secondSelectParent);
               }
@@ -368,7 +358,7 @@
 						$(this).removeClass('dealyes').addClass('dealno');
 				}			
 		});
-		
+			
 		//获取仓库列表——初始
 		$.ajax({
 				type:"post",
@@ -381,7 +371,7 @@
 						mobile:mobile,
 						buildID:buildID,
 						loc:loc,
-						_vt:_vt,
+						//vt:_vt,
 						versionID:versionID
 				},
 				
@@ -389,7 +379,8 @@
 					//theCommonFn.waiting();
 				},
 				
-				success:function(rep){						
+				success:function(rep){
+						alert(rep);
 						var reps;
 						try{
 								reps = JSON.parse(rep);		
@@ -419,7 +410,7 @@
 
  		//首框展示
     $("#productTypeFirst").change(function() {
-  	    var productTypeId = $(this).find("option:selected").attr("data-id");
+  	    var productTypeId = $(this).find("option:checked").attr("data-id");
         getProductNameList(productTypeId);
     });
 
@@ -539,7 +530,7 @@
 						mobile:mobile,
 						buildID:buildID,
 						loc:loc,
-						_vt:_vt,
+						//_vt:_vt,
 						versionID:versionID
 				},
 				
@@ -574,7 +565,7 @@
 			
     //监听仓库选择窗口，插入地址信息
     $("#cells").change(function() {
-        var address = $(this).find("option:selected").attr("address");
+         var address = $(this).find("option:checked").attr("address");
          if(address==null)address="";   
          $("#goodsWarehouse-address-in").text(address);
          $("#goodsWarehouse-address-in").show();
@@ -589,7 +580,7 @@
     		var select_title;
     		$('.good-wrap').find('select').each(function(i,item){
 						select_title = $(this).eq(0).val();
-						var selectValue = $(this).find("option:selected").attr("data-id");
+						var selectValue = $(this).find("option:checked").attr("data-id");
 						if(selectValue==null){
 								isError = 1;
 								return false;
@@ -600,7 +591,7 @@
 	        	return;
         }
         
-    		var storeHouseId = $('#cells').find("option:selected").attr("data-id");
+    		var storeHouseId = $('#cells').find("option:checked").attr("data-id");
 				if(storeHouseId==null){
 						theCommonFn.alertWin('请选择交货仓库');
 						return;
