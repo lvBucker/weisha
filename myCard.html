@@ -212,8 +212,13 @@
 												'<a href="./myBuyonsb.html?financeId=' + financeId + '&type=' + data.type + '" class="list-detal">' +
 													'<ul>' +
 														'<li>' + number + '</li>' +
-														'<li>' + applytime + '</li>' +
-														'<li>' + totalmoney + '</li>';
+														'<li>' + applytime + '</li>';
+									//存储
+									if (type == 4) {
+										li = li + '<li>--</li>';
+									} else {
+										li = li + '<li>' + totalmoney + '</li>';
+									}
 									if (reviewtype == 1) {
 										li = li + '<li>待审核</li>';
 									} else if (reviewtype == 2) {
