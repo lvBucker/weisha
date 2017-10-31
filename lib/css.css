@@ -4,6 +4,12 @@
 	/*margin-top: 0.2rem;*/
 	padding: 0.36rem 0.42rem 0 0.42rem;
 }
+.cell>div2{
+	overflow: hidden;
+	margin-bottom: 0.34rem;
+	height: 0.68rem;
+	line-height: 0.68rem;
+}
 .cell>div{
 	overflow: hidden;
 	margin-bottom: 0.34rem;

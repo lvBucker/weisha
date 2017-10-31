@@ -250,8 +250,8 @@ text-decoration:none;
 			<div class="info-currency">
 				<div>币种</div>
 				<div class="info-currency-select">
-					<select>
-						<option>美元</option>
+					<select id ="currencyCells">
+						<option data-id= '1'>美元</option>
 						<!--<option>1</option>
 						<option>2</option>
 						<option>3</option>-->
@@ -538,8 +538,8 @@ text-decoration:none;
 				<div class="other-ir-select">
 					<select id = "creditCard">
 						<option></option>
-						<option>1</option>
-						<option>2</option>
+						<option data-id='1'>1</option>
+						<option data-id='2'>2</option>
 						<option>3</option>
 					</select>
 				</div>
@@ -1191,21 +1191,62 @@ text-decoration:none;
             // } 
 
             function submitTest(){
+                  var product =[];
+                  var finance_daikai_msg=[];
+                  var suppilerid = localStorage.getItem('weisha_supplierId');
+                  var suppliername = localStorage.getItem('weisha_supplierName');
+                  var currency = $('#currencyCells').find("option:selected").attr("data-id");
+                  var storeHouse_Id  = $('#portCells').find("option:selected").attr("data-id");  
+                  var buyer = $('#buyerCells').find("option:selected").attr("data-id");
+
+                  for(var i=0;i<$('.good-wrap').find('.goods-box').length;i++){
+					var info = $('.good-wrap').find('.goods-box').eq(i);
+                    console.log("hi:"+info.find('#totalPrice').html());  //$(info.find('#totalPrice')[0]).val()
+					product.push({
+                            "unitprice":$.trim(info.find('.goods-price-in input').val()), 
+                            "weight":$.trim(info.find('.goods-total-in input').val()),
+                            "productTypeName":$.trim(info.find('.goods-commodity-select-type select').val()),
+                            "productClassifyId":info.find("option:selected").attr("data-id"),
+                            "shipment":info.find('#picktime').val(),
+                            "cabinet":$.trim(info.find('.goods-num-in input').val()),
+                            "productname":$.trim(info.find('.goods-commodity-select-name select').val())
+					})
+					console.log(product);
+				};
+
+				finance_daikai_msg.push({
+		            "Uu": $('.other').find('.other-u div input').val(),
+		            "thin": $('.other').find('.other-thin div input').val(),
+		            "neps": $('.other').find('.other-u div input').val(),
+		            "thick": $('.other').find('.other-thick div input').val(),
+                    "csp":$('.other').find('.other-csp div input').val(),
+		            "twist":$('.other').find('.other-twist div input').val(),
+		            "L_C":$('.other').find("option:selected").attr("data-id"),
+		            "before":$('#thepicktime').val(),
+		            "packing":$('.other').find('.other-packing div input').val(),//other-packing-in
+		            "loading_port":$('.other').find('.other-lp div input').val(),
+		            "destination_port":$('.other').find('.other-dp div input').val(),
+		            "advising_bank":$('.other').find('.other-ab div input').val(),
+		            "swift_adress":$('.other').find('.other-sa div input').val(),
+		            //"partial_shipment":"PARTIAL SHIPMENT/前1 后2 ",
+		            // "transhipment":"TRANSHIPMENT/前1 后2",
+		            "expiry_place":$('.other').find('.other-ep div input').val(),
+		            "preparation_period":$('.other').find('.other-prpe div input').val()
+				})
+                 console.log(finance_daikai_msg);
             	$.ajax({
 				type:"post",
-				url:"https://wei.wiyarn.com/actiz/rs/b",
+				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=createCertificate",
 				async:true,
 				data:{
                     _vt:'dlk_weishatest',
-					loginId: 'uy4q4h8n31',
-					mtn: '82cc33cf3b35bda1705428551889c787',
+					loginId: 'u5dd27duw7',
+					mtn: '3ceb3cb2781aec510173a03f3ccf9e30',
 					fromType:'2',
 					mobile:'true',
-					_m:'listStorageHosue',
-					_s:'coop',
-					buildID:'201608071700',
-					versionID:'zh-Hans&versionID=1.0.0',
-					sign:'b92d3f53c061fafcfe8a1041b2cf4baf'
+					versionID:'1.0.0',
+					product:product,
+					finance_daikai_msg:finance_daikai_msg
 				},
 				success:function(rep){
 					var reps;

@@ -194,9 +194,9 @@ text-decoration:none;
 				<div>交货地址</div>
 				  <div class="supplier-addr-in">
 					 <div data-toggle="distpicker">
-					   <select data-province="省"></select>
-					   <select data-city="市"></select>
-					   <select data-district="区"></select>
+					   <select id ="provinceSelect" data-province="省"></select>
+					   <select id ="citySelect" data-city="市"></select>
+					   <select id ="districtSelect" data-district="区"></select>
 					 </div>
 				  </div>
 			   </div>
@@ -490,11 +490,6 @@ text-decoration:none;
 				}
 			});
   
-             // $('input').bind('input propertychange', function() {
-             //      //进行相关操作
-             //      alert("input");
-             //    });
-             
              //交货仓库信息获取-初始
              $.ajax({
 				type:"post",
@@ -532,7 +527,6 @@ text-decoration:none;
 						};
 					// 	$('#cells').append(str);
 					};
-					//console.log('这里是测试！！！：'+ suppilerAddress);
 					$('#goodsWarehouseId').append(str);
 				},
 				error:function(){
@@ -555,30 +549,6 @@ text-decoration:none;
 	            $(this).css("background-color","#FFFFFF");
                });
 
-               // function sendWeight(inputobj){
-               // 	    var goodsWeight = inputobj.value;
-               // //	console.log("newceshi1:"+inputobj.findElement());
-               // 	  // var obj = $(this).parent().getElementById("totalPrice");
-               // 	 //  console.log("newceshi2:"+obj);
-               // 	//  alert("这里：！！"+ $(this).val());
-               //      //alert(goodsWeight);
-               //      var jqueryinputobj = $(inputobj);
-
-               //      var goodsPrice2 = jqueryinputobj.parent().parent().parent().parent().find("#price").val();
-
-               //      // goodsWeight = 
-               //      console.log("test123456!:"+goodsPrice2);
-
-               //    //console.log("test123!:"+jqueryinputobj.parent().parent().parent().parent().find("#totalPrice"));
-               //    jqueryinputobj.closest("div[class~=cell]").find("#totalPrice").html(goodsWeight*goodsPrice2);
-               //     //var abc = jqueryinputobj.closest("div[class~=cell]").find("#totalPrice").html("???");
-               //    //var abc = jqueryinputobj.parent(".goods").find("#totalPrice").innerHTML=goodsPrice*goodsWeight;
-               //     //console.log("test!!:"+inputobj.parentNode.style.background="#000000");
-               //     // if (goodsPrice != null && goodsWeight != null)
-               //     // 	jqueryinputobj.closest("div[class~=cell]").find("#totalPrice").html(goodsPrice*goodsWeight);
-               //       //document.getElementById("totalPrice").innerHTML=goodsPrice*goodsWeight;
-               //   }
-
                 function sendWeight(inputobj){
                	    var goodsWeight = inputobj.value;
                     var jqueryinputobj = $(inputobj);
@@ -592,34 +562,17 @@ text-decoration:none;
                     var goodsWeight = jqueryinputobj.parent().parent().parent().parent().find("#weight").val();
                	    jqueryinputobj.closest("div[class~=cell]").find("#totalPrice").html(goodsWeight*goodsPrice);
                  }
-
-                //  function sendPrice(inputobj){
-               	// goodsPrice = inputobj.value;
-
-               	// var jqueryinputobj = $(inputobj);
-               	// jqueryinputobj.closest("div[class~=cell]").find("#totalPrice").html(goodsWeight*goodsPrice);
-                //    // alert(goodsPrice);
-                //    // document.getElementById("totalPrice").innerHTML=goodsPrice*goodsWeight;
-                //  }
-
-              // $("input").on("click", function() {
-              //     //test($(this).attr("name"));
-              //     //do something here
-              //      console.log("succ");
-              //   });
    
              //监听仓库选择
              $("#goodsWarehouseId").change(function() {
              	var wareHouseId = $(this).find("option:selected").attr("data-id");
-             	//var wareHouseId = 123;
-             	alert(wareHouseId);
              	   for(var i =0; i < suppilerWarehouse.length; i++){
              	   	  console.log(wareHouseId);
              	   	  if (wareHouseId.toString() == suppilerWarehouse[i].houseId){
              	   	  	//alert(suppilerWarehouse[i].houseAddress);
              	   	  	$("#goodsWarehouse-address-in").text(suppilerWarehouse[i].houseAddress);
              	   	  	$("#goodsWarehouse-address-in").show();
-             	   	  }
+             	       }
              	   }
              });
 
@@ -632,7 +585,7 @@ text-decoration:none;
              	   	  	$("#supplier-address-in").show();
                  	}
                 }
-	         $.ajax({
+	          $.ajax({
 				type:"post",
 				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductType",
 				async:true,
@@ -798,84 +751,74 @@ text-decoration:none;
            }
 
            submitBtn.click(function(){
-             //没填的提醒别人填写
-    //             var isError = 0 ;
-				// if($('#cells').val()=='请选择供应商'){
-				// 	theCommonFn.alertWin('请选择供应商');
-				// 	return;
-				// }else{
-				// 	$('.good-wrap').find('input').each(function(i,item){
-				// 		if(!$(this).val()){
-				// 			theCommonFn.alertWin('请填写完整');
-				// 			isError = 1;
-				// 			return;
-				// 		}
-				// 	})
-				// };
-    //             if(isError == '1'){
-    //             	return;
-    //             }
-
- //  没填的提醒别人填写
-    		var isError = 0 ;
+ // //  没填的提醒别人填写
+ //    		var isError = 0 ;
     		
-    		var select_title;
-    		$('.good-wrap').find('select').each(function(i,item){
-						select_title = $(this).eq(0).val();
-						var selectValue = $(this).find("option:selected").attr("data-id");
-						if(selectValue==null){
-								isError = 1;
-								return false;
-						}
-				})
-    		if(isError == 1){
-	        	theCommonFn.alertWin("请选择 '"+select_title+"'");
-	        	return;
-        }
+ //    		var select_title;
+ //    		$('.good-wrap').find('select').each(function(i,item){
+	// 					select_title = $(this).eq(0).val();
+	// 					var selectValue = $(this).find("option:selected").attr("data-id");
+	// 					if(selectValue==null){
+	// 							isError = 1;
+	// 							return false;
+	// 					}
+	// 			})
+ //    		if(isError == 1){
+	//         	theCommonFn.alertWin("请选择 '"+select_title+"'");
+	//         	return;
+ //        }
         
-    		var storeHouseId = $('#cells').find("option:selected").attr("data-id");
-				if(storeHouseId==null){
-						theCommonFn.alertWin('请选择交货仓库');
-						return;
-				}
+ //    		var storeHouseId = $('#cells').find("option:selected").attr("data-id");
+	// 			if(storeHouseId==null){
+	// 					theCommonFn.alertWin('请选择交货仓库');
+	// 					return;
+	// 			}
 				
-    		var node_title;
-    		$('.good-wrap').find('input').each(function(i,item){
-						if(!$(this).val()){
-								node_title = $(this).parent().prev().text();
-								isError = 1;
-								return false;
-						}
-				})
+ //    		var node_title;
+ //    		$('.good-wrap').find('input').each(function(i,item){
+	// 					if(!$(this).val()){
+	// 							node_title = $(this).parent().prev().text();
+	// 							isError = 1;
+	// 							return false;
+	// 					}
+	// 			})
 				
-				if(isError == 1){
-	        	//theCommonFn.alertWin("请填写 '"+node_title+"'");
-	        	theCommonFn.alertWin("请填写完整");
-	        	return;
-        }
+	// 			if(isError == 1){
+	//         	//theCommonFn.alertWin("请填写 '"+node_title+"'");
+	//         	theCommonFn.alertWin("请填写完整");
+	//         	return;
+ //                }
 				
-				if(theDeal.hasClass('dealno')){
-						theCommonFn.alertWin("您未同意 '代购服务协议'");
-						isError = 1;
-						return;
-				}
+	// 			if(theDeal.hasClass('dealno')){
+	// 					theCommonFn.alertWin("您未同意 '代购服务协议'");
+	// 					isError = 1;
+	// 					return;
+	// 			}
 				
-        if(isError == '1'){
-        	return;
-        }
+ //        if(isError == '1'){
+ //        	return;
+ //        }
 	        var kk = 0;
            	var product =[];
+            var suppilerId = $('#cells').find("option:selected").attr("data-id");
+            var suppliername = $('#cells').find("option:selected").val();
+            var supplieradress = $('#supplier-address-in').html();
+            var province = $('#provinceSelect').find("option:selected").val();
+            var city = $('#citySelect').find("option:selected").val();
+            var area = $('#districtSelect').find("option:selected").val();
+            var storeHouse_Id = $('#goodsWarehouseId').find("option:selected").attr("data-id");
+            var jh_time = $('#picktime').val();
+ 
            	for(var i=0;i<$('.good-wrap').find('.goods-box').length;i++){
 					// var info3 =  $("#test").val();//可以的
-
 					var info = $('.good-wrap').find('.goods-box').eq(i);
 					//console.log(info.find('#totalPrice')[0]);//correct
 					//console.log(info.find('#totalPrice')[0].val());//correct
                     console.log("hi:"+info.find('#totalPrice').html());  //$(info.find('#totalPrice')[0]).val()
 					product.push({
-							"productClassifyId":info.find("option:checked").attr("data-id"),
+							"productClassifyId":info.find("option:selected").attr("data-id"),
 							"productTypeName":$.trim(info.find('.goods-info-select-type select').val()),
-							"productid":info.find('#productNamesFirst').find("option:checked").attr("data-id"),
+							"productid":info.find('#productNamesFirst').find("option:selected").attr("data-id"),
 							"productname":$.trim(info.find('.goods-info-select-name select').val()),
 							"goods_num":$.trim(info.find('.goods-num input').val()),
 							"goods-weight":$.trim(info.find('.goods-weight input').val()), 
@@ -897,26 +840,41 @@ text-decoration:none;
 				            data:{
                               _vt:'dlk_weishatest',
 					          loginId: loginId,
+					          suppilerid:suppilerId,
+                              suppliername:suppliername,
+                              supplieradress:supplieradress,
+					          national:1,
+					          province:province,
+					          city:city,
+					          area:area,
+					          currency:2,
+					          unitId:1,
+					          storeHouse_Id:storeHouse_Id,
 					          mtn: mtn,
-					          fromType:'2',
+					          fromType:fromType,
 					          mobile:mobile,
 					          buildID:buildID,
 					          versionID:versionID,
+					          jh_time:jh_time,
 					          sign:'b92d3f53c061fafcfe8a1041b2cf4baf',
 					          loc:loc,
-					          junit:'元/吨',
-					          suppliername:'新疆利泰丝路投资有限公司'
-
-					// supplier_id:suppilerId,
-     //                productTypeId:productTypeIdResult
+					          djunit:'元/吨',
 				            },
 				            success:function(rep){
-					       //theCommonFn.alertWin('提交成功');
-					       //theCommonFn.windowPrompts();
-					       $("#result-success").show();
-					      // console.log("zoudoazhelile");
-								theCommonFn.delay2('3000');
-								theCommonFn.waitAndClosePrompts('1','3000');
+                                var reps;
+					            try{
+					                reps = JSON.parse(rep);		
+				                 }catch(e){				
+					             };
+						        if(reps.result){
+						            $("#result-success").show();
+					                theCommonFn.delay2('3000');
+						            theCommonFn.waitAndClosePrompts('1','7000');
+						            theCommonFn.delay2('5000');
+					            }else{
+						            $("#result-error").show();
+						            setTimeout("$('#result-error').hide();",3000);
+					            } 
 				        }
 				})
            });
