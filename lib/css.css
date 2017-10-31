@@ -284,3 +284,30 @@
 /*#dialog { 
 display:none; 
 } */
+.head-title{
+	height: 1rem;
+	line-height: 1rem;
+	background: #ffffff;
+	text-align: center;
+	position: relative;
+}
+.head-title .back{
+	position: absolute;
+	left: .5rem;
+	top:0;
+	font-size: 0.35rem;
+	vertical-align: middle;
+	color: #cccccc;
+}
+.head-title .back i{
+	display: inline-block;
+	width: .3rem;
+	height: .3rem;
+	background: url("../images/back.png") no-repeat;
+	background-size:100% 100%;
+	margin-right: .1rem;
+	vertical-align: middle;
+}
+.head-title .tit{
+	font-size: 0.4rem;
+}
