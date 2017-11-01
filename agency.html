@@ -204,6 +204,7 @@ text-decoration:none;
 		<script src="lib/zepto.mdatetimer.js"></script>
 		<script type="text/javascript" src="lib/YMDClass.js" ></script>
 		<script type="text/javascript" src="lib/succorfai.js" ></script>
+		<script type="text/javascript" src="lib/arg-1.3.min.js"></script>
 	</head>
 	<body>
 		 <!-- <div id="fullbg"></div> 
@@ -628,6 +629,13 @@ text-decoration:none;
 			    box = $('.goods-box'),
 			    theDeal = $('.deal>span').eq(0),
 			    allowed = $('.allowed');
+			     mtn = theCommonFn.getMtnByUrl();
+			    loginId = theCommonFn.getLoginIdByUrl(); 
+			    fromType = theCommonFn.getFromTypeByUrl();
+			    mobile = theCommonFn.getMobileByUrl();
+                buildID = theCommonFn.getBuildIdByUrl();	
+                loc = theCommonFn.getLocByUrl();
+                versionID = theCommonFn.getVersionIDByUrl();
 
                //Buyer信息获取-初始
              $.ajax({
@@ -636,13 +644,13 @@ text-decoration:none;
 				async:true,
 				data:{
 					_vt:'dlk_weishatest',
-					loginId: 'uy4q4h8n31',
-					mtn: '82cc33cf3b35bda1705428551889c787',
-					//fromType:fromType,
-					mobile:'true',
-					buildID:'201608071700',
-					loc:'zh-Hans',
-					versionID:'zh-Hans&versionID=1.0.0'
+					loginId: loginId,
+					mtn: mtn,
+					fromType:fromType,
+					mobile:mobile,
+					buildID:buildID,
+					loc:loc,
+					versionID:versionID
 				},
 				beforeSend:function(){
 					//theCommonFn.waiting();
@@ -686,13 +694,13 @@ text-decoration:none;
 				async:true,
 				data:{
 					_vt:'dlk_weishatest',
-					loginId: 'uy4q4h8n31',
-					mtn: '82cc33cf3b35bda1705428551889c787',
-					//fromType:fromType,
-					mobile:'true',
-					buildID:'201608071700',
-					loc:'zh-Hans',
-					versionID:'zh-Hans&versionID=1.0.0'
+					loginId: loginId,
+					mtn: mtn,
+					fromType:fromType,
+					mobile:mobile,
+					buildID:buildID,
+					loc:loc,
+					versionID:versionID
 				},
 				beforeSend:function(){
 					//theCommonFn.waiting();
@@ -789,13 +797,13 @@ text-decoration:none;
 				async:true,
 				data:{
 					_vt:'dlk_weishatest',
-					loginId: 'uy4q4h8n31',
-					mtn: '82cc33cf3b35bda1705428551889c787',
-					//fromType:fromType,
-					mobile:'true',
-					buildID:'201608071700',
-					loc:'zh-Hans',
-					versionID:'zh-Hans&versionID=1.0.0'
+					loginId: loginId,
+					mtn: mtn,
+					fromType:fromType,
+					mobile:mobile,
+					buildID:buildID,
+					loc:loc,
+					versionID:versionID
 				},
 				beforeSend:function(){
 					//theCommonFn.waiting();
@@ -843,13 +851,13 @@ text-decoration:none;
 				async:true,
 				data:{
 					_vt:'dlk_weishatest',
-					loginId: 'uy4q4h8n31',
-					mtn: '82cc33cf3b35bda1705428551889c787',
-					//fromType:fromType,
-					mobile:'true',
-					buildID:'201608071700',
-					loc:'zh-Hans',
-					versionID:'zh-Hans&versionID=1.0.0'
+					loginId: loginId,
+					mtn: mtn,
+					fromType:fromType,
+					mobile:mobile,
+					buildID:buildID,
+					loc:loc,
+					versionID:versionID
 				},
 				beforeSend:function(){
 					//theCommonFn.waiting();
@@ -942,14 +950,14 @@ text-decoration:none;
 				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductType2Zy",
 				async:true,
 				data:{
-                    _vt:'dlk_weishatest',
-					loginId: 'uy4q4h8n31',
-					mtn: '82cc33cf3b35bda1705428551889c787',
-					//fromType:fromType,
-					mobile:'true',
-					buildID:'201608071700',
-					loc:'zh-Hans',
-					versionID:'zh-Hans&versionID=1.0.0',
+                   _vt:'dlk_weishatest',
+					loginId: loginId,
+					mtn: mtn,
+					fromType:fromType,
+					mobile:mobile,
+					buildID:buildID,
+					loc:loc,
+					versionID:versionID,
 					supplier_id:suppilerId
 				},
 				beforeSend:function(){
@@ -1024,14 +1032,15 @@ text-decoration:none;
 				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductByTypeId",
 				async:true,
 				data:{
-					 _vt:'dlk_weishatest',
-					loginId: 'uy4q4h8n31',
-					mtn: '82cc33cf3b35bda1705428551889c787',
-					fromType:2,
-					mobile:'true',
-					buildID:'201608071700',
-					loc:'zh-Hans',
-					versionID:'zh-Hans&versionID=1.0.0',
+
+					_vt:'dlk_weishatest',
+					loginId: loginId,
+					mtn: mtn,
+					fromType:fromType,
+					mobile:mobile,
+					buildID:buildID,
+					loc:loc,
+					versionID:versionID,
 					productTypeId:productTypeId,
 					supplier_id:suppilerId
 				},
@@ -1074,14 +1083,15 @@ text-decoration:none;
 				     url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductByTypeId",
 				      async:true,
 				 data:{
-                    _vt:'dlk_weishatest',
-					loginId: 'uy4q4h8n31',
-					mtn: '82cc33cf3b35bda1705428551889c787',
-					fromType:2,
-					mobile:'true',
-					buildID:'201608071700',
-					loc:'zh-Hans',
-					versionID:'zh-Hans&versionID=1.0.0',
+
+				 	_vt:'dlk_weishatest',
+					loginId: loginId,
+					mtn: mtn,
+					fromType:fromType,
+					mobile:mobile,
+					buildID:buildID,
+					loc:loc,
+					versionID:versionID,
 					productTypeId:productTypeId,
 					supplier_id:suppilerId
 				},
@@ -1239,12 +1249,16 @@ text-decoration:none;
 				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=createCertificate",
 				async:true,
 				data:{
-                    _vt:'dlk_weishatest',
-					loginId: 'u5dd27duw7',
-					mtn: '3ceb3cb2781aec510173a03f3ccf9e30',
-					fromType:'2',
-					mobile:'true',
-					versionID:'1.0.0',
+
+
+					_vt:'dlk_weishatest',
+					loginId: loginId,
+					mtn: mtn,
+					fromType:fromType,
+					mobile:mobile,
+					buildID:buildID,
+					loc:loc,
+					versionID:versionID,
 					product:product,
 					finance_daikai_msg:finance_daikai_msg
 				},
@@ -1267,7 +1281,6 @@ text-decoration:none;
 				error:function(){
 					theCommonFn.alertWin('服务器出错');
 					theCommonFn.waiting('hide');
-					//
 				}
 			})
             }
