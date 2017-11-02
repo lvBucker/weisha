@@ -751,53 +751,53 @@ text-decoration:none;
            }
 
            submitBtn.click(function(){
- // //  没填的提醒别人填写
- //    		var isError = 0 ;
+ //  没填的提醒别人填写
+    		var isError = 0 ;
     		
- //    		var select_title;
- //    		$('.good-wrap').find('select').each(function(i,item){
-	// 					select_title = $(this).eq(0).val();
-	// 					var selectValue = $(this).find("option:selected").attr("data-id");
-	// 					if(selectValue==null){
-	// 							isError = 1;
-	// 							return false;
-	// 					}
-	// 			})
- //    		if(isError == 1){
-	//         	theCommonFn.alertWin("请选择 '"+select_title+"'");
-	//         	return;
- //        }
+    		var select_title;
+    		$('.good-wrap').find('select').each(function(i,item){
+						select_title = $(this).eq(0).val();
+						var selectValue = $(this).find("option:selected").attr("data-id");
+						if(selectValue==null){
+								isError = 1;
+								return false;
+						}
+				})
+    		if(isError == 1){
+	        	theCommonFn.alertWin("请选择 '"+select_title+"'");
+	        	return;
+        }
         
- //    		var storeHouseId = $('#cells').find("option:selected").attr("data-id");
-	// 			if(storeHouseId==null){
-	// 					theCommonFn.alertWin('请选择交货仓库');
-	// 					return;
-	// 			}
+    		var storeHouseId = $('#cells').find("option:selected").attr("data-id");
+				if(storeHouseId==null){
+						theCommonFn.alertWin('请选择交货仓库');
+						return;
+				}
 				
- //    		var node_title;
- //    		$('.good-wrap').find('input').each(function(i,item){
-	// 					if(!$(this).val()){
-	// 							node_title = $(this).parent().prev().text();
-	// 							isError = 1;
-	// 							return false;
-	// 					}
-	// 			})
+    		var node_title;
+    		$('.good-wrap').find('input').each(function(i,item){
+						if(!$(this).val()){
+								node_title = $(this).parent().prev().text();
+								isError = 1;
+								return false;
+						}
+				})
 				
-	// 			if(isError == 1){
-	//         	//theCommonFn.alertWin("请填写 '"+node_title+"'");
-	//         	theCommonFn.alertWin("请填写完整");
-	//         	return;
- //                }
+				if(isError == 1){
+	        	//theCommonFn.alertWin("请填写 '"+node_title+"'");
+	        	theCommonFn.alertWin("请填写完整");
+	        	return;
+                }
 				
-	// 			if(theDeal.hasClass('dealno')){
-	// 					theCommonFn.alertWin("您未同意 '代购服务协议'");
-	// 					isError = 1;
-	// 					return;
-	// 			}
+				if(theDeal.hasClass('dealno')){
+						theCommonFn.alertWin("您未同意 '代购服务协议'");
+						isError = 1;
+						return;
+				}
 				
- //        if(isError == '1'){
- //        	return;
- //        }
+        if(isError == '1'){
+        	return;
+        }
 	        var kk = 0;
            	var product =[];
             var suppilerId = $('#cells').find("option:selected").attr("data-id");
