@@ -94,47 +94,19 @@
 		</header>
 		<div class="list">
 			<ul id="cardList">
-				<!-- <li>
-					<a href="" class="list-detal">
-						<ul>
-							<li>RZSQ201709090000</li>
-							<li>2017-02-02</li>
-							<li>47841</li>
-							<li>待审核</li>
-						</ul>
-					</a>					
-				</li>
-				<li>
-					<a href="" class="list-detal">
-						<ul>
-							<li>RZSQ201709090000</li>
-							<li>2017-02-02</li>
-							<li>47841</li>
-							<li class="status-no">不通过</li>
-						</ul>
-					</a>					
-				</li>
-				<li>
-					<a href="" class="list-detal">
-						<ul>
-							<li>RZSQ201709090000</li>
-							<li>2017-02-02</li>
-							<li>47841</li>
-							<li class="status-ing">开证中</li>
-						</ul>
-					</a>					
-				</li> -->
+				
 			</ul>
 		</div>
 
 		<script type="text/javascript">
-
 			//登陆用户名
 			var loginId = theCommonFn.getLoginIdByUrl();
 			//初始话加载开证列表
 			$(function(){
 				queryMyCard();
-			})
+			});
+
+
 			// type融资类型（1.代购。2.待开证。3.质押。4.存储）
 			var type = Arg('type');
 			if (type == null || type == undefined) {
