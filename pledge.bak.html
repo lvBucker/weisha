@@ -11,21 +11,21 @@
 				background: #f3f5fe;
 				font-size: 0.24rem;
 			}		
-			.goodsWarehouse-address{
-				 height:100%; !important;
-				 width: 100%;
-				 background: #FFFFFF;
-			}	
+			.goods-box {
+                border-top: 0rem ;
+             }
+             .addr {
+                border-top: 0.2rem solid #f3f5fe ;
+             }
 			.goodsWarehouse-address-in{
-				width: 100%;
-				height:100%; !important;
-				margin-top: 3px;
-				padding-left: 0.3rem;
-				padding-right: 0.3rem;
+				width: 100% !important;
+				margin-top: 3px !important;
+				padding-left: 0.3rem !important;
+				padding-right: 0.3rem !important;
 				background: #FFFFFF;
 				word-wrap: break-word;
 				display:none;
-			}	
+			}
 			header{
 				width: 100%;
 				height: 0.68rem;
@@ -118,7 +118,7 @@
 		</div>
 
 		<header>注：以下商品单价及总金额为含税17%。</header>
-	   <!--  <div class="addr cell">
+	    <!--<div class="addr cell">
 			<div class="addr-choose">
 				<div>意向交货地址</div>
 				<div class="addr-choose-in">
@@ -137,40 +137,44 @@
 					</select>
 				</div>
 			</div>
-		</div> -->
-		<!-- <div>
+		</div>
+		<div>
 			<div class="goodsWarehouse-address-in" id = "goodsWarehouse-address-in">		
 			</div>
-	    </div> -->
+	    </div>-->
 		<div class="goods">
 			<div class="goods-model" style="display: none;">
-				<div class="goods-box cell">
+			    <div class="addr cell">
+			        <div class="addr-choose">
+				       <div>意向交货地址</div>
+				       <div class="addr-choose-in">
+					        <div data-toggle="distpicker">
+					            <select data-province="省"></select>
+					            <select data-city="市"></select>
+					            <select data-district="区"></select>
+					        </div>
+				        </div>
+			        </div>
+			        <div class="addr-warehouse">
+				        <div>交货仓库</div>
+				        <div class="addr-warehouse-in">
+					        <select id="cells">
+						        <option>请选择交货仓库</option>
+					        </select>
+				        </div>
+			        </div>
+		        </div>
+		        <div>
+			         <div class="goodsWarehouse-address-in" id = "goodsWarehouse-address-in">		
+			         </div>
+	            </div>
 
-                    <div class="addr-choose">
-				<div>意向交货地址</div>
-				<div class="addr-choose-in">
-					<div data-toggle="distpicker">
-					  <select data-province="省"></select>
-					  <select data-city="市"></select>
-					  <select data-district="区"></select>
-					</div>
-				</div>
-			</div>
-			<div class="addr-warehouse">
-				<div>交货仓库</div>
-				<div class="addr-warehouse-in">
-					<select class = "cellsSelect"id="cells">
-						<option>请选择交货仓库</option>
-					</select>
-				</div>
-			</div>
-             <div2 class="goodsWarehouse-address-in" id = "goodsWarehouse-address-in">		
-			</div2>
+				<div class="goods-box cell">
 					<div class="goods-info">
 						<div>质押商品</div>
 						<div class="goods-info-select">
 							<div class="goods-info-select-type">
-								<select class = "productTypeSelect"id = "productType">
+								<select id = "productType">
 									<option>商品类型</option>
 								</select>
 							</div>
@@ -223,28 +227,31 @@
 			</div>
 
 			<div class="good-wrap">
+			<!-- 	<div class="goods-box cell"> -->
+				<div class="addr cell">
+			       <div class="addr-choose">
+				        <div>意向交货地址</div>
+				        <div class="addr-choose-in">
+					        <div data-toggle="distpicker">
+					           <select data-province="省"></select>
+					           <select data-city="市"></select>
+					           <select data-district="区"></select>
+					        </div>
+				        </div>
+		         	</div>
+			        <div class="addr-warehouse">
+				        <div>交货仓库</div>
+				        <div class="addr-warehouse-in">
+					        <select id="cellsFirst">
+						        <option>请选择交货仓库</option>
+					        </select>
+				        </div>
+			        </div>
+		        </div>
+		        
 				<div class="goods-box cell">
 
-                    <div class="addr-choose">
-				<div>意向交货地址</div>
-				<div class="addr-choose-in">
-					<div data-toggle="distpicker">
-					  <select data-province="省"></select>
-					  <select data-city="市"></select>
-					  <select data-district="区"></select>
-					</div>
-				</div>
-			</div>
-			<div class="addr-warehouse">
-				<div>交货仓库</div>
-				<div class="addr-warehouse-in">
-					<select id="cellsFirst">
-						<option>请选择交货仓库</option>
-					</select>
-				</div>
-			</div>
-<div2 class="goodsWarehouse-address-in" id = "goodsWarehouse-address-in-first">		
-			</div2>
+
 					<div class="goods-info">
 						<div>质押商品</div>
 						<div class="goods-info-select">
@@ -343,63 +350,11 @@
  			add.click(function(){
 				var theModel = $('.goods-model').children().clone();
 				theModel.appendTo(foodWrap);
-				$(".cellsSelect").change(function() {
-            	 var wareHouseId = $(this).find("option:selected").attr("data-id");
-                   for(var i =0; i < suppilerWarehouse.length; i++){
-             	   	  console.log(wareHouseId);
-             	   	  if (wareHouseId.toString() == suppilerWarehouse[i].houseId){
-             	   	  	$(this).parent().parent().parent().find("#goodsWarehouse-address-in").text(suppilerWarehouse[i].houseAddress);
-             	   	  	$(this).parent().parent().parent().find("#goodsWarehouse-address-in").show();
-             	   	  }
-             	    }
-                 var info = $(this).parent().parent().parent().find("#productType");
-
-             	    //类型信息列表
-			$.ajax({
-				type:"post",
-				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductType2Zy",
-				async:true,
-				data:{					
-					loginId: loginId,
-					mtn: mtn,
-					// loginId: '82cc33cf3b35bda1705428551889c787',
-					// mtn: 'uy4q4h8n31',
-					fromType:fromType,
-					mobile:mobile,
-					buildID:buildID,
-					loc:loc,
-					versionID:versionID
-				},
-				beforeSend:function(){
-				},
-				success:function(rep){
-					var reps;
-					try{
-						reps = JSON.parse(rep);	
-						//console.log(rep);	
-					}catch(e){
-						//TODO handle the exception
-					};
-					if(reps.result){
-						var str = '',
-						    list = reps.content;
-						for(var i=0;i<list.length;i++){
-							str += '<option data-id="'+list[i].product_type_id +'" >'+list[i].product_type_name+'</option>'
-						};
-						//console.log(str);
-						info.append(str);
-					}
-				},
-				error:function(){
-					theCommonFn.alertWin('服务器出错')
-				}
-			});
-             	   });
-
-                $(".productTypeSelect").change(function() {
+                $("select2").change(function() {
                 	var firstSelect=$(this);  //产品类型选择框
                 	var productTypeId = $(this).find("option:selected").attr("data-id");
                 	var secondSelect=firstSelect.parent().siblings().children(); //产品名字选择框
+                     //alert("zhelishejizhongyao");
                      getProductNameListNext(secondSelect,productTypeId);
                     //console.log("当前窗口为："+ $(this).find("option:selected").attr("data-id"));
                      //console.log("测试窗口为："+ $(this).parent().siblings().children());
@@ -425,52 +380,6 @@
 				}
 			});
 
-			//获取存储仓库列表 -初始
-			$.ajax({
-				type:"post",
-				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listStorageHosue",
-				async:true,
-				data:{
-					loginId: loginId,
-					mtn: mtn,		
-					// loginId: '82cc33cf3b35bda1705428551889c787',
-					// mtn: 'uy4q4h8n31',
-					fromType:fromType,
-					mobile:mobile,
-					buildID:buildID,
-					loc:loc,
-					versionID:versionID
-				},
-				beforeSend:function(){
-				},
-				success:function(rep){
-					var reps;
-					try{
-						reps = JSON.parse(rep);		
-					}catch(e){
-						//TODO handle the exception
-					};
-					if(reps.result){
-						var str = '',
-						    list = reps.content;
-						for(var i=0;i<list.length;i++){
-							str += '<option data-id="'+list[i].storeHouseId +'" >'+list[i].storeHouseName+'</option>',
-							suppilerWarehouse.push({
-								"houseId":list[i].storeHouseId,
-								"houseName":list[i].storeHouseName,
-								"houseAddress":list[i].address
-							})
-						};
-						$('#cellsFirst').append(str);
-					}
-				},
-				error:function(){
-					var str = '<option data-id=1 >中国</option>'
-						$('#cellsFirst').append(str);
-					theCommonFn.alertWin('服务器出错')
-				}
-			});
-
 //获取存储仓库列表 -初始
 			$.ajax({
 				type:"post",
@@ -479,8 +388,6 @@
 				data:{
 					loginId: loginId,
 					mtn: mtn,		
-					// loginId: '82cc33cf3b35bda1705428551889c787',
-					// mtn: 'uy4q4h8n31',
 					fromType:fromType,
 					mobile:mobile,
 					buildID:buildID,
@@ -507,76 +414,25 @@
 								"houseAddress":list[i].address
 							})
 						};
+						$('#cellsFirst').append(str);
 						$('#cells').append(str);
 					}
 				},
 				error:function(){
-					var str = '<option data-id=1 >中国</option>'
-						$('#cells').append(str);
+					// var str = '<option data-id=1 >中国</option>'
+					// 	$('#cells').append(str);
 					theCommonFn.alertWin('服务器出错')
 				}
 			});
-
-
-//监听交货选择窗口，增添商品类型列表信息
-            $("#cellsFirst").change(function() {
-                 var wareHouseId = $(this).find("option:selected").attr("data-id");
-                   for(var i =0; i < suppilerWarehouse.length; i++){
-             	   	  console.log(wareHouseId);
-             	   	  if (wareHouseId.toString() == suppilerWarehouse[i].houseId){
-             	   	  	$("#goodsWarehouse-address-in-first").text(suppilerWarehouse[i].houseAddress);
-             	   	  	$("#goodsWarehouse-address-in-first").show();
-             	   	  }
-             	   }
-
-//商品类型信息列表
-			$.ajax({
-				type:"post",
-				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductType2Zy",
-				async:true,
-				data:{					
-					loginId: loginId,
-					mtn: mtn,
-					// loginId: '82cc33cf3b35bda1705428551889c787',
-					// mtn: 'uy4q4h8n31',
-					fromType:fromType,
-					mobile:mobile,
-					buildID:buildID,
-					loc:loc,
-					versionID:versionID
-				},
-				beforeSend:function(){
-				},
-				success:function(rep){
-					var reps;
-					try{
-						reps = JSON.parse(rep);	
-						//console.log(rep);	
-					}catch(e){
-						//TODO handle the exception
-					};
-					if(reps.result){
-						var str = '',
-						    list = reps.content;
-						for(var i=0;i<list.length;i++){
-							str += '<option data-id="'+list[i].product_type_id +'" >'+list[i].product_type_name+'</option>'
-						};
-						$('#productTypeFirst').append(str);  //首行插入
-						//$('#productType').append(str);       //除了首行之外的其余行插入
-					}
-				},
-				error:function(){
-					theCommonFn.alertWin('服务器出错')
-				}
-			});
-
-            });          
 
 	// $("#goodsWarehouse-address-in").text("1134");
-	//document.getElementById("goodsWarehouse-address-in").innerHTML="54123";
  //监听交货选择窗口，增添商品类型列表信息
+
+ // $("#goodsWarehouse-address-in").text("1134");
+ // //$("#goodsWarehouse-address-in").show();
+
             $("#cells").change(function() {
-            	alert(2);
+            	alert("11111");
                  var wareHouseId = $(this).find("option:selected").attr("data-id");
                    for(var i =0; i < suppilerWarehouse.length; i++){
              	   	  console.log(wareHouseId);
@@ -630,6 +486,60 @@
             });          
 
 
+      $("#cellsFirst").change(function() {
+                 var wareHouseId = $(this).find("option:selected").attr("data-id");
+                   for(var i =0; i < suppilerWarehouse.length; i++){
+             	   	  console.log(wareHouseId);
+             	   	  if (wareHouseId.toString() == suppilerWarehouse[i].houseId){
+             	   	  	$("#goodsWarehouse-address-in-first").text(suppilerWarehouse[i].houseAddress);
+             	   	  	$("#goodsWarehouse-address-in-first").show();
+             	   	  }
+             	   }
+
+//商品类型信息列表
+			$.ajax({
+				type:"post",
+				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductType2Zy",
+				async:true,
+				data:{					
+					loginId: loginId,
+					mtn: mtn,
+					// loginId: '82cc33cf3b35bda1705428551889c787',
+					// mtn: 'uy4q4h8n31',
+					fromType:fromType,
+					mobile:mobile,
+					buildID:buildID,
+					loc:loc,
+					versionID:versionID
+				},
+				beforeSend:function(){
+				},
+				success:function(rep){
+					var reps;
+					try{
+						reps = JSON.parse(rep);	
+						//console.log(rep);	
+					}catch(e){
+						//TODO handle the exception
+					};
+					if(reps.result){
+						var str = '',
+						    list = reps.content;
+						for(var i=0;i<list.length;i++){
+							str += '<option data-id="'+list[i].product_type_id +'" >'+list[i].product_type_name+'</option>'
+						};
+						$('#productTypeFirst').append(str);  //首行插入
+						//$('#productType').append(str);       //除了首行之外的其余行插入
+					}
+				},
+				error:function(){
+					theCommonFn.alertWin('服务器出错')
+				}
+			});
+
+            });          
+
+
                function sendWeight(inputobj){
                	    var goodsWeight = inputobj.value;
                     var jqueryinputobj = $(inputobj);
@@ -656,7 +566,6 @@
 
           //首框展示
           $("#productTypeFirst").change(function() {
-          	alert("12331");
           	     var productTypeId = $(this).find("option:selected").attr("data-id");
                  getProductNameList(productTypeId);
             });
@@ -757,8 +666,8 @@
 			submitBtn.click(function(){
                 var isError = 0 ;
 				if($('#cells').val()=='请选择交货仓库'){
-					// theCommonFn.alertWin('请选择交货仓库');
-					// return;
+					theCommonFn.alertWin('请选择交货仓库');
+					return;
 				}else{
 					$('.good-wrap').find('input').each(function(i,item){
 						if(!$(this).val()){
