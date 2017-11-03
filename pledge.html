@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>质押服务申请</title>
+		<title>代销服务申请</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
 		<link rel="stylesheet" href="lib/all.css" />
 		<link rel="stylesheet" href="lib/css.css" />
@@ -167,7 +167,7 @@
              <div2 class="goodsWarehouse-address-in" id = "goodsWarehouse-address-in">		
 			</div2>
 					<div class="goods-info">
-						<div>质押商品</div>
+						<div>代销商品</div>
 						<div class="goods-info-select">
 							<div class="goods-info-select-type">
 								<select class = "productTypeSelect"id = "productType">
@@ -246,7 +246,7 @@
 <div2 class="goodsWarehouse-address-in" id = "goodsWarehouse-address-in-first">		
 			</div2>
 					<div class="goods-info">
-						<div>质押商品</div>
+						<div>代销商品</div>
 						<div class="goods-info-select">
 							<div class="goods-info-select-type">
 								<select id="productTypeFirst">
@@ -288,6 +288,9 @@
 							<div>$</div>
 						</div>
 					</div>
+
+
+
                     <div class="goods-total">
 						<div>商品总价</div>
 						<div class="goods-total-in goodsin" id = "totalPrice">
@@ -297,7 +300,12 @@
 							<div>元</div>
 						</div>
 					</div>
-
+			<div class="otherpromise">
+				<div>其他约定</div>
+				<div class="otherpromise-in">
+					<input type="text" />
+				</div>
+			</div>		
 
 				</div>
 			</div>
@@ -305,19 +313,18 @@
 				+添加更多商品
 			</div>
 		</div>
-		<div class="otherpromise cell">
+		<!-- <div class="otherpromise cell">
 			<div>
 				<div>其他约定</div>
 				<div class="otherpromise-in">
 					<input type="text" />
 				</div>
-			</div>
-			
-		</div>
+			</div>		
+		</div> -->
 		<div class="deal">
-			<span class="dealno"></span><span>已同意</span><a href="contractZSZY.html">《中实质押合同》</a>
+			<span class="dealno"></span><span>已同意</span><a href="contractZSZY.html">《代销服务协议》</a>
 		</div>
-	    <div class="submit" id="submit">提交</div>
+	    <div class="submit" id="submit">提交申请</div>
 		
 		<script>
 			var add = $('.goods-add'),
@@ -338,7 +345,14 @@
                 alert("mtn："+mtn );
                 alert("loginId："+ loginId );
                 
-			    
+			     //监听input窗口控制颜色变化
+            $('.goods').on('focus','input',function(){
+    		    $(this).css("background-color","#EDEDED");
+            });
+            $('.goods').on('blur','input',function(){
+    		   $(this).css("background-color","#FFFFFF");
+            });
+
          //添加list同时绑定select元素用以监听
  			add.click(function(){
 				var theModel = $('.goods-model').children().clone();
@@ -576,7 +590,6 @@
 	//document.getElementById("goodsWarehouse-address-in").innerHTML="54123";
  //监听交货选择窗口，增添商品类型列表信息
             $("#cells").change(function() {
-            	alert(2);
                  var wareHouseId = $(this).find("option:selected").attr("data-id");
                    for(var i =0; i < suppilerWarehouse.length; i++){
              	   	  console.log(wareHouseId);
@@ -656,7 +669,7 @@
 
           //首框展示
           $("#productTypeFirst").change(function() {
-          	alert("12331");
+          	//alert("12331");
           	     var productTypeId = $(this).find("option:selected").attr("data-id");
                  getProductNameList(productTypeId);
             });
@@ -768,10 +781,18 @@
 						}
 					})
 				};
-
-	            if(theDeal.hasClass('dealno')){
-							theCommonFn.alertWin('您未同意储存协议');
+           
+                $('.good-wrap').find('input').each(function(i,item){
+                    if(!$(this).val()){
+							theCommonFn.alertWin('请填写完整');
+							isError = 1;
 							return;
+						}
+                });
+                
+	            if(theDeal.hasClass('dealno')){
+				    theCommonFn.alertWin('您未同意储存协议');
+				    return;
 				}
 									
                 if(isError == '1'){
