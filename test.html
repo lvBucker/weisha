@@ -81,12 +81,21 @@
 		 <div class="content">
 			<div class="jeitem">
 		        <label class="jelabel">点击图标</label>
-		        <div class="jeinpbox" style="width: 145px;"><input type="text" class="jeinput" id="testico" ></div>
+		        <div class="jeinpbox" style="width: 145px;">
+		        	<input type="text" class="jeinput" id="testico" ></div>
 		        <div class="icons jebtns" onclick="$.jeDate('#testico',{trigger:false,format: 'YYYY-MM-DD hh:mm:ss'})"></div>
 		    </div>
 		</div>
 	</div>
-	
+     
+
+    <button id = 'ldx' onclick="output()">click</button>
+      
+	<script>
+    function output(){
+    	//alert($('#testico').val()) ;
+    	console.log($('#testico').val());
+    }
 </script>
 </body>
 </html>

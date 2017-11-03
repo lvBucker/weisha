@@ -12,7 +12,42 @@
 				background: #f3f5fe;
 				font-size: 0.24rem;
 			}
+            .icons{
+		background: url(./images/date.png) no-repeat;
+		background-size:100% 100%; 
+	}
 
+	.jeinpbox{
+		float: left;
+		width: 3rem;
+		margin-right: 0px;
+		display: inline-block;
+		vertical-align: middle;
+		position: relative;
+	}
+	.jeinput{
+		display: block;
+		width: 100%;
+		padding-left: .1rem; 
+		height: .5rem;
+		line-height: .36rem;
+		border: 1px solid #e6e6e6;
+		background-color: #fff;
+		border-radius: 3px;
+	}
+	.jebtns{
+		width: .5rem;
+		margin-left: 5px; 
+		margin-left: 3px;
+		height: .6rem;
+		line-height: 1;
+		border: 1px solid #e6e6e6;
+		background-color: #fff;
+		border-radius: 3px;
+		background-position:right center;
+		float: left;
+		cursor: pointer;
+	}
 
 #fullbg { 
 background-color:gray; 
@@ -198,10 +233,13 @@ text-decoration:none;
 				margin: 0 0.14rem;
 			}
 		</style>
+		<script type="text/javascript" src="lib/jquery-2.2.4.min.js" ></script>
+		<script type="text/javascript" src="lib/jquery.jedate.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="lib/jedate.css">
 		<script type="text/javascript" src="lib/selfFit.js" ></script>
 		<script src="lib/common.js"></script>
-		<script src="lib/zepto.js"></script>
-		<script src="lib/zepto.mdatetimer.js"></script>
+		<!-- <script src="lib/zepto.js"></script>
+		<script src="lib/zepto.mdatetimer.js"></script> -->
 		<script type="text/javascript" src="lib/YMDClass.js" ></script>
 		<script type="text/javascript" src="lib/succorfai.js" ></script>
 		<script type="text/javascript" src="lib/arg-1.3.min.js"></script>
@@ -361,14 +399,26 @@ text-decoration:none;
 				         <div class="goods-total-in goodsin" id = "totalPrice">		
 				         </div>
 			         </div>
-					<div class="goods-shipment">
+
+					<!-- <div class="goods-shipment">
 						<div>Shipment</div>
 						<div class="goods-total-in">
 							<div>
 								<input type="text" class="picktime" value="" readonly>
 							</div>
 						</div>
+					</div> -->
+						 <div class="goods-shipment">
+						<div>入库时间</div>
+						<div class="rightinput">
+	                      <div class="jewarp content jeitem" onclick="dateSelect(this)" >
+		                     <div class="jeinpbox" style="width: 80%;"><input type="text" class="jeinput" id="testico" readonly></div>
+		                     <div class="icons jebtns" ></div>
+	                       </div>
+						</div>
 					</div>
+
+
 					<div class="goods-delete">删除此商品</div>
 				</div>
 			</div>
@@ -429,14 +479,28 @@ text-decoration:none;
 				         <div class="goods-total-in goodsin" id = "totalPrice">		
 				         </div>
 			         </div>
-					<div class="goods-shipment">
+					<!-- <div class="goods-shipment">
 						<div>Shipment</div>
 						<div class="goods-total-in">
 							<div>
 								<input type="text" class="picktime" id="picktime" value="" readonly>
 							</div>
 						</div>
+					</div> -->
+
+
+					 <div class="goods-shipment">
+						<div>入库时间</div>
+						<div class="rightinput">
+	                      <div class="jewarp content jeitem" onclick="dateSelect(this)" >
+		                     <div class="jeinpbox" style="width: 80%;"><input type="text" class="jeinput" id="testico" readonly></div>
+		                     <div class="icons jebtns" ></div>
+	                       </div>
+						</div>
 					</div>
+
+
+
 				</div>
 			</div>
 			<div class="goods-add">
@@ -551,9 +615,13 @@ text-decoration:none;
 			<div class="other-sign">
 				<div>sign contract before</div>
 				<div class="other-sign-in">
-					<div>
+					<!-- <div>
 						<input type="text" class="picktime" id="thepicktime" value="" readonly>
-					</div>
+					</div> -->
+	                      <div class="jewarp content jeitem" onclick="dateSelect(this)" >
+		                     <div class="jeinpbox" style="width: 80%;"><input type="text" class="jeinput" id="testico" readonly></div>
+		                     <div class="icons jebtns" ></div>
+	                       </div>
 				</div>
 			</div>
 			<div class="other-packing">
@@ -1000,6 +1068,13 @@ text-decoration:none;
           	     var suppilerId = localStorage.getItem('weisha_supplierId');
                  getProductNameList(productTypeId,suppilerId);
             });
+
+          //日期控制
+
+       function dateSelect(inputobj){
+       	var a = $(inputobj);
+       	$.jeDate(a.find("#testico"),{trigger:false,format: 'YYYY-MM-DD'})
+       }
             
              //添加list同时绑定select元素用以监听
  			add.click(function(){
@@ -1153,20 +1228,21 @@ text-decoration:none;
                  }
 
 			//日期插件配置
-			var config = {
-				mode : 1, //时间选择器模式：1：年月日，2：年月日时分（24小时），3：年月日时分（12小时），4：年月日时分秒。默认：1
-				format : 2, //时间格式化方式：1：2015年06月10日 17时30分46秒，2：2015-05-10  17:30:46。默认：2
-				years : [2000, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021], //年份数组
-				nowbtn : true, //是否显示现在按钮
-				onOk : function(){
-					//alert('OK');
-				},  //点击确定时添加额外的执行函数 默认null
-				onCancel : function(){
+			// var config = {
+			// 	mode : 1, //时间选择器模式：1：年月日，2：年月日时分（24小时），3：年月日时分（12小时），4：年月日时分秒。默认：1
+			// 	format : 2, //时间格式化方式：1：2015年06月10日 17时30分46秒，2：2015-05-10  17:30:46。默认：2
+			// 	years : [2000, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021], //年份数组
+			// 	nowbtn : true, //是否显示现在按钮
+			// 	onOk : function(){
+			// 		//alert('OK');
+			// 	},  //点击确定时添加额外的执行函数 默认null
+			// 	onCancel : function(){
 					
-				}, //点击取消时添加额外的执行函数 默认null
-			};
-			$('#picktime').mdatetimer(config);
-			$('#thepicktime').mdatetimer(config);
+			// 	}, //点击取消时添加额外的执行函数 默认null
+			// };
+			// $('#picktime').mdatetimer(config);
+			// $('#thepicktime').mdatetimer(config);
+
 			// add.click(function(){
 			// 	var theModel = $('.goods-model').children().clone();
 			// 	var picktimenum = foodWrap.find('.foodWrap').length;
@@ -1232,7 +1308,8 @@ text-decoration:none;
                     "csp":$('.other').find('.other-csp div input').val(),
 		            "twist":$('.other').find('.other-twist div input').val(),
 		            "L_C":$('.other').find("option:selected").attr("data-id"),
-		            "before":$('#thepicktime').val(),
+		            //"before":$('#thepicktime').val(),//testico
+		            "before":$('#testico').val(),
 		            "packing":$('.other').find('.other-packing div input').val(),//other-packing-in
 		            "loading_port":$('.other').find('.other-lp div input').val(),
 		            "destination_port":$('.other').find('.other-dp div input').val(),

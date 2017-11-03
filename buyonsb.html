@@ -12,6 +12,42 @@
 				background: #f3f5fe;
 				font-size: 0.24rem;
 			}
+				.icons{
+		background: url(./images/date.png) no-repeat;
+		background-size:100% 100%; 
+	}
+
+	.jeinpbox{
+		float: left;
+		width: 3rem;
+		margin-right: 0px;
+		display: inline-block;
+		vertical-align: middle;
+		position: relative;
+	}
+	.jeinput{
+		display: block;
+		width: 100%;
+		padding-left: .1rem; 
+		height: .5rem;
+		line-height: .36rem;
+		border: 1px solid #e6e6e6;
+		background-color: #fff;
+		border-radius: 3px;
+	}
+	.jebtns{
+		width: .5rem;
+		margin-left: 5px; 
+		margin-left: 3px;
+		height: .6rem;
+		line-height: 1;
+		border: 1px solid #e6e6e6;
+		background-color: #fff;
+		border-radius: 3px;
+		background-position:right center;
+		float: left;
+		cursor: pointer;
+	}
 			.supplier-address-in{
 				width: 100% !important;
 				margin-top: 3px !important;
@@ -130,13 +166,14 @@ text-decoration:none;
 				color: #03dcc5;
 			}						
 		</style>
-		<script src="lib/zepto.js"></script>
-		<script src="lib/zepto.mdatetimer.js"></script>
+
 		<script src="lib/common.js"></script>
 		<script type="text/javascript" src="lib/selfFit.js" ></script>
-		<!--<script type="text/javascript" src="lib/jquery-2.2.4.min.js" ></script>-->
+		<script type="text/javascript" src="lib/jquery-2.2.4.min.js" ></script>
 		<script type="text/javascript" src="lib/distpicker.js" ></script>
 		<script type="text/javascript" src="lib/arg-1.3.min.js"></script>
+		<script type="text/javascript" src="lib/jquery.jedate.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="lib/jedate.css">
 	</head>
 	<body>
    <!--成功窗口-->
@@ -223,12 +260,23 @@ text-decoration:none;
 				<div class="goodsWarehouse-address-in" id = "goodsWarehouse-address-in">		
 				</div>
 	        </div> -->
-	             <div class="goods-time">
+	            <!--  <div class="goods-time">
 						<div>入库时间</div>
 						<div class="rightinput">
 							<input type="text" id="picktime" class="picktime" value="" readonly>
 						</div>
-			     </div>
+			     </div> -->
+
+			     <div class="goods-time">
+				    <div>入库时间</div>
+					<div class="rightinput">
+			            <div class="jewarp content jeitem" onclick="dateSelect(this)" >
+		                   <div class="jeinpbox" style="width: 80%;"><input type="text" class="jeinput" id="testico" readonly></div>
+		                  <div class="icons jebtns" ></div>
+	                    </div>
+					</div>
+				</div>
+
 		    </div>
             
 		<div class="goods">
@@ -430,21 +478,27 @@ text-decoration:none;
 			    	window.AndroidWebView.finishWebView();
 			    });
 
-           //时间控件配置
-			var config = {
-				mode : 1, //时间选择器模式：1：年月日，2：年月日时分（24小时），3：年月日时分（12小时），4：年月日时分秒。默认：1
-				format : 2, //时间格式化方式：1：2015年06月10日 17时30分46秒，2：2015-05-10  17:30:46。默认：2
-				years : [2000, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021], //年份数组
-				nowbtn : true, //是否显示现在按钮
-				onOk : function(){
-					//alert('OK');
-				},  //点击确定时添加额外的执行函数 默认null
-				onCancel : function(){				
-				}, //点击取消时添加额外的执行函数 默认null
-			};
+   //         //时间控件配置
+			// var config = {
+			// 	mode : 1, //时间选择器模式：1：年月日，2：年月日时分（24小时），3：年月日时分（12小时），4：年月日时分秒。默认：1
+			// 	format : 2, //时间格式化方式：1：2015年06月10日 17时30分46秒，2：2015-05-10  17:30:46。默认：2
+			// 	years : [2000, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021], //年份数组
+			// 	nowbtn : true, //是否显示现在按钮
+			// 	onOk : function(){
+			// 		//alert('OK');
+			// 	},  //点击确定时添加额外的执行函数 默认null
+			// 	onCancel : function(){				
+			// 	}, //点击取消时添加额外的执行函数 默认null
+			// };
 
-			    //时间控件调用
-			$('#picktime').mdatetimer(config);
+			//     //时间控件调用
+			// $('#picktime').mdatetimer(config);
+
+			 //日期控制
+            function dateSelect(inputobj){
+       	       var a = $(inputobj);
+       	       $.jeDate(a.find("#testico"),{trigger:false,format: 'YYYY-MM-DD'})
+            }
                  
             //获取供应商信息-初始
 			$.ajax({

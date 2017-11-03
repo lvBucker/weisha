@@ -342,8 +342,8 @@
                 loc = theCommonFn.getLocByUrl();
                 versionID = theCommonFn.getVersionIDByUrl();
                 
-                alert("mtn："+mtn );
-                alert("loginId："+ loginId );
+                // alert("mtn："+mtn );
+                // alert("loginId："+ loginId );
                 
 			     //监听input窗口控制颜色变化
             $('.goods').on('focus','input',function(){
@@ -479,8 +479,6 @@
 					}
 				},
 				error:function(){
-					var str = '<option data-id=1 >中国</option>'
-						$('#cellsFirst').append(str);
 					theCommonFn.alertWin('服务器出错')
 				}
 			});
