@@ -79,11 +79,11 @@
 		<script src="lib/common.js"></script>
 		<script type="text/javascript" src="lib/arg-1.3.min.js"></script>
 		<script type="text/javascript" src="lib/Consts.js"></script>
-		<script type="text/javascript" src="lib/header.js"></script>
+		<!-- <script type="text/javascript" src="lib/header.js"></script> -->
 
 	</head>
 	<body>
-		<div id="head"></div>
+		<!-- <div id="head"></div> -->
 		<header>
 			<ul>
 				<li>申请单号</li>
@@ -99,6 +99,7 @@
 		</div>
 
 		<script type="text/javascript">
+			alert(Arg('mtn'));
 			//登陆用户名
 			var loginId = theCommonFn.getLoginIdByUrl();
 			//初始话加载开证列表
@@ -114,16 +115,16 @@
 			}
 			if(type == 1){
 				$(document).attr('title','我的代购');
-				$("#head").append(head('我的代购'));
+				/*$("#head").append(head('我的代购'));*/
 			}else if(type == 2){
 				$(document).attr('title','我的代开证');
-				$("#head").append(head('我的代开证'));
+				/*$("#head").append(head('我的代开证'));*/
 			}else if(type == 3){
 				$(document).attr('title','我的质押');
-				$("#head").append(head('我的质押'));
+				/*$("#head").append(head('我的质押'));*/
 			}else if(type == 4){
 				$(document).attr('title','我的存储');
-				$("#head").append(head('我的存储'));
+				/*$("#head").append(head('我的存储'));*/
 			}
 
 			//开证列表查询
