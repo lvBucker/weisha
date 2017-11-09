@@ -206,7 +206,7 @@
 						</div>
 					</div>
 					<div class="goods-weight storage-from">
-						<div>重量</div>
+						<div>重量(吨)</div>
 						<div class="rightinput">
 							<input type="text" />
 						</div>
@@ -303,7 +303,7 @@
 						</div>
 					</div>
 					<div class="goods-weight storage-from">
-						<div>重量</div>
+						<div>重量(吨)</div>
 						<div class="rightinput">
 							<input type="text" />
 						</div>
@@ -368,7 +368,7 @@
 			</div>
 		</div>
 		<div class="deal">
-			<span class="dealno"></span><span>已同意</span><a href="#">《存储协议》</a>
+			<span class="dealno"></span><span>已阅读</span><a href="contractSTORAGE.html">《存储协议》</a>
 		</div>
 	    <div class="submit" id="submit">提交</div>
 		
@@ -383,8 +383,8 @@
 		    submitBtn = $('#submit');
 		    suppilerWarehouse=[];  //仓库地址
 	
-	var mtn = getUrlParam('mtn');
-	var loginId = getUrlParam('loginId');
+	var mtn = theCommonFn.getMtnByUrl();
+	var loginId = theCommonFn.getLoginIdByUrl();
 	var fromType = theCommonFn.getFromTypeByUrl;//getUrlParam('fromType');
 	var mobile = theCommonFn.getMobileByUrl;//getUrlParam('mobile');
 	var buildID = theCommonFn.getBuildIdByUrl();
@@ -761,8 +761,7 @@
 										theCommonFn.delay2('3000');
 										theCommonFn.waitAndClosePrompts('1','7000');
 										theCommonFn.delay2('5000');
-										//window.navigate("www.baidu.com"); 
-										//window.location="https://www.baidu.com";
+										theCommonFn.closeWindow();
 								}else{
 										$("#result-error").show();
 										setTimeout("$('#result-error').hide();",3000);

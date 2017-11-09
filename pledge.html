@@ -40,8 +40,8 @@
 				border: none;
 				background: #F3F5FE;
 				border-radius: 0.08rem;
-				font-size: 0.2rem;
-				color: #CDCCCD;
+				font-size: 0.15rem;
+				/*color: #CDCCCD;*/
 			}
 			.otherpromise{
 				margin-top: 0.2rem;
@@ -188,7 +188,7 @@
 							<div>
 								<input type="text"   id="price" onKeyup="javascript:sendPrice(this);" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
 							</div>
-							<div>元/每吨</div>
+							<div>元/吨</div>
 						</div>
 					</div>
 					<div class="goods-weight">
@@ -197,7 +197,7 @@
 							<div>
 								<input type="text" id="weight" onKeyup="javascript:sendWeight(this);" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
 							</div>
-							<div>顿</div>
+							<div>吨</div>
 						</div>
 					</div>
 					<div class="goods-num">
@@ -206,7 +206,7 @@
 							<div>
 								<input type="text" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
 							</div>
-							<div>$</div>
+							<!--<div>$</div>-->
 						</div>
 					</div>
 					<div class="goods-total">
@@ -267,7 +267,7 @@
 							<div>
 								<input type="text"  id="price" onKeyup="javascript:sendPrice(this);" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
 							</div>
-							<div>元/每吨</div>
+							<div>元/吨</div>
 						</div>
 					</div>
 					<div class="goods-weight">
@@ -276,7 +276,7 @@
 							<div>
 								<input type="text" id="weight" onKeyup="javascript:sendWeight(this);" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
 							</div>
-							<div>顿</div>
+							<div>吨</div>
 						</div>
 					</div>
 					<div class="goods-num">
@@ -285,7 +285,7 @@
 							<div>
 								<input type="text" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
 							</div>
-							<div>$</div>
+							<!--<div>$</div>-->
 						</div>
 					</div>
 

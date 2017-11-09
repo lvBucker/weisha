@@ -130,8 +130,8 @@ text-decoration:none;
 				border: none;
 				background: #F3F5FE;
 				border-radius: 0.08rem;
-				font-size: 0.2rem;
-				color: #CDCCCD;
+				font-size: 0.15rem;
+				/*color: #CDCCCD;*/
 			}	
 			.goods{
 				margin-bottom: 2.2rem;
@@ -425,7 +425,7 @@ text-decoration:none;
 		</div>
 
 		<div class="deal">
-			<span class="dealno"></span><span>已阅读</span><a href="contractZSZY.html">《代购服务协议》</a>
+			<span class="dealno"></span><span>已阅读</span><a href="contractBUY.html">《代购服务协议》</a>
 		</div>
 	    <div class="submit" id="put">提交</div>
 	    <!--<div class="submit" id="test1">这是一个测试</div>
@@ -925,6 +925,7 @@ text-decoration:none;
 					                theCommonFn.delay2('3000');
 						            theCommonFn.waitAndClosePrompts('1','7000');
 						            theCommonFn.delay2('5000');
+						            theCommonFn.closeWindow();
 					            }else{
 						            $("#result-error").show();
 						            setTimeout("$('#result-error').hide();",3000);
