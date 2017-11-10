@@ -29,10 +29,6 @@ git reset --hard
 git pull
 
 
-<<<<<<< Updated upstream
 备注
 
 你好
-=======
-你好
->>>>>>> Stashed changes
