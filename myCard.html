@@ -73,6 +73,22 @@
 				width: 1.3rem;
 			}
 			
+			 .footer {
+	            position:fixed;
+	            bottom:0; left:0;
+	            width:100%;
+	            height:50px;
+	            padding:0;
+	            text-align: center;
+	            vertical-align: middle;
+	            font-size: 0.35rem;
+	            background: #cccccc;
+	        }
+
+	        .footer .pullUpLabel{
+	        	height: 1rem;
+				line-height: 1rem;
+	        }
 		</style>
 		<script type="text/javascript" src="lib/selfFit.js" ></script>
 		<script type="text/javascript" src="lib/jquery-2.2.4.min.js" ></script>
@@ -96,15 +112,23 @@
 			<ul id="cardList">
 				
 			</ul>
+
+			<div id="fotter" class="footer" onclick="queryByPage()">	
+					<span class="pullUpLabel">加载更多...</span>
+			</div>
 		</div>
 
+		
 		<script type="text/javascript">
 			//alert(Arg('mtn'));
 			//登陆用户名
 			var loginId = theCommonFn.getLoginIdByUrl();
+			//当前页数
+			var curPage = 1;
+		
 			//初始话加载开证列表
 			$(function(){
-				queryMyCard();
+				queryMyCard(curPage);
 			});
 
 
@@ -127,8 +151,14 @@
 				/*$("#head").append(head('我的存储'));*/
 			}
 
+			//分页查询
+			function queryByPage() {
+				curPage++;
+				queryMyCard(curPage);
+			}
+
 			//开证列表查询
-			function queryMyCard() {
+			function queryMyCard(page) {
 				var data = {};
 				//通用信息
 				data._vt = 'dlk_weishatest';
@@ -137,6 +167,7 @@
 				data.mobile = theCommonFn.getMobileByUrl();
 				data.mtn = theCommonFn.getMtnByUrl();
 				data.buildID = theCommonFn.getBuildIdByUrl();
+			
 
 				data.loc = 'zh-Hans';
 				data.versionID = theCommonFn.getVersionIDByUrl();
@@ -149,7 +180,7 @@
 				data.endtime = '';
 				data.type = type;
 				data.reviewType = '';
-				data.page = 1;
+				data.page = page;
 				data.rows = 10;
 				//开证列表
 				$.ajax({
@@ -170,9 +201,19 @@
 						try{
 							reps = JSON.parse(rep);	
 							if(reps.result){
-								$("#cardList").empty();
+								if (page == 1) {
+									$("#cardList").empty();
+								}
+								
 								var context = reps.content;
 								var html = '';
+
+								if (context == null || context == undefined || context.length == 0 || context.length < 10) {
+									$("#fotter").hide();
+								} else {
+									$("#fotter").show();
+								}
+
 								$.each(context, function(index, value) {
 									//审核状态  1.待审核2.审核通过3.审核不通过
 									var reviewtype = value.reviewtype;
@@ -185,11 +226,15 @@
 									//申请总额
 									var totalmoney = theCommonFn.getValue(value.totalmoney);
 									if (totalmoney == '') {
-										totalmoney = '-';
+										totalmoney = '0';
 									}
+									
+									var params = '&fromType=' + data.fromType + '&mobile=' + data.mobile 
+									           + '&mtn=' + data.mtn + '&buildID=' + data.buildID
+									           + '&versionID=' + data.versionID + '&loginId=' + data.loginId;
 
 									var li = '<li>' +
-												'<a href="./myBuyonsb.html?financeId=' + financeId + '&type=' + data.type + '" class="list-detal">' +
+												'<a href="./myBuyonsb.html?financeId=' + financeId + '&type=' + data.type + params + '" class="list-detal">' +
 													'<ul>' +
 														'<li>' + number + '</li>' +
 														'<li>' + applytime + '</li>';
