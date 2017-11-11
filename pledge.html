@@ -150,9 +150,9 @@
 				<div>意向交货地址</div>
 				<div class="addr-choose-in">
 					<div data-toggle="distpicker">
-					  <select data-province="省"></select>
-					  <select data-city="市"></select>
-					  <select data-district="区"></select>
+					  <select id ="provinceSelect" data-province="省"></select>
+					  <select id ="citySelect" data-city="市"></select>
+					  <select id ="districtSelect" data-district="区"></select>
 					</div>
 				</div>
 			</div>
@@ -206,7 +206,7 @@
 							<div>
 								<input type="text" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
 							</div>
-							<!--<div>$</div>-->
+							<div></div>
 						</div>
 					</div>
 					<div class="goods-total">
@@ -229,9 +229,9 @@
 				<div>意向交货地址</div>
 				<div class="addr-choose-in">
 					<div data-toggle="distpicker">
-					  <select data-province="省"></select>
-					  <select data-city="市"></select>
-					  <select data-district="区"></select>
+					  <select id ="provinceSelectFirst" data-province="省"></select>
+					  <select id ="citySelectFirst" data-city="市"></select>
+					  <select id ="districtSelectFirst" data-district="区"></select>
 					</div>
 				</div>
 			</div>
@@ -285,7 +285,7 @@
 							<div>
 								<input type="text" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
 							</div>
-							<!--<div>$</div>-->
+							<div></div>
 						</div>
 					</div>
 
@@ -414,7 +414,8 @@
                 	var firstSelect=$(this);  //产品类型选择框
                 	var productTypeId = $(this).find("option:selected").attr("data-id");
                 	var secondSelect=firstSelect.parent().siblings().children(); //产品名字选择框
-                     getProductNameListNext(secondSelect,productTypeId);
+                	var secondSelectParent = $(this).parent().siblings().find("option");//产品名字框上级属性，用来清除使用
+                     getProductNameListNext(secondSelect,productTypeId,secondSelectParent);
                     //console.log("当前窗口为："+ $(this).find("option:selected").attr("data-id"));
                      //console.log("测试窗口为："+ $(this).parent().siblings().children());
                      // $(this).parent().siblings().children().find("option:checked").append('<option data-id="'+4+'" >'+'飞机4'+'</option>');
@@ -529,6 +530,60 @@
 				}
 			});
 
+//区仓库选择
+             $("#districtSelectFirst").change(function() {   	
+             	var province = $("#provinceSelect").find("option:selected").attr("data-code");
+             	var city = $("#citySelect").find("option:selected").attr("data-code");
+             	var district = $("#districtSelect").find("option:selected").attr("data-code");
+
+             	   //交货仓库信息获取
+             $.ajax({
+				type:"post",
+				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listStroeByArea",
+				async:true,
+				data:{
+					province:province,
+					city:city,
+					district:district,
+					loginId: loginId,
+					mtn: mtn,
+					fromType:fromType,
+					mobile:mobile,
+					buildID:buildID,
+					loc:loc,
+					versionID:versionID
+				},
+				beforeSend:function(){
+					//theCommonFn.waiting();
+				},
+				success:function(rep){
+                      var reps;
+					try{
+						reps = JSON.parse(rep);		
+					}catch(e){
+						//TODO handle the exception
+					};
+					if(reps.result){
+						var str = '',
+						    list = reps.content;
+						for(var i=0;i<list.length;i++){
+							str += '<option data-id="'+list[i].store_house_id +'" >'+list[i].store_house_name+'</option>',
+							suppilerWarehouse.push({
+								"houseId":list[i].store_house_id,
+								"houseName":list[i].store_house_name,
+								"houseAddress":list[i].address
+							})
+						};
+					// 	$('#cells').append(str);
+					};
+					$('#goodsWarehouseId').append(str);
+				},
+				error:function(){
+					theCommonFn.alertWin('服务器出错')
+				}
+			});
+          });
+
 
 //监听交货选择窗口，增添商品类型列表信息
             $("#cellsFirst").change(function() {
@@ -542,45 +597,45 @@
              	   }
 
 //商品类型信息列表
-			$.ajax({
-				type:"post",
-				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductType2Zy",
-				async:true,
-				data:{					
-					loginId: loginId,
-					mtn: mtn,
-					// loginId: '82cc33cf3b35bda1705428551889c787',
-					// mtn: 'uy4q4h8n31',
-					fromType:fromType,
-					mobile:mobile,
-					buildID:buildID,
-					loc:loc,
-					versionID:versionID
-				},
-				beforeSend:function(){
-				},
-				success:function(rep){
-					var reps;
-					try{
-						reps = JSON.parse(rep);	
-						//console.log(rep);	
-					}catch(e){
-						//TODO handle the exception
-					};
-					if(reps.result){
-						var str = '',
-						    list = reps.content;
-						for(var i=0;i<list.length;i++){
-							str += '<option data-id="'+list[i].product_type_id +'" >'+list[i].product_type_name+'</option>'
-						};
-						$('#productTypeFirst').append(str);  //首行插入
-						//$('#productType').append(str);       //除了首行之外的其余行插入
-					}
-				},
-				error:function(){
-					theCommonFn.alertWin('服务器出错')
-				}
-			});
+			// $.ajax({
+			// 	type:"post",
+			// 	url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductType2Zy",
+			// 	async:true,
+			// 	data:{					
+			// 		loginId: loginId,
+			// 		mtn: mtn,
+			// 		// loginId: '82cc33cf3b35bda1705428551889c787',
+			// 		// mtn: 'uy4q4h8n31',
+			// 		fromType:fromType,
+			// 		mobile:mobile,
+			// 		buildID:buildID,
+			// 		loc:loc,
+			// 		versionID:versionID
+			// 	},
+			// 	beforeSend:function(){
+			// 	},
+			// 	success:function(rep){
+			// 		var reps;
+			// 		try{
+			// 			reps = JSON.parse(rep);	
+			// 			//console.log(rep);	
+			// 		}catch(e){
+			// 			//TODO handle the exception
+			// 		};
+			// 		if(reps.result){
+			// 			var str = '',
+			// 			    list = reps.content;
+			// 			for(var i=0;i<list.length;i++){
+			// 				str += '<option data-id="'+list[i].product_type_id +'" >'+list[i].product_type_name+'</option>'
+			// 			};
+			// 			$('#productTypeFirst').append(str);  //首行插入
+			// 			//$('#productType').append(str);       //除了首行之外的其余行插入
+			// 		}
+			// 	},
+			// 	error:function(){
+			// 		theCommonFn.alertWin('服务器出错')
+			// 	}
+			// });
 
             });          
 
@@ -596,8 +651,9 @@
              	   	  	$("#goodsWarehouse-address-in").show();
              	   	  }
              	   }
+            });        
 
-//商品类型信息列表
+            //商品类型信息列表
 			$.ajax({
 				type:"post",
 				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductType2Zy",
@@ -636,9 +692,7 @@
 				error:function(){
 					theCommonFn.alertWin('服务器出错')
 				}
-			});
-
-            });          
+			});  
 
 
                function sendWeight(inputobj){
@@ -667,7 +721,6 @@
 
           //首框展示
           $("#productTypeFirst").change(function() {
-          	//alert("12331");
           	     var productTypeId = $(this).find("option:selected").attr("data-id");
                  getProductNameList(productTypeId);
             });
@@ -676,7 +729,7 @@
            function getProductNameList(productTypeId){
                  $.ajax({
 				type:"post",
-				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductByTypeId",
+				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductByTypeId2Zy",
 				async:true,
 				data:{
 					loginId: loginId,
@@ -709,6 +762,7 @@
 						};
                              //str = '<option data-id="'+2+'" >'+'傻子'+'</option>';
 						//$('#productNamesFirst').append('<option data-id="'+2+'" >'+'飞机'+'</option>');  //首行插入
+						$('#productNamesFirst option').remove();//首框删除老的选择内容
 						$('#productNamesFirst').append(str);  //首行插入
 						//$('#productNames').append(str);       //除了首行之外的其余行插入
 					}
@@ -719,12 +773,13 @@
 			});
            }
 
-            function getProductNameListNext(secondSelect,productTypeId){
+            function getProductNameListNext(secondSelect,productTypeId,secondSelectParent){
  	             var secondSelectObject = secondSelect;
  	             var productTypeIdResult = productTypeId;
+ 	             var secondSelectParentObject = secondSelectParent;
                  $.ajax({
 				     type:"post",
-				     url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductByTypeId",
+				     url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductByTypeId2Zy",
 				      async:true,
 				 data:{
 					loginId: loginId,
@@ -755,6 +810,7 @@
 						for(var i=0;i<list.length;i++){
 							str += '<option data-id="'+list[i].product_id +'" >'+list[i].product_name+'</option>'
 						};
+						secondSelectParentObject.remove();
                         secondSelectObject.append(str);
 						//$('#productNames').append(str);  
 					}

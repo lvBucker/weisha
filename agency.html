@@ -279,18 +279,18 @@ text-decoration:none;
 		</div>
 		<div class="info cell">
 			<div class="info-country">
-				<div>业务国别</div>
+				<div>Buyer</div>
 				<div class="info-country-select">
 					<select id="buyerCells">
-						<option>请选择业务国别</option>
+						<option>Please select...</option>
 					</select>
 				</div>
 			</div>
 			<div class="info-currency">
-				<div>币种</div>
+				<div>Currency</div>
 				<div class="info-currency-select">
 					<select id ="currencyCells">
-						<option data-id= '1'>美元</option>
+						<option data-id= '1'>$</option>
 						<!--<option>1</option>
 						<option>2</option>
 						<option>3</option>-->
@@ -298,7 +298,7 @@ text-decoration:none;
 				</div>
 			</div>
 			<div class="info-unit">
-				<div>计量单位</div>
+				<div>Unit</div>
 				<div class="info-unit-select">
 					<select>
 						<option>kg</option>
@@ -308,14 +308,14 @@ text-decoration:none;
 					</select>
 				</div>
 			</div>
-			<div class="info-port">
+			<!--<div class="info-port">
 				<div>交货港口</div>
 				<div class="info-port-select">
 					<select id="portCells">
 						<option>请选择交货港口</option>
 					</select>
 				</div>
-			</div>
+			</div>-->
 			<div class="info-contract">
 				<div>Contract No</div>
 				<div class="info-contract-in rightinput">
@@ -323,7 +323,7 @@ text-decoration:none;
 				</div>
 			</div>
 			<div class="info-date">
-				<div>date</div>
+				<div>Date</div>
 				<div class="info-date-select">
 					<div>
 						<select name="year"></select>
@@ -333,7 +333,7 @@ text-decoration:none;
 				</div>
 			</div>
 			<div class="info-seller">
-				<div>seller</div>
+				<div>Seller</div>
 				<div class="info-seller-select">
 					<select id ="supplierCells">
 						<option >选择供应商</option>
@@ -345,22 +345,22 @@ text-decoration:none;
 			<div class="goods-model" style="display: none;">
 				<div class="goods-box cell">
 					<div class="goods-commodity">
-						<div>商品信息</div>
+						<div>COMMODITY:</div>
 						<div class="goods-commodity-select">
 							<div class="goods-commodity-select-type">
 								<select id="productType">
-									<option>商品类型</option>
+									<option>Please select...</option>
 								</select>
 							</div>
 							<div class="goods-commodity-select-name">
-								<select>
-									<option>商品名称</option>
+								<select id="productNames">
+									<option>Please select...</option>
 								</select>
 							</div>
 						</div>
 					</div>
 					<div class="goods-num">
-						<div class="wordtitle">Number Of Container</div>
+						<div class="wordtitle">NUMBER OF CONTAINER:</div>
 						<div class="goods-num-in">
 							<div class="rightinput">
 								<input type="text" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
@@ -368,7 +368,7 @@ text-decoration:none;
 						</div>
 					</div>
 					<div class="goods-cs">
-						<div class="wordtitle">Container Size</div>
+						<div class="wordtitle">CONTAINER SIZE:</div>
 						<div class="goods-cs-in goodsin">
 							<select id = 'containerSize'>
 								<option></option>
@@ -376,7 +376,7 @@ text-decoration:none;
 						</div>
 					</div>
 					<div class="goods-quantity">
-						<div>Quantity</div>
+						<div>QUANTITY:</div>
 						<div class="goods-price-in goodsin">
 							<div>
 								<input type="text" id="weight" onKeyup="javascript:sendWeight(this);" onKeyup="javascript:sendWeight(this);" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
@@ -385,7 +385,7 @@ text-decoration:none;
 						</div>
 					</div>
 					<div class="goods-unitprice">
-						<div>Unit Price</div>
+						<div>UNIT PRICE:</div>
 						<div class="goods-total-in goodsin">
 							<div>
 								<input type="text" id="price" onKeyup="javascript:sendPrice(this);" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
@@ -395,7 +395,7 @@ text-decoration:none;
 					</div>
 
 					 <div class="goods-total">
-				         <div>商品总价</div>
+				         <div>AMOUNT:</div>
 				         <div class="goods-total-in goodsin" id = "totalPrice">		
 				         </div>
 			         </div>
@@ -409,7 +409,7 @@ text-decoration:none;
 						</div>
 					</div> -->
 						 <div class="goods-shipment">
-						<div>入库时间</div>
+						<div>SHIPMENT</div>
 						<div class="rightinput">
 	                      <div class="jewarp content jeitem" onclick="dateSelect(this)" >
 		                     <div class="jeinpbox" style="width: 80%;"><input type="text" class="jeinput" id="testico" readonly></div>
@@ -425,22 +425,22 @@ text-decoration:none;
 		    <div class="good-wrap">
 				<div class="goods-box cell">
 					<div class="goods-commodity">
-						<div>商品信息</div>
+						<div>COMMODITY:</div>
 						<div class="goods-commodity-select">
 							<div class="goods-commodity-select-type">
 								<select id = "productTypeFirst">
-									<option>商品类型</option>
+									<option>Please select...</option>
 								</select>
 							</div>
 							<div class="goods-commodity-select-name">
 								<select id = "productNamesFirst">
-									<option>商品名称</option>
+									<option>Please select...</option>
 								</select>
 							</div>
 						</div>
 					</div>
 					<div class="goods-num">
-						<div class="wordtitle">Number Of Container</div>
+						<div class="wordtitle">NUMBER OF CONTAINER:</div>
 						<div class="goods-num-in">
 							<div  class="rightinput">
 								<input type="text" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
@@ -448,7 +448,7 @@ text-decoration:none;
 						</div>
 					</div>
 					<div class="goods-cs">
-						<div class="wordtitle">Container Size</div>
+						<div class="wordtitle">CONTAINER SIZE:</div>
 						<div class="goods-cs-in goodsin">
 							<select id = 'containerSizeFirst'>
 								<option></option>
@@ -456,7 +456,7 @@ text-decoration:none;
 						</div>
 					</div>
 					<div class="goods-quantity">
-						<div>Quantity</div>
+						<div>QUANTITY:</div>
 						<div class="goods-price-in goodsin">
 							<div>
 								<input type="text" id="weight" onKeyup="javascript:sendWeight(this);" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
@@ -465,7 +465,7 @@ text-decoration:none;
 						</div>
 					</div>
 					<div class="goods-unitprice">
-						<div>Unit Price</div>
+						<div>UNIT PRICE:</div>
 						<div class="goods-total-in goodsin">
 							<div>
 								<input type="text" id="price" onKeyup="javascript:sendPrice(this);" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
@@ -475,7 +475,7 @@ text-decoration:none;
 					</div>
 
 					 <div class="goods-total">
-				         <div>商品总价</div>
+				         <div>AMOUNT:</div>
 				         <div class="goods-total-in goodsin" id = "totalPrice">		
 				         </div>
 			         </div>
@@ -490,7 +490,7 @@ text-decoration:none;
 
 
 					 <div class="goods-shipment">
-						<div>入库时间</div>
+						<div>SHIPMENT:</div>
 						<div class="rightinput">
 	                      <div class="jewarp content jeitem" onclick="dateSelect(this)" >
 		                     <div class="jeinpbox" style="width: 80%;"><input type="text" class="jeinput" id="testico" readonly></div>
@@ -504,13 +504,13 @@ text-decoration:none;
 				</div>
 			</div>
 			<div class="goods-add">
-				+添加更多商品
+				ADD
 			</div>
 		</div>
 		
 		<div class="pps cell">
 			<div class="pps-port">
-				<div>Port</div>
+				<div>PORT:</div>
 				<div class="pps-port">
 					<select id ="portCellsSecond">
 						<option></option>
@@ -524,7 +524,7 @@ text-decoration:none;
 				</div>
 			</div>-->
 			<div class="pps-say">
-				<div>Say</div>
+				<div>SAY:</div>
 				<div class="pps-say-in rightinput">
 					<input type="text"  class="" />
 				</div>
@@ -1039,7 +1039,7 @@ text-decoration:none;
 						//TODO handle the exception
 					};
 					if(reps.result){
-						var str = '<option>商品类型</option>',
+						var str = '<option>Please select...</option>',
 						//var str_address,
 						list = reps.content;
 						//console.log(suppilerAddress[0].address);
@@ -1083,6 +1083,13 @@ text-decoration:none;
                 $("select").change(function() {
                 	//alert("触发");
                 	var firstSelect=$(this);  //产品类型选择框
+                	if(firstSelect.attr("id")=='productNamesFirst'){
+                	   	return;
+ 
+                	   }
+                	    if(firstSelect.attr("id")=='productNames'){
+                	   	return;
+                	   }
                 	var productTypeId = $(this).find("option:selected").attr("data-id");
                 	var secondSelect=firstSelect.parent().siblings().children(); //产品名字选择框
                 	var secondSelectParent = $(this).parent().siblings().find("option");//产品名字框上级属性，用来清除使用
