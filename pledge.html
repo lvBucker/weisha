@@ -300,17 +300,28 @@
 							<div>元</div>
 						</div>
 					</div>
-			<div class="otherpromise">
+			<!-- <div class="otherpromise">
 				<div>其他约定</div>
 				<div class="otherpromise-in">
 					<input type="text" />
 				</div>
-			</div>		
+			</div>		 -->
 
 				</div>
 			</div>
 			<div class="goods-add">
 				+添加更多商品
+			</div>
+			<div class="other cell">
+			    <div class="goods-convention">
+					<div>特殊约定</div>
+					<div class="goods-convention-in goodsin">
+						<div>
+							<input type="text" onafterpaste="if(isNaN(value))execCommand('undo')"/><!-- 去掉onkeyup="if(isNaN(value))execCommand('undo')"  -->
+						</div>
+						<div></div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<!-- <div class="otherpromise cell">
@@ -777,6 +788,7 @@
  	             var secondSelectObject = secondSelect;
  	             var productTypeIdResult = productTypeId;
  	             var secondSelectParentObject = secondSelectParent;
+
                  $.ajax({
 				     type:"post",
 				     url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductByTypeId2Zy",
@@ -821,8 +833,60 @@
 			});
            }
 
+
+             //交货仓库反向选择交货地址
+             $("#cellsFirst").change(function() {
+             	  //alert("123");
+             	  var storehouserId = $(this).find("option:selected").attr("data-id");
+             	  //alert(storehouserId);
+              	  //获取仓库地址
+             $.ajax({
+				type:"post",
+				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=getAreaByStroseId",
+				async:true,
+				data:{
+					storehouserId:storehouserId,
+					loginId: loginId,
+					mtn: mtn,
+					fromType:fromType,
+					mobile:mobile,
+					buildID:buildID,
+					loc:loc,
+					versionID:versionID
+				},
+				beforeSend:function(){
+					//theCommonFn.waiting();
+				},
+				success:function(rep){
+                      var reps;
+					try{
+						reps = JSON.parse(rep);		
+					}catch(e){
+						//TODO handle the exception
+					};
+					if(reps.result){
+                          list = reps.content;
+                           var province = list.province;
+                           var city = list.city;
+                           var district = list.district;
+                    
+                           $("#provinceSelectFirst option[value="+province+"]").attr("selected", "selected");
+                           $("#provinceSelectFirst").trigger("change");//刷新回显信息
+                           $("#citySelectFirst option[value="+city+"]").attr("selected", true);
+                           $("#citySelectFirst").trigger("change");//刷新回显信息
+                           $("#districtSelectFirst option[value="+district+"]").attr("selected", true);
+					};
+				},
+				error:function(){
+					theCommonFn.alertWin('服务器出错')
+				}
+			});
+
+             });
+
 			submitBtn.click(function(){
                 var isError = 0 ;
+                var yueding = $('.goods-convention-in input').val();  
 				if($('#cells').val()=='请选择交货仓库'){
 					// theCommonFn.alertWin('请选择交货仓库');
 					// return;
@@ -887,6 +951,8 @@
 					          versionID:versionID,
 					          //sign:'b92d3f53c061fafcfe8a1041b2cf4baf',
 					          loc:loc,
+					          product:product,
+					          yueding:yueding
 					          //junit:'元/吨',
 					          //suppliername:'新疆利泰丝路投资有限公司'
 				            },

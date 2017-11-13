@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>代销服务申请</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+		<link rel="stylesheet" href="lib/all.css" />
+		<link rel="stylesheet" href="lib/css.css" />
+		<style>
+</style>
+<script src="lib/common.js"></script>
+		<script type="text/javascript" src="lib/selfFit.js" ></script>
+		<script type="text/javascript" src="lib/jquery-2.2.4.min.js" ></script>
+		<script type="text/javascript" src="lib/distpicker.js" ></script>
+		<script src="lib/common.js"></script>
+		</head>
+	<body>
+        <div class="goods">
+			<div class="goods-model" style="display: none;">
+			<!-- <div class="goods-model"> -->
+               <div>意向交货地址</div>
+				    <div class="addr-choose-in">
+					    <div data-toggle="distpicker">
+					       <select id ="provinceSelect" data-province="省"></select>
+					       <select id ="citySelect" data-city="市"></select>
+					       <select id ="districtSelect" data-district="区"></select>
+					    </div>
+		             </div>
+		        </div>
+	        </div>
+	    </div>
+
+	    <div class="good-wrap">
+     		    <div>意向交货地址</div>
+				    <div class="addr-choose-in">
+					     <div data-toggle="distpicker">
+					         <select id ="provinceSelect" data-province="省"></select>
+					         <select id ="citySelect" data-city="市"></select>
+					         <select id ="districtSelect" data-district="区"></select>
+					     </div>
+				    </div>
+			    </div>
+
+			    <div class="goods-add">
+				+添加更多商品
+			    </div>
+	    </div>
+
+
+
+
+
+
+	    <script>
+			var add = $('.goods-add');
+			var foodWrap = $('.good-wrap');
+			add.click(function(){
+				var theModel = $('.goods-model').children().clone();
+				theModel.appendTo(foodWrap);
+			});
+		</script>
+	</body>
+</html>

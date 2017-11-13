@@ -300,8 +300,8 @@ text-decoration:none;
 			<div class="info-unit">
 				<div>Unit</div>
 				<div class="info-unit-select">
-					<select>
-						<option>kg</option>
+					<select id ="unitCells"> 
+						<option data-id= '1'>kg</option>
 						<!--<option>1</option>
 						<option>2</option>
 						<option>3</option>-->
@@ -319,10 +319,10 @@ text-decoration:none;
 			<div class="info-contract">
 				<div>Contract No</div>
 				<div class="info-contract-in rightinput">
-					<input type="text" class=""/>
+					<input id = "contractNo" type="text" class=""/>
 				</div>
 			</div>
-			<div class="info-date">
+			<!-- <div class="info-date">
 				<div>Date</div>
 				<div class="info-date-select">
 					<div>
@@ -331,7 +331,19 @@ text-decoration:none;
 						<select name="day"></select>						
 					</div>					
 				</div>
+			</div> -->
+
+			<div class="info-date">
+				<div>Date</div>
+				<div class="other-sign-in">
+	                <div class="jewarp content jeitem" onclick="dateSelect(this)" >
+		                <div class="jeinpbox" style="width: 80%;"><input type="text" class="jeinput" id="testico" readonly></div>
+		                <div class="icons jebtns" ></div>
+	                </div>
+				</div>
 			</div>
+
+			
 			<div class="info-seller">
 				<div>Seller</div>
 				<div class="info-seller-select">
@@ -612,18 +624,29 @@ text-decoration:none;
 			<div class="other-for">
 				<div class="justsentence">for 100% Constractvalue.The L/C shoud be opened after</div>
 			</div>
-			<div class="other-sign">
+
+		<!-- 	<div class="other-sign">
 				<div>sign contract before</div>
 				<div class="other-sign-in">
-					<!-- <div>
-						<input type="text" class="picktime" id="thepicktime" value="" readonly>
-					</div> -->
-	                      <div class="jewarp content jeitem" onclick="dateSelect(this)" >
-		                     <div class="jeinpbox" style="width: 80%;"><input type="text" class="jeinput" id="testico" readonly></div>
-		                     <div class="icons jebtns" ></div>
-	                       </div>
+	                <div class="jewarp content jeitem" onclick="dateSelect(this)" >
+		                <div class="jeinpbox" style="width: 80%;"><input type="text" class="jeinput" id="testico" readonly></div>
+		                <div class="icons jebtns" ></div>
+	                </div>
+				</div>
+			</div> -->
+
+            <div class="other-sign">
+				<div>sign contract before</div>
+				<div class="info-date-select">
+					<div>
+						<select id ="year" name="year"></select>
+						<select id ="month" name="month"></select>
+						<select id ="day" name="day"></select>						
+					</div>					
 				</div>
 			</div>
+
+
 			<div class="other-packing">
 				<div class="green">Packing</div>
 				<div class="other-packing-in rightinput">
@@ -697,13 +720,24 @@ text-decoration:none;
 			    box = $('.goods-box'),
 			    theDeal = $('.deal>span').eq(0),
 			    allowed = $('.allowed');
-			     mtn = theCommonFn.getMtnByUrl();
+			     mtn = theCommonFn.getMtnByUrl();//?mtn=0f723e3aec3fe6b24910535f2a779e99
+			     if(mtn){
+			     	window.localStorage.setItem('mtn',mtn);
+			     }else{
+                    mtn = localStorage.getItem('mtn');
+			     } 
 			    loginId = theCommonFn.getLoginIdByUrl(); 
+			     if(loginId){
+			     	window.localStorage.setItem('loginId',loginId);
+			     }else{
+                    loginId = localStorage.getItem('loginId');
+			     } 
 			    fromType = theCommonFn.getFromTypeByUrl();
 			    mobile = theCommonFn.getMobileByUrl();
                 buildID = theCommonFn.getBuildIdByUrl();	
                 loc = theCommonFn.getLocByUrl();
                 versionID = theCommonFn.getVersionIDByUrl();
+                suppilerWarehouse=[];  //仓库地址
 
                //Buyer信息获取-初始
              $.ajax({
@@ -1289,8 +1323,16 @@ text-decoration:none;
                   var suppilerid = localStorage.getItem('weisha_supplierId');
                   var suppliername = localStorage.getItem('weisha_supplierName');
                   var currency = $('#currencyCells').find("option:selected").attr("data-id");
-                  var storeHouse_Id  = $('#portCells').find("option:selected").attr("data-id");  
+                  var storeHouse_Id  = $('#portCells').find("option:selected").attr("data-id"); 
+                  alert("this"+storeHouse_Id) 
                   var buyer = $('#buyerCells').find("option:selected").attr("data-id");
+                  var unit = $('#unitCells').find("option:selected").attr("data-id");
+                  var nian = $('#year').val();
+                  var yue = $('#month').val();
+                  var ri = $('#day').val();
+                  var creditCard = $('#creditCard').find("option:selected").attr("data-id");
+                  var contractNo = $('#contractNo').val();
+                  //alert($('#year').val());
 
                   for(var i=0;i<$('.good-wrap').find('.goods-box').length;i++){
 					var info = $('.good-wrap').find('.goods-box').eq(i);
@@ -1327,14 +1369,14 @@ text-decoration:none;
 		            "expiry_place":$('.other').find('.other-ep div input').val(),
 		            "preparation_period":$('.other').find('.other-prpe div input').val()
 				})
+                 product = JSON.stringify(product);
+                 finance_daikai_msg = JSON.stringify(finance_daikai_msg);
                  console.log(finance_daikai_msg);
             	$.ajax({
 				type:"post",
 				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=createCertificate",
 				async:true,
 				data:{
-
-
 					_vt:'dlk_weishatest',
 					loginId: loginId,
 					mtn: mtn,
@@ -1343,6 +1385,30 @@ text-decoration:none;
 					buildID:buildID,
 					loc:loc,
 					versionID:versionID,
+					supplierid:suppilerid,
+					suppliername:suppliername,
+
+  supplieradress:'',
+  currency:currency,
+   unitId:unit,
+   djunit:'$/kg',
+  storeHouse_Id:'',  //storeHouse_Id
+  credit_letter_type_id:creditCard,
+   yueding:'',
+  say:'',		
+  contractNo:contractNo,
+  nian:nian,
+  yue:yue,
+  ri:ri,
+   price_trem:'',
+  buyer:buyer,
+
+  province:0,
+    city:0,
+    area:0,
+    flag:0,
+
+
 					product:product,
 					finance_daikai_msg:finance_daikai_msg
 				},

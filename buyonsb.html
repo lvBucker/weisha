@@ -270,8 +270,8 @@ text-decoration:none;
 			     <div class="goods-time">
 				    <div>入库时间</div>
 					<div class="rightinput">
-			            <div class="jewarp content jeitem" onclick="dateSelect(this)" >
-		                   <div class="jeinpbox" style="width: 80%;"><input type="text" class="jeinput" id="testico" readonly></div>
+			            <div id = "picktime1" class="jewarp content jeitem" onclick="dateSelect(this)" >
+		                   <div id = "picktime2" class="jeinpbox" style="width: 80%;"><input type="text" class="jeinput" id="testico" readonly></div>
 		                  <div class="icons jebtns" ></div>
 	                    </div>
 					</div>
@@ -280,7 +280,7 @@ text-decoration:none;
 		    </div>
             
 		<div class="goods">
-			<div class="goods-model" style="display: none;">
+			<div id = "goods_model" class="goods-model" style="display: none;">
 				<div class="goods-box cell">
 					<div class="goods-info">
 						<div>商品信息</div>
@@ -335,15 +335,9 @@ text-decoration:none;
 							<div>元</div>
 						</div>
 					</div>
-					  <div class="goods-convention">
-						<div>特殊约定</div>
-						<div class="goods-convention-in goodsin">
-							<div>
-								<input type="text" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
-							</div>
-							<div></div>
-						</div>
-					</div>
+
+					 
+
 					<div class="goods-delete">删除此商品</div>
 				</div>
 			</div>
@@ -402,20 +396,23 @@ text-decoration:none;
 
 
 
-                    <div class="goods-convention">
-						<div>特殊约定</div>
-						<div class="goods-convention-in goodsin">
-							<div>
-								<input type="text" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
-							</div>
-							<div></div>
-						</div>
-					</div>
+                   
 				</div>
 			</div>
 			<div class="goods-add">
 				+添加更多商品
 			</div>
+<div class="other cell">
+			 <div class="goods-convention">
+						<div>特殊约定</div>
+						<div class="goods-convention-in goodsin">
+							<div>
+								<input type="text" onafterpaste="if(isNaN(value))execCommand('undo')"/><!-- 去掉onkeyup="if(isNaN(value))execCommand('undo')"  -->
+							</div>
+							<div></div>
+						</div>
+					</div>
+				</div>
 		</div>
 
 		<div class="deal">
@@ -453,6 +450,15 @@ text-decoration:none;
 			 // var goodsWeight,
 			 //    goodsPrice,
 			 //    goodsTotal;
+
+
+                if(localStorage.getItem('weisha_supplierId')){
+                	//alert(localStorage.getItem('weisha_supplierId'));
+                	//$('#cells option').text(localStorage.getItem('weisha_supplierId'))
+                	//$("#cells option[value="9"]").attr("selected", "selected");
+                	// alert("xuanze");
+                }
+
 
 			    theDeal.click(function(){
 				if($(this).hasClass('dealno')){
@@ -678,7 +684,7 @@ text-decoration:none;
 						//TODO handle the exception
 					};
 					if(reps.result){
-						alert(reps.result);
+						//alert(reps.result);
                           list = reps.content;
                            var province = list.province;
                            var city = list.city;
@@ -749,7 +755,14 @@ text-decoration:none;
 
             //监听供应商选择窗口，增添商品类型列表信息
             $("#cells").change(function() {
-                var suppilerId = $(this).find("option:selected").attr("data-id");
+            	var suppilerId = $(this).find("option:selected").attr("data-id");
+            	//alert($('.good-wrap').find('.goods-box').length);
+            	if($('.good-wrap').find('.goods-box').length!= 1){
+            		//localStorage.getItem('weisha_supplierName')
+            		window.localStorage.setItem('weisha_supplierId',suppilerId);
+            		window.location.reload();
+            	}
+                //var suppilerId = $(this).find("option:selected").attr("data-id");
                 if(suppilerId){
                    for(var i = 0 ;i<suppilerAddress.length;i++){ //插入地址信息
                         if (suppilerId.toString() == suppilerAddress[i].dataId){
@@ -794,11 +807,13 @@ text-decoration:none;
 						for(var i=0;i<list.length;i++){
 							str += '<option data-id="'+list[i].product_type_id +'" >'+list[i].product_type_name+'</option>'
 						};
-
 					   $('#productTypeFirst option').remove();//首框删除老的选择内容
 					   $('#productTypeFirst').append(str);  //首框插入新的内容
                        $('#productType option').remove();//后续框删除老的选择内容
-					   $('#productType').append(str);  //后续框插入新的内容
+                        // var a =  $('#productType option');
+                        // console.log(a);
+                        // strtext = '<option data-id=15 >asdas</option>'
+					     $('#productType').append(str);  //后续框插入新的内容
 					};
 				},
 				error:function(){
@@ -869,7 +884,7 @@ text-decoration:none;
 						//TODO handle the exception
 					};
 					if(reps.result){
-						var str = '<option>商品类型</option>',
+						var str = '<option>商品名称</option>',
 						    list = reps.content;
 						for(var i=0;i<list.length;i++){
 							str += '<option data-id="'+list[i].product_id +'" >'+list[i].product_name+'</option>'
@@ -954,7 +969,24 @@ text-decoration:none;
 	        	theCommonFn.alertWin("请选择 '"+select_title+"'");
 	        	return;
         }
+
+        var provinceSelect = $('#provinceSelect').find("option:selected").attr("data-text");
+				if(provinceSelect=="省"){
+						theCommonFn.alertWin('请选择省份');
+						return;
+				}
+
+				 var citySelect = $('#citySelect').find("option:selected").attr("data-text");
+				if(citySelect=="市"){
+						theCommonFn.alertWin('请选择市');
+						return;
+				}
         
+         var districtSelect = $('#districtSelect').find("option:selected").attr("data-text");
+				if(districtSelect=="区"){
+						theCommonFn.alertWin('请选择区');
+						return;
+				}
     		var storeHouseId = $('#cells').find("option:selected").attr("data-id");
 				if(storeHouseId==null){
 						theCommonFn.alertWin('请选择交货仓库');
@@ -994,7 +1026,14 @@ text-decoration:none;
             var city = $('#citySelect').find("option:selected").val();
             var area = $('#districtSelect').find("option:selected").val();
             var storeHouse_Id = $('#goodsWarehouseId').find("option:selected").attr("data-id");
-            var jh_time = $('#picktime').val();
+            var jh_time = $('#testico').val();
+            var yueding = $('.goods-convention-in input').val();  
+            console.log('213332121321!!!')
+            console.log(jh_time);
+           // console.log($('#picktime2').test())
+            console.log($('#picktime2').val())
+            console.log($('#picktime2').html())
+            console.log('end213332121321!!!')
  
            	for(var i=0;i<$('.good-wrap').find('.goods-box').length;i++){
 					// var info3 =  $("#test").val();//可以的
@@ -1008,10 +1047,10 @@ text-decoration:none;
 							"productid":info.find('#productNamesFirst').find("option:selected").attr("data-id"),
 							"productname":$.trim(info.find('.goods-info-select-name select').val()),
 							"goods_num":$.trim(info.find('.goods-num input').val()),
-							"goods-weight":$.trim(info.find('.goods-weight input').val()), 
-							"goods-price":$.trim(info.find('.goods-price input').val()), 
+							"weight":$.trim(info.find('.goods-weight input').val()), 
+							"unitprice":$.trim(info.find('.goods-price input').val()), 
 							//"goods-total":$.trim(info.find('.goods-total-in').val()), //totalPrice
-							"goods-total":info.find('#totalPrice').html(),
+							"money":info.find('#totalPrice').html(),
                             "goods-convention":$.trim(info.find('.goods-convention input').val())
 					})
                      kk += 1; 
@@ -1020,6 +1059,7 @@ text-decoration:none;
 
 				//console.log("一共有" + kk +"个商品");
 				product = JSON.stringify(product);
+				console.log("123"+jh_time);
             	$.ajax({
 						type:"post",
 				        url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=createPurchasing",
@@ -1027,7 +1067,7 @@ text-decoration:none;
 				            data:{
                               _vt:'dlk_weishatest',
 					          loginId: loginId,
-					          suppilerid:suppilerId,
+					          supplierid:suppilerId,
                               suppliername:suppliername,
                               supplieradress:supplieradress,
 					          national:1,
@@ -1046,6 +1086,8 @@ text-decoration:none;
 					          sign:'b92d3f53c061fafcfe8a1041b2cf4baf',
 					          loc:loc,
 					          djunit:'元/吨',
+					          product:product,
+					          yueding:yueding
 				            },
 				            success:function(rep){
                                 var reps;
