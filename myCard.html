@@ -74,15 +74,14 @@
 			}
 			
 			 .footer {
-	            position:fixed;
-	            bottom:0; left:0;
 	            width:100%;
-	            height:50px;
+	            height:1rem;
+	            line-height: 1rem;
 	            padding:0;
 	            text-align: center;
 	            vertical-align: middle;
 	            font-size: 0.35rem;
-	            background: #cccccc;
+	            background:#EEEED1;
 	        }
 
 	        .footer .pullUpLabel{
@@ -120,7 +119,6 @@
 
 		
 		<script type="text/javascript">
-
 			//登陆用户名
 			var loginId = theCommonFn.getLoginIdByUrl();
 			//当前页数
@@ -163,13 +161,11 @@
 				//通用信息
 				data._vt = 'dlk_weishatest';
 
-
 				data.fromType = theCommonFn.getFromTypeByUrl();
 				data.mobile = theCommonFn.getMobileByUrl();
 				data.mtn = theCommonFn.getMtnByUrl();
 				data.buildID = theCommonFn.getBuildIdByUrl();
 			
-
 
 				data.loc = 'zh-Hans';
 				data.versionID = theCommonFn.getVersionIDByUrl();
