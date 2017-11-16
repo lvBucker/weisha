@@ -12,6 +12,16 @@
 				background: #f3f5fe;
 				font-size: 0.24rem;
 			}
+			.goodsWarehouse-address-in{
+				width: 100%;
+				height:100%; !important;
+				margin-top: 3px;
+				padding-left: 0.3rem;
+				padding-right: 0.3rem;
+				background: #FFFFFF;
+				word-wrap: break-word;
+				display:none;
+			}	
             .icons{
 		background: url(./images/date.png) no-repeat;
 		background-size:100% 100%; 
@@ -352,6 +362,10 @@ text-decoration:none;
 					</select>
 				</div>
 			</div>
+
+			<div2 class="goodsWarehouse-address-in" id = "goodsWarehouse-address-in-first">	
+			213412	
+			</div2>
 		</div>
 		<div class="goods">
 			<div class="goods-model" style="display: none;">
@@ -789,6 +803,176 @@ text-decoration:none;
 			});
 
 
+//选取供应商放入,并刷出商品类型
+			// if(localStorage.getItem('weisha_supplierName')){
+			// 	$('.info-seller-select select option').text(localStorage.getItem('weisha_supplierName'))
+			// 	var suppilerId = localStorage.getItem('weisha_supplierId');
+			// 	console.log("ldx111："+suppilerId);
+			// 	 $.ajax({
+			// 	type:"post",
+			// 	url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductType2Zy",
+			// 	async:true,
+			// 	data:{
+   //                 _vt:'dlk_weishatest',
+			// 		loginId: loginId,
+			// 		mtn: mtn,
+			// 		fromType:fromType,
+			// 		mobile:mobile,
+			// 		buildID:buildID,
+			// 		loc:loc,
+			// 		versionID:versionID,
+			// 		supplier_id:suppilerId
+			// 	},
+			// 	beforeSend:function(){
+			// 		//theCommonFn.waiting();
+			// 	},
+			// 	success:function(rep){
+   //                    var reps;
+			// 		try{
+			// 			reps = JSON.parse(rep);	
+			// 		}catch(e){
+			// 			//TODO handle the exception
+			// 		};
+			// 		if(reps.result){
+			// 			var str = '<option>Please select...</option>',
+			// 			//var str_address,
+			// 			list = reps.content;
+			// 			//console.log(suppilerAddress[0].address);
+			// 			//$('supplier-address-in').replace(suppilerAddress[0].address);
+
+			// 			for(var i=0;i<list.length;i++){
+			// 				str += '<option data-id="'+list[i].product_type_id +'" >'+list[i].product_type_name+'</option>'
+			// 			};
+   //                       //console.log("str is "+str);
+			// 		   $('#productTypeFirst option').remove();//首框删除老的选择内容
+			// 		   $('#productTypeFirst').append(str);  //首框插入新的内容
+   //                     $('#productType option').remove();//后续框删除老的选择内容
+			// 		   $('#productType').append(str);  //后续框插入新的内容
+			// 		};
+			// 	},
+			// 	error:function(){
+			// 		theCommonFn.alertWin('服务器出错')
+			// 	}
+			// });
+			// };
+//Seller信息获取
+                $.ajax({
+					type:"post",
+					url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listSupplier",
+					async:true,
+					data:{
+						loginId: loginId,
+					    mtn: mtn,
+						fromType:2,
+						mobile:true,
+						_m:'listStorageHosue',
+						_s:'coop',
+						buildID:201608071700,
+						loc:'zh-Hans',
+						versionID:'1.0.0'//,
+						// page: 0,
+						// rows: 99999,
+						// query: sear || '',
+						// country_type: coun || ''
+					},
+					beforeSend:function(){
+						theCommonFn.waiting();
+					},
+					success:function(rep){
+						theCommonFn.waiting('hide');
+						var reps;
+						try{
+							reps = JSON.parse(rep);		
+						}catch(e){
+							//TODO handle the exception
+						};
+						if(reps.result){
+							var str = '',
+							    list = reps.content;
+							for(var i=0;i<list.length;i++){
+								//设计图上是国内外
+								// str += '<li data-id="'+ list[i].supplier_id +'"><div class="list-company">'+ list[i].company_name +'</div><div class="list-country">'+ list[i].address  +'</div></li>';
+								str += '<option data-id="'+list[i].supplier_id +'" >'+list[i].company_name+'</option>'
+								suppilerWarehouse.push({
+												"suppilerId":list[i].supplier_id,
+												"suppilerName":list[i].company_name,
+												"suppilerAddress":list[i].address
+										})
+							};
+							    //str += '<li data-id=10><div class="list-company">china </div><div class="list-country">shanghai001</div></li>'
+							console.log('ldx1113:'+suppilerWarehouse)
+							//$('.info-seller-select select option').text(localStorage.getItem('weisha_supplierName'))
+							//$('.info-seller-select select option').text(str)
+							$('#supplierCells').append(str);
+						}
+					},
+					error:function(){
+						theCommonFn.alertWin('服务器出错')
+					}
+				});
+
+//Sellers选择监听
+               $("#supplierCells").change(function() {
+                    var wareHouseId = $(this).find("option:selected").attr("data-id");
+                    window.localStorage.setItem('weisha_supplierId',wareHouseId);
+                        for(var i =0; i < suppilerWarehouse.length; i++){
+             	    	    if (wareHouseId.toString() == suppilerWarehouse[i].suppilerId){
+             	     	     	$("#goodsWarehouse-address-in-first").text(suppilerWarehouse[i].suppilerAddress);
+             	     	     	window.localStorage.setItem('weisha_suppilerAddress',suppilerWarehouse[i].suppilerAddress);
+             	    	  	    $("#goodsWarehouse-address-in-first").show();
+             	    	    }
+             	        }
+
+                     $.ajax({
+				        type:"post",
+				            url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductType2Zy",
+				            async:true,
+				            data:{
+                               _vt:'dlk_weishatest',
+					           loginId: loginId,
+					           mtn: mtn,
+					           fromType:fromType,
+					           mobile:mobile,
+					           buildID:buildID,
+					           loc:loc,
+					           versionID:versionID,
+					           supplier_id:wareHouseId
+				            },
+				            beforeSend:function(){
+					//theCommonFn.waiting();
+				             },
+				            success:function(rep){
+                               var reps;
+					           try{
+						           reps = JSON.parse(rep);	
+					           }catch(e){
+						//TODO handle the exception
+					           };
+					           if(reps.result){
+						           var str = '<option>Please select...</option>',
+						//var str_address,
+						            list = reps.content;
+						//console.log(suppilerAddress[0].address);
+						//$('supplier-address-in').replace(suppilerAddress[0].address);
+
+						             for(var i=0;i<list.length;i++){
+							              str += '<option data-id="'+list[i].product_type_id +'" >'+list[i].product_type_name+'</option>'
+						             };
+                         //console.log("str is "+str);
+					                 $('#productTypeFirst option').remove();//首框删除老的选择内容
+					                 $('#productTypeFirst').append(str);  //首框插入新的内容
+                                     $('#productType option').remove();//后续框删除老的选择内容
+					                 $('#productType').append(str);  //后续框插入新的内容
+					            };
+				            },            
+				            error:function(){
+					            theCommonFn.alertWin('服务器出错')
+				            }
+			            });
+             	});
+
+
+
   //交货港口信息获取-初始
              $.ajax({
 				type:"post",
@@ -922,7 +1106,6 @@ text-decoration:none;
 					if(reps.result){
 						var str = '',
 						    list = reps.content.containerList;
-						    console.log("ldx0121:"+list);
 					     for(var i=0;i<list.length;i++){
 					  		str += '<option data-id="'+list[i].key +'" >'+list[i].label+'</option>';
 					// // // 		suppilerWarehouse.push({
@@ -934,7 +1117,6 @@ text-decoration:none;
 					// // //};
 					// // //$('#goodsWarehouseId').append(str);
 				         }
-				         console.log("123321:"+str);
                          $('#containerSizeFirst').append(str);
                          $('#containerSize').append(str);
 				 //        console.log('这里是测试！！！：'+ kk);
@@ -1043,62 +1225,63 @@ text-decoration:none;
 
            
 			//选取供应商放入,并刷出商品类型
-			if(localStorage.getItem('weisha_supplierName')){
-				$('.info-seller-select select option').text(localStorage.getItem('weisha_supplierName'))
-				var suppilerId = localStorage.getItem('weisha_supplierId');
-				console.log("ldx111："+suppilerId);
-				 $.ajax({
-				type:"post",
-				url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductType2Zy",
-				async:true,
-				data:{
-                   _vt:'dlk_weishatest',
-					loginId: loginId,
-					mtn: mtn,
-					fromType:fromType,
-					mobile:mobile,
-					buildID:buildID,
-					loc:loc,
-					versionID:versionID,
-					supplier_id:suppilerId
-				},
-				beforeSend:function(){
-					//theCommonFn.waiting();
-				},
-				success:function(rep){
-                      var reps;
-					try{
-						reps = JSON.parse(rep);	
-					}catch(e){
-						//TODO handle the exception
-					};
-					if(reps.result){
-						var str = '<option>Please select...</option>',
-						//var str_address,
-						list = reps.content;
-						//console.log(suppilerAddress[0].address);
-						//$('supplier-address-in').replace(suppilerAddress[0].address);
+			// if(localStorage.getItem('weisha_supplierName')){
+			// 	$('.info-seller-select select option').text(localStorage.getItem('weisha_supplierName'))
+			// 	var suppilerId = localStorage.getItem('weisha_supplierId');
+			// 	console.log("ldx111："+suppilerId);
+			// 	 $.ajax({
+			// 	type:"post",
+			// 	url:"https://wei.wiyarn.com/actiz/rs/b?_s=coop&_m=listProductType2Zy",
+			// 	async:true,
+			// 	data:{
+   //                 _vt:'dlk_weishatest',
+			// 		loginId: loginId,
+			// 		mtn: mtn,
+			// 		fromType:fromType,
+			// 		mobile:mobile,
+			// 		buildID:buildID,
+			// 		loc:loc,
+			// 		versionID:versionID,
+			// 		supplier_id:suppilerId
+			// 	},
+			// 	beforeSend:function(){
+			// 		//theCommonFn.waiting();
+			// 	},
+			// 	success:function(rep){
+   //                    var reps;
+			// 		try{
+			// 			reps = JSON.parse(rep);	
+			// 		}catch(e){
+			// 			//TODO handle the exception
+			// 		};
+			// 		if(reps.result){
+			// 			var str = '<option>Please select...</option>',
+			// 			//var str_address,
+			// 			list = reps.content;
+			// 			//console.log(suppilerAddress[0].address);
+			// 			//$('supplier-address-in').replace(suppilerAddress[0].address);
 
-						for(var i=0;i<list.length;i++){
-							str += '<option data-id="'+list[i].product_type_id +'" >'+list[i].product_type_name+'</option>'
-						};
-                         //console.log("str is "+str);
-					   $('#productTypeFirst option').remove();//首框删除老的选择内容
-					   $('#productTypeFirst').append(str);  //首框插入新的内容
-                       $('#productType option').remove();//后续框删除老的选择内容
-					   $('#productType').append(str);  //后续框插入新的内容
-					};
-				},
-				error:function(){
-					theCommonFn.alertWin('服务器出错')
-				}
-			});
-			};
+			// 			for(var i=0;i<list.length;i++){
+			// 				str += '<option data-id="'+list[i].product_type_id +'" >'+list[i].product_type_name+'</option>'
+			// 			};
+   //                       //console.log("str is "+str);
+			// 		   $('#productTypeFirst option').remove();//首框删除老的选择内容
+			// 		   $('#productTypeFirst').append(str);  //首框插入新的内容
+   //                     $('#productType option').remove();//后续框删除老的选择内容
+			// 		   $('#productType').append(str);  //后续框插入新的内容
+			// 		};
+			// 	},
+			// 	error:function(){
+			// 		theCommonFn.alertWin('服务器出错')
+			// 	}
+			// });
+			// };
 
           //首框展示
           $("#productTypeFirst").change(function() {
           	     var productTypeId = $(this).find("option:selected").attr("data-id");
           	     //console.log("productType = " +productTypeId);
+          	     //alert(productTypeId);
           	     var suppilerId = localStorage.getItem('weisha_supplierId');
                  getProductNameList(productTypeId,suppilerId);
             });
@@ -1307,15 +1490,18 @@ text-decoration:none;
 			});
 			new YMDselect('year','month','day');
 //			succOrFai('失败');
+
             //选择供应商
             $('.info-seller-select').click(function(evt){
-            	evt.preventDefault();
-            	window.location.href = 'supplierList.html';
+            	// evt.preventDefault();
+            	// window.location.href = 'supplierList.html';
             });
 
-            // function closeBg() { //关闭遮罩层
-            //     $("#fullbg,#dialog").hide(); 
-            // } 
+
+ // $("#buyerCells").change(function() {
+                
+ //                alert(localStorage.getItem('weisha_suppilerAddress'));
+ //             	});
 
             function submitTest(){
                   var product =[];
@@ -1324,14 +1510,16 @@ text-decoration:none;
                   var suppliername = localStorage.getItem('weisha_supplierName');
                   var currency = $('#currencyCells').find("option:selected").attr("data-id");
                   var storeHouse_Id  = $('#portCells').find("option:selected").attr("data-id"); 
-                  alert("this"+storeHouse_Id) 
-                  var buyer = $('#buyerCells').find("option:selected").attr("data-id");
+                  //alert("this"+storeHouse_Id) 
+                  //var buyer = $('#buyerCells').find("option:selected").attr("data-id");
+                  var buyer = $('#buyerCells').val();
                   var unit = $('#unitCells').find("option:selected").attr("data-id");
                   var nian = $('#year').val();
                   var yue = $('#month').val();
                   var ri = $('#day').val();
                   var creditCard = $('#creditCard').find("option:selected").attr("data-id");
                   var contractNo = $('#contractNo').val();
+            
                   //alert($('#year').val());
 
                   for(var i=0;i<$('.good-wrap').find('.goods-box').length;i++){
@@ -1388,11 +1576,12 @@ text-decoration:none;
 					supplierid:suppilerid,
 					suppliername:suppliername,
 
-  supplieradress:'',
+  supplieradress:localStorage.getItem('weisha_suppilerAddress'),
+  //window.localStorage.setItem('weisha_suppilerAddress',suppilerWarehouse[i].suppilerAddress);
   currency:currency,
    unitId:unit,
    djunit:'$/kg',
-  storeHouse_Id:'',  //storeHouse_Id
+  storeHouse_Id:$('#portCells').find("option:selected").attr("data-id"),  //storeHouse_Id
   credit_letter_type_id:creditCard,
    yueding:'',
   say:'',		
